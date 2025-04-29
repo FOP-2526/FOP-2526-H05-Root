@@ -2,11 +2,13 @@ package h05;
 
 public interface Equippable {
 
-    RobotEquipment[] getEquipments();
+    Equipment[] getEquipments();
 
-    RobotEquipment getEquipment(int index);
+    Equipment getEquipment(int index);
 
-    RobotEquipment getEquipment(String name);
+    Equipment getEquipment(String name);
 
-    void equip(RobotEquipment equipment);
+    void equip(Equipment equipment);
+
+    void unequip(Equipment equipment);
 }

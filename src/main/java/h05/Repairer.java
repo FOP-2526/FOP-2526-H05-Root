@@ -1,10 +1,21 @@
 package h05;
 
-public interface Repairer {
+import h05.equipment.EquippedRobot;
 
-    RepairInstruction[] getInstructions();
+public interface Repairer extends Worker {
 
-    void assign(RepairInstruction instruction);
+    Instruction[] getInstructions();
 
-    void repair();
+    Instruction getInstruction(int index);
+
+    void assign(Instruction instruction);
+
+    void removeInstruction(Instruction instruction);
+
+    interface Instruction {
+
+        EquippedRobot getRobot();
+
+        String getEquipmentName();
+    }
 }

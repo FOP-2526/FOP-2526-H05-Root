@@ -1,6 +1,6 @@
 package h05;
 
-import h05.equipment.EquippedRobot;
+import h05.robot.EquippedRobot;
 
 public interface Repairer extends Worker {
 

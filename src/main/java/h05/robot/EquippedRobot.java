@@ -1,13 +1,14 @@
-package h05.equipment;
+package h05.robot;
 
 import fopbot.Robot;
+import fopbot.RobotFamily;
 import h05.Equipment;
 import h05.Equippable;
 
 public class EquippedRobot extends Robot implements Equippable {
 
     public EquippedRobot(int x, int y) {
-        super(x, y);
+        super(x, y, RobotFamily.SQUARE_RED);
     }
 
     @Override

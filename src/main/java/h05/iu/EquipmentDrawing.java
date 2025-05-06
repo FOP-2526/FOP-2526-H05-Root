@@ -1,8 +1,10 @@
-package h05;
+package h05.iu;
 
 import fopbot.Drawable;
 import fopbot.DrawingContext;
 import fopbot.PaintUtils;
+import h05.AbstractEquipment;
+import h05.Equipment;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.Graphics;

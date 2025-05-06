@@ -1,7 +1,5 @@
 package h05;
 
-import fopbot.Direction;
-import fopbot.KarelWorld;
 import fopbot.Robot;
 import fopbot.World;
 
@@ -9,81 +7,68 @@ public class EquippedBot extends Robot implements Equipable {
 
     private static final int MAX_EQUIPMENTS = 3;
 
-    private Tool tool;
-
+    private Camera camera;
+    private Battery battery;
     private final Equipment[] equipments = new Equipment[MAX_EQUIPMENTS];
 
     private int equipmentCount = 0;
 
-    public EquippedBot(int x, int y, Direction direction) {
-        super(x, y, direction, 0);
-        this.tool = new NoTool(x, y);
-        Camera camera = new Camera(x, y);
-        equipments[0] = camera;
-        equipments[1] = new Battery(x, y);
-        equipmentCount = 2;
-
-        removeFog(getVisibleFields());
-    }
-
-    public void removeFog(int[][] points) {
-        KarelWorld world = World.getGlobalWorld();
-        for (int[] point : points) {
-            int newX = point[0];
-            int newY = point[1];
-            world.removeEntity(newX, newY, Fog.class);
+    public EquippedBot(int x, int y) {
+        super(x, y);
+        this.camera = new Camera(x, y);
+        this.battery = new Battery(x, y);
+        removeFog(x, y);
+        for (int[] points : getVisibleFields(x, y)) {
+            removeFog(points[0], points[1]);
         }
     }
 
-    public void placeFog(int[][] points) {
-        KarelWorld world = World.getGlobalWorld();
-        for (int[] point : points) {
-            int newX = point[0];
-            int newY = point[1];
-            world.placeEntity(new Fog(newX, newY));
-        }
+    private void removeFog(int x, int y) {
+        World.getGlobalWorld().removeEntity(x, y, Fog.class);
     }
 
-    public int[][] getVisibleFields() {
-        Camera camera = (Camera) equipments[0];
-        int range = camera.getVisibilityRange();
-        int x = getX();
-        int y = getY();
+    private void placeFog(int x, int y) {
+        World.getGlobalWorld().placeEntity(new Fog(x, y));
+    }
 
-        int count = 0;
-        for (int dx = -range; dx <= range; dx++) {
-            for (int dy = -range; dy <= range; dy++) {
+    public int[][] getVisibleFields(int x, int y) {
+        int visibilityRange = camera.getVisibilityRange();
+        int fieldCount = 0;
+        for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
+            for (int dy = -visibilityRange; dy <= visibilityRange; dy++) {
                 int newX = x + dx;
                 int newY = y + dy;
                 if (newX < 0 || newX >= World.getWidth() || newY < 0 || newY >= World.getHeight()) {
                     continue;
                 }
-                count++;
+                fieldCount++;
             }
         }
 
-        // Now create the array and fill it
-        int[][] visibleFields = new int[count][2];
+        int[][] visibleFields = new int[fieldCount][2];
         int index = 0;
-        for (int dx = -range; dx <= range; dx++) {
-            for (int dy = -range; dy <= range; dy++) {
+
+        for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
+            for (int dy = -visibilityRange; dy <= visibilityRange; dy++) {
                 int newX = x + dx;
                 int newY = y + dy;
                 if (newX < 0 || newX >= World.getWidth() || newY < 0 || newY >= World.getHeight()) {
                     continue;
                 }
-                visibleFields[index][0] = x + dx;
-                visibleFields[index][1] = y + dy;
+                visibleFields[index][0] = newX;
+                visibleFields[index][1] = newY;
                 index++;
             }
         }
         return visibleFields;
     }
 
+    public Camera getCamera() {
+        return camera;
+    }
 
-    @Override
-    public Tool getTool() {
-        return tool;
+    public Battery getBattery() {
+        return battery;
     }
 
     @Override
@@ -92,13 +77,12 @@ public class EquippedBot extends Robot implements Equipable {
     }
 
     @Override
-    public void equip(Tool tool) {
-        this.tool = tool;
-    }
-
-    @Override
     public void equip(Equipment equipment) {
-        if (equipmentCount == equipments.length) {
+        if (equipment.getName().equals(camera.getName())) {
+            camera = (Camera) equipment;
+        } else if (equipment.getName().equals(battery.getName())) {
+            battery = (Battery) equipment;
+        } else if (equipmentCount == equipments.length) {
             equipments[equipmentCount - 1] = equipment;
         } else {
             equipments[equipmentCount++] = equipment;
@@ -129,16 +113,59 @@ public class EquippedBot extends Robot implements Equipable {
         equipmentCount--;
     }
 
+    private void useBattery() {
+        battery.reduceDurability(equipmentCount + 2);
+    }
+
     @Override
-    public void move() {
-        placeFog(getVisibleFields());
-        super.move();
-        removeFog(getVisibleFields());
+    public void turnLeft() {
+        if (isBatteryBroken()) {
+            turnOff();
+            return;
+        }
+        super.turnLeft();
+        useBattery();
+    }
+
+    private void updateEquipmentsPosition() {
         for (int i = 0; i < equipmentCount; i++) {
             if (equipments[i] != null) {
                 equipments[i].setX(getX());
                 equipments[i].setY(getY());
             }
         }
+    }
+
+    public boolean isBatteryBroken() {
+        return battery.getCondition() == Equipment.Condition.BROKEN;
+    }
+
+    @Override
+    public void move() {
+        if (isBatteryBroken()) {
+            turnOff();
+            return;
+        }
+        int oldX = getX();
+        int oldY = getY();
+        super.move();
+
+        int newX = getX();
+        int newY = getY();
+        updateEquipmentsPosition();
+        int[][] oldPoints = getVisibleFields(oldX, oldY);
+        int[][] newPoints = getVisibleFields(getX(), getY());
+        for (int[] points : oldPoints) {
+            int x = points[0];
+            int y = points[1];
+            if (x == newX && y == newY) {
+                continue;
+            }
+            placeFog(x, y);
+        }
+        for (int[] points : newPoints) {
+            removeFog(points[0], points[1]);
+        }
+        useBattery();
     }
 }

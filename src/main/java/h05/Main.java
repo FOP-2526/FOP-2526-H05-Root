@@ -8,6 +8,7 @@ import fopbot.FieldEntity;
 import fopbot.Robot;
 import fopbot.Wall;
 import fopbot.World;
+import h05.maze.MazeGenerator;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -31,23 +32,29 @@ public class Main {
         int height = 10;
         World.setSize(width, height);
         World.getGlobalWorld().setDrawingRegistry(
-                DrawingRegistry.builder(DrawingRegistry.DEFAULT)
-                        .addAll(Map.ofEntries(
-                                Map.entry(Battery.class, new EquipmentDrawing()),
-                                Map.entry(Camera.class, new EquipmentDrawing()),
-                                Map.entry(Fog.class, new FogDrawing())
-                        ))
-                        .build(Comparator.comparingInt(Main::getDrawingPriority))
+            DrawingRegistry.builder(DrawingRegistry.DEFAULT)
+                .addAll(Map.ofEntries(
+                    Map.entry(Battery.class, new EquipmentDrawing()),
+                    Map.entry(Camera.class, new EquipmentDrawing()),
+                    Map.entry(Wall.class, new WallWithFogDrawing()),
+                    Map.entry(Fog.class, new FogDrawing())
+                ))
+                .build(Comparator.comparingInt(Main::getDrawingPriority))
         );
+        MazeGenerator.generate();
         World.setVisible(true);
+
+        int rX = 5;
+        int rY = 5;
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                if (x == 0 && y == 0) {
+                if (x == rX && y == rY) {
                     continue;
                 }
                 World.getGlobalWorld().placeEntity(new Fog(x, y));
             }
         }
-        EquippedBot r = new EquippedBot(0, 0, Direction.UP);
+        EquippedBot r = new EquippedBot(rX, rY, Direction.UP);
     }
 }

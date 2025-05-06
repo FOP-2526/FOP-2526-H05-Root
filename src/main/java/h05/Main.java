@@ -2,6 +2,7 @@ package h05;
 
 import fopbot.Block;
 import fopbot.Coin;
+import fopbot.Direction;
 import fopbot.DrawingRegistry;
 import fopbot.FieldEntity;
 import fopbot.Robot;
@@ -20,6 +21,7 @@ public class Main {
             case Robot c -> 2;
             case Coin c -> 3;
             case Block b -> 4;
+            case Fog fog -> 5;
             default -> Integer.MAX_VALUE;
         };
     }
@@ -32,16 +34,20 @@ public class Main {
                 DrawingRegistry.builder(DrawingRegistry.DEFAULT)
                         .addAll(Map.ofEntries(
                                 Map.entry(Battery.class, new EquipmentDrawing()),
-                                Map.entry(Camera.class, new EquipmentDrawing())
+                                Map.entry(Camera.class, new EquipmentDrawing()),
+                                Map.entry(Fog.class, new FogDrawing())
                         ))
                         .build(Comparator.comparingInt(Main::getDrawingPriority))
         );
-
-        int[] durabilities = {90, 50, 20, 0};
-        for (int i = 0; i < durabilities.length; i++) {
-            Battery battery = new Battery(5 + i, 5);
-            battery.setDurability(durabilities[i]);
-        }
         World.setVisible(true);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                if (x == 0 && y == 0) {
+                    continue;
+                }
+                World.getGlobalWorld().placeEntity(new Fog(x, y));
+            }
+        }
+        EquippedBot r = new EquippedBot(0, 0, Direction.UP);
     }
 }

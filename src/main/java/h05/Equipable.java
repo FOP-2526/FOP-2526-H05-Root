@@ -10,7 +10,7 @@ public interface Equipable {
 
     void equip(Equipment equipment);
 
-    void unequip(Tool tool);
+    void unequip(String name);
 
-    void unequip(Equipment equipment);
+    void unequip(int index);
 }

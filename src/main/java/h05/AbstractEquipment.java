@@ -1,7 +1,6 @@
 package h05;
 
 import fopbot.FieldEntity;
-import fopbot.World;
 
 public class AbstractEquipment extends FieldEntity implements Equipment {
 
@@ -11,13 +10,22 @@ public class AbstractEquipment extends FieldEntity implements Equipment {
 
     public AbstractEquipment(int x, int y, String name) {
         super(x, y);
-        World.getGlobalWorld().placeEntity(this);
         this.name = name;
     }
 
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void setX(int x) {
+        super.setX(x);
+    }
+
+    @Override
+    public void setY(int y) {
+        super.setY(y);
     }
 
     @Override

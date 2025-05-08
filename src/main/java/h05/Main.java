@@ -8,6 +8,7 @@ import fopbot.Robot;
 import fopbot.Wall;
 import fopbot.World;
 import h05.entitity.Loot;
+import h05.entitity.MineBot;
 import h05.ui.FogDrawing;
 import h05.ui.LootDrawing;
 import h05.ui.WallFogDrawing;
@@ -42,8 +43,22 @@ public class Main {
                 ))
                 .build(Comparator.comparingInt(Main::getDrawingPriority))
         );
-        World.getGlobalWorld().placeEntity(new Loot(3, 3, new Camera(1)));
-        Robot r = new Robot(2, 2);
+
+        int rX = 5;
+        int rY = 5;
+        boolean fog = true;
+        if (fog) {
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    World.getGlobalWorld().placeEntity(new Fog(x, y));
+                }
+            }
+        }
+
+        World.getGlobalWorld().placeEntity(new Loot(3, 3, new Battery()));
+        World.setVisible(true);
+        MineBot steve = new MineBot(rX, rY);
+        steve.move();
 
         World.setVisible(true);
     }

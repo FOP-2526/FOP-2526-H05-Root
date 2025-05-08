@@ -1,23 +1,30 @@
-package h05;
+package h05.entitity;
 
 import fopbot.Robot;
 import fopbot.World;
+import h05.Battery;
+import h05.Camera;
+import h05.Equipment;
+import h05.Fog;
+import h05.ui.Equipable;
 
-public class EquippedBot extends Robot implements Equipable {
+public class MineBot extends Robot implements Equipable {
 
     private static final int MAX_EQUIPMENTS = 3;
 
     private Camera camera;
+
     private Battery battery;
+
     private final Equipment[] equipments = new Equipment[MAX_EQUIPMENTS];
 
     private int equipmentCount = 0;
 
-    public EquippedBot(int x, int y) {
+    public MineBot(int x, int y) {
         super(x, y);
-        this.camera = new Camera(x, y);
-        this.battery = new Battery(x, y);
-        removeFog(x, y);
+        this.camera = new Camera();
+        this.battery = new Battery();
+
         for (int[] points : getVisibleFields(x, y)) {
             removeFog(points[0], points[1]);
         }
@@ -90,50 +97,12 @@ public class EquippedBot extends Robot implements Equipable {
     }
 
     @Override
-    public void unequip(String name) {
-        int i = 0;
-        for (; i < equipmentCount; i++) {
-            if (name.equals(equipments[i].getName())) {
-                equipments[i] = null;
-                equipmentCount--;
-                break;
-            }
-        }
-        for (; i < equipmentCount - 1; i++) {
-            equipments[i] = equipments[i + 1];
-        }
-    }
-
-    @Override
     public void unequip(int index) {
         for (int i = index; i < equipmentCount - 1; i++) {
             equipments[i] = equipments[i + 1];
         }
         equipments[equipmentCount - 1] = null;
         equipmentCount--;
-    }
-
-    private void useBattery() {
-        battery.reduceDurability(equipmentCount + 2);
-    }
-
-    @Override
-    public void turnLeft() {
-        if (isBatteryBroken()) {
-            turnOff();
-            return;
-        }
-        super.turnLeft();
-        useBattery();
-    }
-
-    private void updateEquipmentsPosition() {
-        for (int i = 0; i < equipmentCount; i++) {
-            if (equipments[i] != null) {
-                equipments[i].setX(getX());
-                equipments[i].setY(getY());
-            }
-        }
     }
 
     public boolean isBatteryBroken() {
@@ -143,18 +112,17 @@ public class EquippedBot extends Robot implements Equipable {
     @Override
     public void move() {
         if (isBatteryBroken()) {
-            turnOff();
             return;
         }
         int oldX = getX();
         int oldY = getY();
         super.move();
 
+
         int newX = getX();
         int newY = getY();
-        updateEquipmentsPosition();
         int[][] oldPoints = getVisibleFields(oldX, oldY);
-        int[][] newPoints = getVisibleFields(getX(), getY());
+        int[][] newPoints = getVisibleFields(newX, newY);
         for (int[] points : oldPoints) {
             int x = points[0];
             int y = points[1];
@@ -166,6 +134,6 @@ public class EquippedBot extends Robot implements Equipable {
         for (int[] points : newPoints) {
             removeFog(points[0], points[1]);
         }
-        useBattery();
+        battery.reduceDurability(equipmentCount + 2);
     }
 }

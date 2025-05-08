@@ -16,14 +16,6 @@ public interface Equipment extends Durable {
         return Condition.BROKEN;
     }
 
-    int getX();
-
-    int getY();
-
-    void setX(int x);
-
-    void setY(int y);
-
     enum Condition {
         NEW,
         USED,

@@ -1,4 +1,4 @@
-package h05.iu;
+package h05.ui;
 
 import fopbot.ColorProfile;
 import fopbot.Drawable;
@@ -11,7 +11,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
-public class WallWithFogDrawing implements Drawable<Wall> {
+public class WallFogDrawing implements Drawable<Wall> {
 
     @Override
     public void draw(Graphics g, DrawingContext<Wall> context) {

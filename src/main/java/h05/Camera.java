@@ -2,18 +2,19 @@ package h05;
 
 public class Camera extends AbstractEquipment {
 
-    private int visibilityRange = 1;
+    public static final int DEFAULT_VISIBILITY_RANGE = 1;
+    private final int visibilityRange;
 
-    public Camera(int x, int y) {
-        super(x, y, "Camera");
+    public Camera(int visibilityRange) {
+        super("Camera");
+        this.visibilityRange = visibilityRange;
     }
 
+    public Camera() {
+        this(DEFAULT_VISIBILITY_RANGE);
+    }
 
     public int getVisibilityRange() {
         return visibilityRange;
-    }
-
-    public void setVisibilityRange(int visibilityRange) {
-        this.visibilityRange = visibilityRange;
     }
 }

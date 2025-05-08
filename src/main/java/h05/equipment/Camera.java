@@ -1,8 +1,9 @@
-package h05;
+package h05.equipment;
 
 public class Camera extends AbstractEquipment {
 
     public static final int DEFAULT_VISIBILITY_RANGE = 1;
+
     private final int visibilityRange;
 
     public Camera(int visibilityRange) {
@@ -15,6 +16,9 @@ public class Camera extends AbstractEquipment {
     }
 
     public int getVisibilityRange() {
+        if (getCondition() == Condition.DAMAGED) {
+            return 0;
+        }
         return visibilityRange;
     }
 }

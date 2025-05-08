@@ -1,16 +1,20 @@
 package h05.entitity;
 
+import fopbot.Direction;
 import fopbot.Robot;
 import fopbot.World;
-import h05.Battery;
-import h05.Camera;
 import h05.Equipment;
 import h05.Fog;
+import h05.equipment.Battery;
+import h05.equipment.Camera;
+import h05.equipment.MiningDetector;
+import h05.equipment.TelephotoLense;
+import h05.equipment.WallBreaker;
 import h05.ui.Equipable;
 
-public class MineBot extends Robot implements Equipable {
+public class MiningRobot extends Robot implements Equipable {
 
-    private static final int MAX_EQUIPMENTS = 3;
+    private static final int MAX_EQUIPMENTS = 2;
 
     private Camera camera;
 
@@ -20,26 +24,25 @@ public class MineBot extends Robot implements Equipable {
 
     private int equipmentCount = 0;
 
-    public MineBot(int x, int y) {
+    public MiningRobot(int x, int y) {
         super(x, y);
         this.camera = new Camera();
         this.battery = new Battery();
 
-        for (int[] points : getVisibleFields(x, y)) {
+        for (int[] points : getVisibleFields(camera.getVisibilityRange(), x, y)) {
             removeFog(points[0], points[1]);
         }
     }
 
-    private void removeFog(int x, int y) {
+    void removeFog(int x, int y) {
         World.getGlobalWorld().removeEntity(x, y, Fog.class);
     }
 
-    private void placeFog(int x, int y) {
+    void placeFog(int x, int y) {
         World.getGlobalWorld().placeEntity(new Fog(x, y));
     }
 
-    public int[][] getVisibleFields(int x, int y) {
-        int visibilityRange = camera.getVisibilityRange();
+    int[][] getVisibleFields(int visibilityRange, int x, int y) {
         int fieldCount = 0;
         for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
             for (int dy = -visibilityRange; dy <= visibilityRange; dy++) {
@@ -109,20 +112,9 @@ public class MineBot extends Robot implements Equipable {
         return battery.getCondition() == Equipment.Condition.BROKEN;
     }
 
-    @Override
-    public void move() {
-        if (isBatteryBroken()) {
-            return;
-        }
-        int oldX = getX();
-        int oldY = getY();
-        super.move();
-
-
-        int newX = getX();
-        int newY = getY();
-        int[][] oldPoints = getVisibleFields(oldX, oldY);
-        int[][] newPoints = getVisibleFields(newX, newY);
+    void updateFog(int visibilityRange, int oldX, int oldY, int newX, int newY) {
+        int[][] oldPoints = getVisibleFields(visibilityRange, oldX, oldY);
+        int[][] newPoints = getVisibleFields(visibilityRange, newX, newY);
         for (int[] points : oldPoints) {
             int x = points[0];
             int y = points[1];
@@ -134,6 +126,37 @@ public class MineBot extends Robot implements Equipable {
         for (int[] points : newPoints) {
             removeFog(points[0], points[1]);
         }
+    }
+
+    @Override
+    public void move() {
+        if (isBatteryBroken()) {
+            return;
+        }
+        int oldX = getX();
+        int oldY = getY();
+        Direction direction = getDirection();
+        int newX = oldX + direction.getDx();
+        int newY = oldY + direction.getDy();
+        int visibilityRange = camera.getVisibilityRange();
+
+       for(int i = 0; i < equipmentCount; i++) {
+           Equipment equipment = equipments[i];
+            if (equipment.getName().equals("Wall Breaker")
+                    && !isFrontClear()
+                    && newX >= 0 && newX < World.getWidth()
+                    && newY >= 0 && newY < World.getHeight()) {
+                ((WallBreaker) equipment).breakWall(newX, newY);
+            } else if (equipment.getName().equals("TelephotoLense")) {
+                visibilityRange = ((TelephotoLense) equipment).extendVisibilityRange(camera);
+            } else if (equipment.getName().equals("Mining Detector")) {
+                ((MiningDetector) equipment).scan(newX, newY);
+            }
+        }
+
+        super.move();
+
+        updateFog(visibilityRange, oldX, oldY, newX, newY);
         battery.reduceDurability(equipmentCount + 2);
     }
 }

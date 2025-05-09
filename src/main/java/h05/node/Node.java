@@ -4,18 +4,27 @@ import fopbot.FieldEntity;
 import h05.Mineable;
 
 public abstract class Node extends FieldEntity implements Mineable {
-    private MiningState miningState;
+    private State miningState;
+    private int durability;
     public Node(int x, int y) {
         super(x, y);
+        this.miningState = State.NOT_MINED;
+        this.durability = 100;
     }
 
-    @Override
-    public MiningState getMiningState() {
+    public void reduceDurability(int amount) {
+        durability -= amount;
+    }
+
+    public int getDurability() {
+        return durability;
+    }
+
+    public State getMiningState() {
        return miningState;
     }
 
-    @Override
-    public void setMiningState(MiningState miningState) {
+    public void setMiningState(State miningState) {
         this.miningState = miningState;
     }
 }

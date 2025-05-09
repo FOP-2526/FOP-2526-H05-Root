@@ -2,7 +2,7 @@ package h05.robot;
 
 import fopbot.*;
 //import h05.Pickaxe;
-import h05.node.MiningNode;
+import h05.node.Rock;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -25,7 +25,6 @@ public class MiningRobot extends EquippedRobot implements KeyListener {
         int currentY = getY();
         int xToMine = currentX;
         int yToMine = currentY;
-
         if (isFacingUp()) {
             yToMine = currentY - 1;
         } else if (isFacingRight()) {
@@ -47,7 +46,7 @@ public class MiningRobot extends EquippedRobot implements KeyListener {
         if (entityList.isEmpty()) return;
 
         var entity = entityList.getFirst();
-        if (entity instanceof MiningNode node) {
+        if (entity instanceof Rock node) {
 //            node.mine();
         }
     }

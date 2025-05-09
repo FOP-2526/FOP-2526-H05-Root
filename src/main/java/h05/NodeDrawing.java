@@ -18,7 +18,7 @@ public class NodeDrawing implements Drawable<Node> {
     public void draw(Graphics g, DrawingContext<Node> context) {
         Node node = context.entity();
         if (images == null) {
-            var conditions = Mineable.MiningState.values();
+            var conditions = Mineable.State.values();
             images = new BufferedImage[conditions.length];
             for (var state : conditions) {
                 String sanitizedName = node.getName().toLowerCase().replace(" ", "");

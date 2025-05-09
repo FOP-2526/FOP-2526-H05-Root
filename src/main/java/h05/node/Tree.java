@@ -3,6 +3,6 @@ package h05.node;
 
 public class Tree extends Node {
     public Tree(int x, int y) {
-        super(x, y);
+        super(x, y, "tree");
     }
 }

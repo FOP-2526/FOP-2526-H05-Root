@@ -6,8 +6,11 @@ import h05.Mineable;
 public abstract class Node extends FieldEntity implements Mineable {
     private State miningState;
     private int durability;
-    public Node(int x, int y) {
+    private String name;
+
+    public Node(int x, int y, String name) {
         super(x, y);
+        this.name = name;
         this.miningState = State.NOT_MINED;
         this.durability = 100;
     }
@@ -19,13 +22,14 @@ public abstract class Node extends FieldEntity implements Mineable {
     public int getDurability() {
         return durability;
     }
+
     @Override
     public String getName() {
-        return this.getClass().getSimpleName();
+        return name;
     }
 
     public State getMiningState() {
-       return miningState;
+        return miningState;
     }
 
     public void setMiningState(State miningState) {

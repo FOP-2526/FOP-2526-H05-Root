@@ -19,6 +19,10 @@ public abstract class Node extends FieldEntity implements Mineable {
     public int getDurability() {
         return durability;
     }
+    @Override
+    public String getName() {
+        return this.getClass().getSimpleName();
+    }
 
     public State getMiningState() {
        return miningState;

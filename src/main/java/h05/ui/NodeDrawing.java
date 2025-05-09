@@ -34,32 +34,4 @@ public class NodeDrawing extends SvgBasedDrawing<Node> {
             setImage(i, image);
         }
     }
-
-//    @Override
-//    public void draw(Graphics g, DrawingContext<Node> context) {
-//        Node node = context.entity();
-//        if (images == null) {
-//            var conditions = Mineable.State.values();
-//            images = new BufferedImage[conditions.length];
-//            for (var state : conditions) {
-//                String sanitizedName = node.getName().toLowerCase().replace(" ", "");
-//                String path = sanitizedName + "_" + state.name().toLowerCase() + ".svg";
-//                InputStream in = getClass().getResourceAsStream(path);
-//                if (in == null) {
-//                    throw new IllegalArgumentException("Image not found: " + path);
-//                }
-//                images[state.ordinal()] = PaintUtils.loadFieldImage(
-//                        in,
-//                        0,
-//                        scale(context.colorProfile().fieldInnerSize() - context.colorProfile().fieldInnerOffset() * 2,
-//                                context)
-//                );
-//            }
-//        }
-//        Point upperLeft = context.upperLeftCorner();
-//        Image image = images[node.getMiningState().ordinal()];
-//        g.drawImage(image, scale(upperLeft.x, context), scale(upperLeft.y, context), null);
-//    }
-
-
 }

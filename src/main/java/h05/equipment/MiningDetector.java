@@ -1,12 +1,13 @@
 package h05.equipment;
 
+import fopbot.Direction;
 import fopbot.Field;
 import fopbot.World;
-import h05.entitity.Loot;
+import h05.entity.Loot;
 
 import java.awt.Color;
 
-public class MiningDetector extends AbstractEquipment {
+public class MiningDetector extends AbstractUsableEquipment {
 
     public static final int DEFAULT_VISIBILITY_RANGE = 3;
 
@@ -21,7 +22,8 @@ public class MiningDetector extends AbstractEquipment {
         this(DEFAULT_VISIBILITY_RANGE);
     }
 
-    public void scan(int x, int y) {
+    @Override
+    public void use(int x, int y, Direction direction) {
         if (getCondition() == Condition.BROKEN) {
             return;
         }

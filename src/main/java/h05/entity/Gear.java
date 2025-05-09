@@ -1,4 +1,4 @@
-package h05.entitity;
+package h05.entity;
 
 import fopbot.FieldEntity;
 import fopbot.World;
@@ -14,7 +14,7 @@ public class Gear extends FieldEntity {
         World.getGlobalWorld().placeEntity(this);
     }
 
-    public Equipment getLoot() {
+    public Equipment getEquipment() {
         return loot;
     }
 }

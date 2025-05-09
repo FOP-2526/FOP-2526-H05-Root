@@ -1,6 +1,6 @@
 package h05.equipment;
 
-public class TelephotoLense extends AbstractEquipment {
+public class TelephotoLense extends AbstractAttachableEquipment {
 
     private final int rangeEnhancement;
 
@@ -11,16 +11,5 @@ public class TelephotoLense extends AbstractEquipment {
 
     public int getRangeEnhancement() {
         return rangeEnhancement;
-    }
-
-    public int extendVisibilityRange(Camera camera) {
-        int visibilityRange = camera.getVisibilityRange();
-        reduceDurability(visibilityRange);
-        if (getCondition() == Condition.BROKEN) {
-            return visibilityRange;
-        }
-        visibilityRange += rangeEnhancement;
-        reduceDurability(rangeEnhancement);
-        return visibilityRange;
     }
 }

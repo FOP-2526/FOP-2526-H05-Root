@@ -16,6 +16,10 @@ public interface Equipment extends Durable {
         return Condition.BROKEN;
     }
 
+    boolean isUpgrade();
+
+    boolean isUsable();
+
     enum Condition {
         NEW,
         USED,

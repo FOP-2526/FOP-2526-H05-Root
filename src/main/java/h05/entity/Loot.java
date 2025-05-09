@@ -1,4 +1,4 @@
-package h05.entitity;
+package h05.entity;
 
 import fopbot.FieldEntity;
 import fopbot.World;

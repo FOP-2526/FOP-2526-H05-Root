@@ -1,27 +1,15 @@
 package h05;
 
-import fopbot.DrawingRegistry;
-import fopbot.FieldEntity;
-import fopbot.Robot;
-import fopbot.Wall;
-import fopbot.World;
+import fopbot.*;
 import h05.entity.Fog;
 import h05.entity.Gear;
 import h05.entity.Loot;
 import h05.entity.MiningRobot;
-import h05.equipment.WallBreaker;
-import h05.ui.FogDrawing;
-import h05.ui.GearDrawing;
-import h05.ui.LootDrawing;
-import h05.ui.MineBotDrawing;
-import h05.ui.WallFogDrawing;
+import h05.node.Node;
+import h05.node.Tree;
+import h05.ui.*;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class GameLoop {
 
@@ -58,6 +46,7 @@ public class GameLoop {
             case Loot l -> 1;
             case Robot c -> 2;
             case Fog fog -> 3;
+            case Node node -> 0;
             default -> -1;
         };
     }
@@ -67,21 +56,23 @@ public class GameLoop {
         int height = 10;
         World.setSize(width, height);
         World.getGlobalWorld().setDrawingRegistry(
-            DrawingRegistry.builder(DrawingRegistry.DEFAULT)
-                .addAll(Map.ofEntries(
-                    Map.entry(Wall.class, new WallFogDrawing()),
-                    Map.entry(Gear.class, new GearDrawing()),
-                    Map.entry(Loot.class, new LootDrawing()),
-                    Map.entry(MiningRobot.class, new MineBotDrawing()),
-                    Map.entry(Fog.class, new FogDrawing())
-                ))
-                .build(Comparator.comparingInt(this::getDrawingPriority))
+                DrawingRegistry.builder(DrawingRegistry.DEFAULT)
+                        .addAll(Map.ofEntries(
+                                Map.entry(Wall.class, new WallFogDrawing()),
+                                Map.entry(Gear.class, new GearDrawing()),
+                                Map.entry(Loot.class, new LootDrawing()),
+                                Map.entry(MiningRobot.class, new MineBotDrawing()),
+                                Map.entry(Fog.class, new FogDrawing()),
+                                Map.entry(Tree.class, new TreeDrawing())
+                        ))
+                        .build(Comparator.comparingInt(this::getDrawingPriority))
         );
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 World.getGlobalWorld().placeEntity(new Fog(x, y));
             }
         }
+        World.getGlobalWorld().placeEntity(new Tree(4, 4));
     }
 
     protected void setupRobots() {

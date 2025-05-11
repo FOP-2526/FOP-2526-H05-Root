@@ -1,4 +1,6 @@
-package h05.equipment;
+package h05;
+
+import h05.equipment.AbstractAttachableEquipment;
 
 public class TelephotoLense extends AbstractAttachableEquipment {
 

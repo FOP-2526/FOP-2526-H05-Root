@@ -1,11 +1,12 @@
-package h05.equipment;
+package h05;
 
 import fopbot.Direction;
 import fopbot.Field;
 import fopbot.World;
 import h05.entity.Loot;
+import h05.equipment.AbstractUsableEquipment;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class MiningDetector extends AbstractUsableEquipment {
 

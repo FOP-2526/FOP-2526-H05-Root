@@ -7,7 +7,7 @@ import h05.Mineable;
 import h05.entity.Loot;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
-import java.awt.*;
+import java.awt.Image;
 
 @DoNotTouch
 public class LootDrawing extends SvgBasedDrawing<Loot> {
@@ -17,24 +17,26 @@ public class LootDrawing extends SvgBasedDrawing<Loot> {
         super(Mineable.State.values().length);
     }
 
+    @DoNotTouch
     @Override
-    protected void loadImages(int i, DrawingContext<Loot> drawingContext) {
-        Loot entity = drawingContext.entity();
+    protected Image getCurrentDrawingImage(Loot entity) {
+        return getImage(entity.getMineable().getState().ordinal());
+    }
+
+    @DoNotTouch
+    @Override
+    protected void loadImages(int targetSize, DrawingContext<? extends Loot> context) {
+        Loot entity = context.entity();
         Mineable mineable = entity.getMineable();
         Mineable.State[] states = Mineable.State.values();
         for (Mineable.State state : states) {
             String path = mineable.getName() + "_" + state.name().toLowerCase() + EXTENSION;
             Image image = PaintUtils.loadFieldImage(
-                    Thread.currentThread().getContextClassLoader().getResourceAsStream(path),
-                    0,
-                    i);
+                Thread.currentThread().getContextClassLoader().getResourceAsStream(path),
+                0,
+                targetSize
+            );
             setImage(state.ordinal(), image);
         }
-    }
-
-    @DoNotTouch
-    @Override
-    protected Image getCurrentDrawingImage(Loot entity) {
-        return getImage(entity.getMineable().getState().ordinal());
     }
 }

@@ -18,25 +18,25 @@ import java.util.stream.Collectors;
 public class GameInputHandler {
 
     private static final Map<Integer, Direction> KEY_TO_DIRECTION = Map.ofEntries(
-            Map.entry(Direction.UP, Set.of(KeyEvent.VK_UP, KeyEvent.VK_W)),
-            Map.entry(Direction.RIGHT, Set.of(KeyEvent.VK_RIGHT, KeyEvent.VK_D)),
-            Map.entry(Direction.DOWN, Set.of(KeyEvent.VK_DOWN, KeyEvent.VK_S)),
-            Map.entry(Direction.LEFT, Set.of(KeyEvent.VK_LEFT, KeyEvent.VK_A))
-        ).entrySet()
-        .stream()
-        .flatMap(entry -> entry.getValue().stream().map(value -> Map.entry(value, entry.getKey())))
-        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                    Map.entry(Direction.UP, Set.of(KeyEvent.VK_UP, KeyEvent.VK_W)),
+                    Map.entry(Direction.RIGHT, Set.of(KeyEvent.VK_RIGHT, KeyEvent.VK_D)),
+                    Map.entry(Direction.DOWN, Set.of(KeyEvent.VK_DOWN, KeyEvent.VK_S)),
+                    Map.entry(Direction.LEFT, Set.of(KeyEvent.VK_LEFT, KeyEvent.VK_A))
+            ).entrySet()
+            .stream()
+            .flatMap(entry -> entry.getValue().stream().map(value -> Map.entry(value, entry.getKey())))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     private static final Map<Integer, Integer> KEY_TO_SELECTION = Map.ofEntries(
-        Map.entry(KeyEvent.VK_1, 1),
-        Map.entry(KeyEvent.VK_2, 2),
-        Map.entry(KeyEvent.VK_3, 3),
-        Map.entry(KeyEvent.VK_4, 4),
-        Map.entry(KeyEvent.VK_5, 5),
-        Map.entry(KeyEvent.VK_6, 6),
-        Map.entry(KeyEvent.VK_7, 7),
-        Map.entry(KeyEvent.VK_8, 8),
-        Map.entry(KeyEvent.VK_9, 9)
+            Map.entry(KeyEvent.VK_1, 1),
+            Map.entry(KeyEvent.VK_2, 2),
+            Map.entry(KeyEvent.VK_3, 3),
+            Map.entry(KeyEvent.VK_4, 4),
+            Map.entry(KeyEvent.VK_5, 5),
+            Map.entry(KeyEvent.VK_6, 6),
+            Map.entry(KeyEvent.VK_7, 7),
+            Map.entry(KeyEvent.VK_8, 8),
+            Map.entry(KeyEvent.VK_9, 9)
     );
 
     private final AtomicReference<Direction> direction = new AtomicReference<Direction>(null);
@@ -72,10 +72,10 @@ public class GameInputHandler {
 
     protected void updateKeysPressed() {
         Set<Integer> keysPressed = World.getGlobalWorld().getInputHandler().getKeysPressed();
+        this.mine.set(keysPressed.contains(KeyEvent.VK_SPACE));
         this.direction.set(mapKeyToDirection(keysPressed));
         this.selection.set(mapKeyToSelection(keysPressed));
         this.pickGear.set(keysPressed.contains(KeyEvent.VK_E));
-        this.mine.set(keysPressed.contains(KeyEvent.VK_SPACE));
     }
 
     public Direction getDirection() {
@@ -91,28 +91,32 @@ public class GameInputHandler {
     }
 
     public boolean isMine() {
-        return mine.get();
+        var isMine = mine.get();
+        if (isMine) {
+            this.mine.set(false);
+        }
+        return isMine;
     }
 
     public void install() {
         World.getGlobalWorld().getInputHandler().addKeyListener(
-            new KeyListener() {
+                new KeyListener() {
 
-                @Override
-                public void keyTyped(KeyEvent e) {
-                    updateKeysPressed();
-                }
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        updateKeysPressed();
+                    }
 
-                @Override
-                public void keyPressed(KeyEvent e) {
-                    updateKeysPressed();
-                }
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        updateKeysPressed();
+                    }
 
-                @Override
-                public void keyReleased(KeyEvent e) {
-                    updateKeysPressed();
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        updateKeysPressed();
+                    }
                 }
-            }
         );
     }
 }

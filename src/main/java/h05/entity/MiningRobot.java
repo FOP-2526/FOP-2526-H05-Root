@@ -192,6 +192,9 @@ public class MiningRobot extends Robot implements Miner {
         }
 
         Node node = WorldUtilities.getNode(pointToMineAt.x, pointToMineAt.y);
+        if (node == null) {
+            return;
+        }
 
         var amountMined = node.getMined(this.primaryTool);
         var inventoryAfterMining = currentInventory + amountMined;
@@ -223,6 +226,9 @@ public class MiningRobot extends Robot implements Miner {
 
     @Override
     public void handleKeyInput(@Nullable Direction direction, int selection, boolean pickGear, boolean mine) {
+        if (mine) {
+            mine();
+        }
         if (direction != null) {
             while (getDirection() != direction) {
                 turnLeft();
@@ -236,9 +242,6 @@ public class MiningRobot extends Robot implements Miner {
         }
         if (pickGear) {
             pickGear();
-        }
-        if (mine) {
-            mine();
         }
     }
 }

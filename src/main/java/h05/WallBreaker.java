@@ -1,10 +1,7 @@
-package h05.equipment;
+package h05;
 
-import fopbot.Direction;
-import fopbot.FieldEntity;
-import fopbot.KarelWorld;
-import fopbot.Wall;
-import fopbot.World;
+import fopbot.*;
+import h05.equipment.AbstractUsableEquipment;
 
 public class WallBreaker extends AbstractUsableEquipment {
 

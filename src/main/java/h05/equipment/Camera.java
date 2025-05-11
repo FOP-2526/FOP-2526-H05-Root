@@ -1,6 +1,7 @@
 package h05.equipment;
 
 import h05.AttachableEquipment;
+import h05.TelephotoLense;
 
 public class Camera extends AbstractUpgradeableEquipment {
 

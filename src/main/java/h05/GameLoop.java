@@ -34,7 +34,7 @@ public class GameLoop {
         public void run() {
             for (Robot robot : robots) {
                 if (robot instanceof Miner miner) {
-                    miner.handleKeyInput(inputHandler.getDirection(), inputHandler.getSelection(), inputHandler.isMine(), );
+                    miner.handleKeyInput(inputHandler.getDirection(), inputHandler.getSelection(), inputHandler.isPickGear(), inputHandler.isMine());
                 }
             }
         }

@@ -86,6 +86,10 @@ public class GameInputHandler {
         return selection.get();
     }
 
+    public boolean isPickGear() {
+        return pickGear.get();
+    }
+
     public boolean isMine() {
         return mine.get();
     }

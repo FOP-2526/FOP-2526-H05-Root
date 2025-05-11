@@ -11,6 +11,7 @@ import h05.equipment.Camera;
 import h05.equipment.MiningDetector;
 import h05.equipment.TelephotoLense;
 import h05.equipment.WallBreaker;
+import h05.gamecontrol.TickBased;
 import h05.node.Node;
 import h05.ui.Equipable;
 
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MiningRobot extends Robot implements Equipable {
+public class MiningRobot extends Robot implements Equipable, TickBased {
 
     private static final int MAX_EQUIPMENTS = 2;
     private static final int INVENTORY_SIZE = 1000;
@@ -191,17 +192,20 @@ public class MiningRobot extends Robot implements Equipable {
         if (pointToMineAt == null) {
             return;
         }
-        var entityAtFront = World.getGlobalWorld().getField(pointToMineAt.x, pointToMineAt.y).getEntities().getFirst();
-        if (entityAtFront == null) {
+        var entities = World.getGlobalWorld().getField(pointToMineAt.x, pointToMineAt.y).getEntities();
+        if (entities.isEmpty()) {
             return;
         }
+        var entityInFront = entities.getFirst();
 
-        Node node = (Node) entityAtFront;
+        Node node = (Node) entityInFront;
         var primaryTool = getPrimaryTool();
 
         var amountMined = node.getMined(primaryTool);
         var inventoryAfterMining = currentInventory + amountMined;
         currentInventory = Math.min(inventoryAfterMining, INVENTORY_SIZE);
+        System.out.println(node.getDurability());
+        System.out.println(node.getMiningState());
     }
 
     public Point getPointInFront() {
@@ -223,6 +227,30 @@ public class MiningRobot extends Robot implements Equipable {
         Point(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+    }
+
+    public void handleKeyInput(final int direction, final boolean shouldMine) {
+        if (shouldMine) {
+            mine();
+        }
+        if (direction >= 0 && direction < 4) {
+            // start with direction 0 (UP)
+            int dx = 0;
+            int dy = 1;
+            // rotate direction times by 90 degrees to the right
+            for (int i = 0; i < direction; i++) {
+                final int tmp = dx;
+                dx = dy;
+                dy = -tmp;
+            }
+            while (getDirection().getDx() != dx || getDirection().getDy() != dy) {
+                turnLeft();
+            }
+            if (isFrontClear()) {
+                move();
+            }
+
         }
     }
 }

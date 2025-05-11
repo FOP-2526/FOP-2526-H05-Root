@@ -1,8 +1,10 @@
 package h05;
 
-public class Main {
 
+import h05.gamecontrol.GameController;
+
+public class Main {
     public static void main(String[] args) {
-        new GameLoop(1).start();
+        new GameController().startGame();
     }
 }

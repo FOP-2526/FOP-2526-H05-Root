@@ -4,23 +4,21 @@ package h05.ui;
 import fopbot.*;
 import h05.Mineable;
 import h05.node.Node;
-import org.jetbrains.annotations.Nullable;
+import h05.node.Tree;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.InputStream;
 
-public class NodeDrawing extends SvgBasedDrawing<Node> {
+public class TreeDrawing extends SvgBasedDrawing<Tree> {
 
-    public NodeDrawing() {
+    public TreeDrawing() {
         super(Mineable.State.values().length);
     }
-    protected Image getCurrentDrawingImage(Node entity) {
+    protected Image getCurrentDrawingImage(Tree entity) {
         return getImage(0);
     }
 
     @Override
-    protected void loadImages(int targetSize, DrawingContext<Node> context) {
+    protected void loadImages(int targetSize, DrawingContext<Tree> context) {
         Node entity = context.entity();
         String suffix = entity.getClass().getSimpleName().toLowerCase();
         for (int i = 0; i < Mineable.State.values().length; i++) {

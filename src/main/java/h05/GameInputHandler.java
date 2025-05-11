@@ -19,7 +19,7 @@ public class GameInputHandler {
 
     private static final Map<Integer, Direction> KEY_TO_DIRECTION = Map.ofEntries(
             Map.entry(Direction.UP, Set.of(KeyEvent.VK_UP, KeyEvent.VK_W)),
-            Map.entry(Direction.RIGHT, Set.of(KeyEvent.VK_RIGHT, KeyEvent.VK_R)),
+            Map.entry(Direction.RIGHT, Set.of(KeyEvent.VK_RIGHT, KeyEvent.VK_D)),
             Map.entry(Direction.DOWN, Set.of(KeyEvent.VK_DOWN, KeyEvent.VK_S)),
             Map.entry(Direction.LEFT, Set.of(KeyEvent.VK_LEFT, KeyEvent.VK_A))
         ).entrySet()

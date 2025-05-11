@@ -13,6 +13,7 @@ import h05.equipment.WallBreaker;
 import h05.ui.FogDrawing;
 import h05.ui.GearDrawing;
 import h05.ui.LootDrawing;
+import h05.ui.MineBotDrawing;
 import h05.ui.WallFogDrawing;
 
 import java.util.Comparator;
@@ -71,6 +72,7 @@ public class GameLoop {
                     Map.entry(Wall.class, new WallFogDrawing()),
                     Map.entry(Gear.class, new GearDrawing()),
                     Map.entry(Loot.class, new LootDrawing()),
+                    Map.entry(MiningRobot.class, new MineBotDrawing()),
                     Map.entry(Fog.class, new FogDrawing())
                 ))
                 .build(Comparator.comparingInt(this::getDrawingPriority))

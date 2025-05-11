@@ -17,14 +17,6 @@ public abstract class Node extends Block implements Mineable {
         this.durability = 100;
     }
 
-    public void reduceDurability(int amount) {
-        durability -= amount;
-    }
-
-    public int getDurability() {
-        return durability;
-    }
-
     @Override
     public String getName() {
         return name;
@@ -63,5 +55,17 @@ public abstract class Node extends Block implements Mineable {
 
     public void setMiningState(State miningState) {
         this.miningState = miningState;
+    }
+
+    public void reduceDurability(int amount) {
+        durability -= amount;
+    }
+
+    public int getDurability() {
+        return durability;
+    }
+
+    public void setDurability(int durability) {
+        this.durability = durability;
     }
 }

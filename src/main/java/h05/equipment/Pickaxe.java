@@ -18,6 +18,11 @@ public class Pickaxe implements Tool {
         return durability;
     }
 
+    @Override
+    public void setDurability(int durability) {
+        this.durability = durability;
+    }
+
     public void reduceDurability(int amount) {
         durability -= amount;
     }

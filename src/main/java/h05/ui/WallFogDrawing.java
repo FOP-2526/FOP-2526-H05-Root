@@ -1,16 +1,10 @@
 package h05.ui;
 
-import fopbot.ColorProfile;
-import fopbot.Drawable;
-import fopbot.DrawingContext;
-import fopbot.KarelWorld;
-import fopbot.Wall;
+import fopbot.*;
 import h05.entity.Fog;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 
 @DoNotTouch
 public class WallFogDrawing implements Drawable<Wall> {
@@ -21,7 +15,7 @@ public class WallFogDrawing implements Drawable<Wall> {
 
     @DoNotTouch
     @Override
-    public void draw(Graphics g, DrawingContext<? extends Wall> context) {
+    public void draw(Graphics g, DrawingContext<Wall> context) {
         final Wall entity = context.entity();
         final KarelWorld world = context.world();
         final ColorProfile profile = context.colorProfile();

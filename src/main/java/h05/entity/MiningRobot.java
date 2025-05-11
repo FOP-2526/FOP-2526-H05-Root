@@ -1,28 +1,31 @@
 package h05.entity;
 
-import fopbot.Direction;
-import fopbot.FieldEntity;
-import fopbot.KarelWorld;
-import fopbot.Robot;
-import fopbot.World;
+import fopbot.*;
 import h05.Equipment;
 import h05.Miner;
 import h05.UsableEquipment;
 import h05.WorldUtilities;
 import h05.equipment.Battery;
 import h05.equipment.Camera;
+import h05.equipment.Tool;
+import h05.node.Node;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
+import static h05.WorldUtilities.getPointInFront;
+
 public class MiningRobot extends Robot implements Miner {
 
     private static final int MAX_EQUIPMENTS = 2;
-
     private static final int EQUIPMENTS_OFFSET = 2;
+    private static final int INVENTORY_SIZE = 1000;
 
     private final Equipment[] storage = new Equipment[MAX_EQUIPMENTS + EQUIPMENTS_OFFSET];
     private final UsableEquipment[] usableEquipments = new UsableEquipment[MAX_EQUIPMENTS];
+    private int currentInventory;
+    private Tool primaryTool;
+
 
     private int equipmentCount;
     private int usableEquipmentsCount;
@@ -32,6 +35,7 @@ public class MiningRobot extends Robot implements Miner {
         storage[0] = new Battery();
         storage[1] = new Camera();
         equipmentCount = EQUIPMENTS_OFFSET;
+        currentInventory = 0;
         for (int[] points : getVision(getCamera().getVisibilityRange(), x, y)) {
             WorldUtilities.removeFog(points[0], points[1]);
         }
@@ -164,6 +168,7 @@ public class MiningRobot extends Robot implements Miner {
     @Override
     public void move() {
         if (isBatteryBroken()) {
+            System.out.println("Battery is broken");
             return;
         }
         int oldX = getX();
@@ -181,7 +186,18 @@ public class MiningRobot extends Robot implements Miner {
 
     @Override
     public void mine() {
-        // TODO
+        var pointToMineAt = getPointInFront(getX(), getY(), getDirection());
+        if (pointToMineAt == null) {
+            return;
+        }
+
+        Node node = WorldUtilities.getNode(pointToMineAt.x, pointToMineAt.y);
+
+        var amountMined = node.getMined(this.primaryTool);
+        var inventoryAfterMining = currentInventory + amountMined;
+        currentInventory = Math.min(inventoryAfterMining, INVENTORY_SIZE);
+        System.out.println(node.getDurability());
+        System.out.println(node.getMiningState());
     }
 
     @Override
@@ -197,6 +213,9 @@ public class MiningRobot extends Robot implements Miner {
                 world.removeEntity(entity);
                 equip(((Gear) entity).getEquipment());
                 return;
+            }
+            if (WorldUtilities.isTool(entity)) {
+                world.removeEntity(entity);
             }
         }
         crash();

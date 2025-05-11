@@ -212,7 +212,7 @@ public class MiningRobot extends Robot implements Miner {
                 move();
             }
         }
-        if (selection != -1) {
+        if (selection != -1 && selection < getEquipmentCount()) {
             useEquipment(selection - 1);
         }
         if (pickGear) {

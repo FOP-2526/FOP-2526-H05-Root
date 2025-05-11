@@ -30,7 +30,13 @@ public class GameInputHandler {
     private static final Map<Integer, Integer> KEY_TO_SELECTION = Map.ofEntries(
         Map.entry(KeyEvent.VK_1, 1),
         Map.entry(KeyEvent.VK_2, 2),
-        Map.entry(KeyEvent.VK_3, 3)
+        Map.entry(KeyEvent.VK_3, 3),
+        Map.entry(KeyEvent.VK_4, 4),
+        Map.entry(KeyEvent.VK_5, 5),
+        Map.entry(KeyEvent.VK_6, 6),
+        Map.entry(KeyEvent.VK_7, 7),
+        Map.entry(KeyEvent.VK_8, 8),
+        Map.entry(KeyEvent.VK_9, 9)
     );
 
     private final AtomicReference<Direction> direction = new AtomicReference<Direction>(null);

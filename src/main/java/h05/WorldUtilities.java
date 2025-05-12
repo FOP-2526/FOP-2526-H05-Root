@@ -8,6 +8,8 @@ import h05.entity.Gear;
 import h05.equipment.Tool;
 import h05.AbstractMinableEntity.AbstractMinableEntity;
 
+import java.awt.*;
+
 public final class WorldUtilities {
 
     private WorldUtilities() {
@@ -51,15 +53,5 @@ public final class WorldUtilities {
             return null;
         }
         return new Point(newX, newY);
-    }
-
-    public static class Point {
-        public int x;
-        public int y;
-
-        Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
     }
 }

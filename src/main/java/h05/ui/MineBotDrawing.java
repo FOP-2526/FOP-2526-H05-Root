@@ -4,13 +4,16 @@ import fopbot.ColorProfile;
 import fopbot.Drawable;
 import fopbot.DrawingContext;
 import h05.entity.MiningRobot;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 
+@DoNotTouch
 public class MineBotDrawing implements Drawable<MiningRobot> {
 
+    @DoNotTouch
     @Override
     public void draw(Graphics g, DrawingContext<? extends MiningRobot> context) {
         final MiningRobot robot = context.entity();

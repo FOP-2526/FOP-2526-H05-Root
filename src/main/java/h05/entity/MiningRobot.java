@@ -8,7 +8,7 @@ import h05.WorldUtilities;
 import h05.equipment.Battery;
 import h05.equipment.Camera;
 import h05.equipment.Tool;
-import h05.node.Node;
+import h05.AbstractMinableEntity.AbstractMinableEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -191,16 +191,20 @@ public class MiningRobot extends Robot implements Miner {
             return;
         }
 
-        Node node = WorldUtilities.getNode(pointToMineAt.x, pointToMineAt.y);
+        AbstractMinableEntity node = WorldUtilities.getNode(pointToMineAt.x, pointToMineAt.y);
         if (node == null) {
             return;
         }
-
-        var amountMined = node.getMined(this.primaryTool);
+        if (currentInventory >= INVENTORY_SIZE) {
+            System.out.println("Inventory is full");
+            return;
+        }
+        var amountMined = node.getMined(primaryTool);
         var inventoryAfterMining = currentInventory + amountMined;
         currentInventory = Math.min(inventoryAfterMining, INVENTORY_SIZE);
         System.out.println(node.getDurability());
-        System.out.println(node.getMiningState());
+        System.out.println(node.getState());
+
     }
 
     @Override
@@ -218,6 +222,7 @@ public class MiningRobot extends Robot implements Miner {
                 return;
             }
             if (WorldUtilities.isTool(entity)) {
+                primaryTool = (Tool) entity;
                 world.removeEntity(entity);
             }
         }

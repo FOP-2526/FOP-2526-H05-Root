@@ -6,7 +6,7 @@ import fopbot.World;
 import h05.entity.Fog;
 import h05.entity.Gear;
 import h05.equipment.Tool;
-import h05.node.Node;
+import h05.AbstractMinableEntity.AbstractMinableEntity;
 
 public final class WorldUtilities {
 
@@ -37,11 +37,11 @@ public final class WorldUtilities {
         return World.getGlobalWorld().getField(x, y).getEntities().toArray(FieldEntity[]::new);
     }
 
-    public static Node getNode(int x, int y) {
+    public static AbstractMinableEntity getNode(int x, int y) {
         if (World.getGlobalWorld().getField(x, y).getEntities().isEmpty()) {
             return null;
         }
-        return (Node) World.getGlobalWorld().getField(x, y).getEntities().getFirst();
+        return (AbstractMinableEntity) World.getGlobalWorld().getField(x, y).getEntities().getFirst();
     }
 
     public static Point getPointInFront(int x, int y, Direction dir) {

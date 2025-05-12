@@ -1,16 +1,16 @@
-package h05.node;
+package h05.AbstractMinableEntity;
 
 import fopbot.Block;
 import fopbot.World;
 import h05.Mineable;
 import h05.equipment.Tool;
 
-public abstract class Node extends Block implements Mineable {
+public abstract class AbstractMinableEntity extends Block implements Mineable {
     private State miningState;
     private int durability;
     private final String name;
 
-    public Node(int x, int y, String name) {
+    public AbstractMinableEntity(int x, int y, String name) {
         super(x, y);
         this.name = name;
         this.miningState = State.NOT_MINED;
@@ -40,16 +40,19 @@ public abstract class Node extends Block implements Mineable {
     public void updateAfterMining() {
         if (durability < 100 && durability > 50) {
             setMiningState(State.HALF_MINED);
+            World.getGlobalWorld().getGuiPanel().repaint();
         } else if (durability <= 50 && durability > 0) {
             setMiningState(State.FULLY_MINED);
+            World.getGlobalWorld().getGuiPanel().repaint();
         }
-        if (durability <= 0) {
+        else if (durability <= 0) {
             World.getGlobalWorld().removeEntity(getX(), getY(), getClass());
+
         }
     }
 
 
-    public State getMiningState() {
+    public State getState() {
         return miningState;
     }
 

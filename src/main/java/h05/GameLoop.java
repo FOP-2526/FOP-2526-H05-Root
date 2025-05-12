@@ -5,8 +5,9 @@ import h05.entity.Fog;
 import h05.entity.Gear;
 import h05.entity.Loot;
 import h05.entity.MiningRobot;
-import h05.node.Node;
-import h05.node.Tree;
+import h05.AbstractMinableEntity.AbstractMinableEntity;
+import h05.AbstractMinableEntity.Rock;
+import h05.AbstractMinableEntity.Tree;
 import h05.ui.*;
 
 import java.util.*;
@@ -46,7 +47,7 @@ public class GameLoop {
             case Loot l -> 1;
             case Robot c -> 2;
             case Fog fog -> 3;
-            case Node node -> 0;
+            case AbstractMinableEntity node -> 0;
             default -> -1;
         };
     }
@@ -56,16 +57,17 @@ public class GameLoop {
         int height = 10;
         World.setSize(width, height);
         World.getGlobalWorld().setDrawingRegistry(
-                DrawingRegistry.builder(DrawingRegistry.DEFAULT)
-                        .addAll(Map.ofEntries(
-                                Map.entry(Wall.class, new WallFogDrawing()),
-                                Map.entry(Gear.class, new GearDrawing()),
-                                Map.entry(Loot.class, new LootDrawing()),
-                                Map.entry(MiningRobot.class, new MineBotDrawing()),
-                                Map.entry(Fog.class, new FogDrawing()),
-                                Map.entry(Tree.class, new TreeDrawing())
-                        ))
-                        .build(Comparator.comparingInt(this::getDrawingPriority))
+            DrawingRegistry.builder(DrawingRegistry.DEFAULT)
+                .addAll(Map.ofEntries(
+                    Map.entry(Wall.class, new WallFogDrawing()),
+                    Map.entry(Gear.class, new GearDrawing()),
+                    Map.entry(Loot.class, new LootDrawing()),
+                    Map.entry(MiningRobot.class, new MineBotDrawing()),
+                    Map.entry(Fog.class, new FogDrawing()),
+                    Map.entry(Tree.class, new NodeDrawing()),
+                    Map.entry(Rock.class, new NodeDrawing())
+                ))
+                .build(Comparator.comparingInt(this::getDrawingPriority))
         );
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -73,6 +75,7 @@ public class GameLoop {
             }
         }
         World.getGlobalWorld().placeEntity(new Tree(4, 4));
+        World.getGlobalWorld().placeEntity(new Rock(4, 5));
     }
 
     protected void setupRobots() {

@@ -1,6 +1,10 @@
 package h05;
 
-import fopbot.*;
+import fopbot.Direction;
+import fopbot.FieldEntity;
+import fopbot.KarelWorld;
+import fopbot.Wall;
+import fopbot.World;
 import h05.equipment.AbstractUsableEquipment;
 
 public class WallBreaker extends AbstractUsableEquipment {
@@ -27,6 +31,7 @@ public class WallBreaker extends AbstractUsableEquipment {
         boolean isHorizontal = direction == Direction.UP || direction == Direction.DOWN;
         KarelWorld world = World.getGlobalWorld();
         for (FieldEntity entity : world.getField(removeX, removeY).getEntities()) {
+            // TODO: Do not expose instanceof
             if (entity instanceof Wall wall && wall.isHorizontal() == isHorizontal) {
                 world.removeEntity(wall);
                 return;

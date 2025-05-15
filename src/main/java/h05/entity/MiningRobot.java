@@ -1,6 +1,11 @@
 package h05.entity;
 
-import fopbot.*;
+import fopbot.Direction;
+import fopbot.FieldEntity;
+import fopbot.KarelWorld;
+import fopbot.Robot;
+import fopbot.World;
+import h05.AbstractMinableEntity.AbstractMinableEntity;
 import h05.Equipment;
 import h05.Miner;
 import h05.UsableEquipment;
@@ -8,7 +13,6 @@ import h05.WorldUtilities;
 import h05.equipment.Battery;
 import h05.equipment.Camera;
 import h05.equipment.Tool;
-import h05.AbstractMinableEntity.AbstractMinableEntity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -72,6 +76,7 @@ public class MiningRobot extends Robot implements Miner {
             storage[equipmentCount++] = equipment;
         }
         if (equipment.isUsable()) {
+            // TODO: Do not expose cast
             usableEquipments[usableEquipmentsCount++] = (UsableEquipment) equipment;
         }
     }
@@ -218,10 +223,12 @@ public class MiningRobot extends Robot implements Miner {
         for (FieldEntity entity : WorldUtilities.getEntities(getX(), getY())) {
             if (WorldUtilities.isGear(entity)) {
                 world.removeEntity(entity);
+                // TODO: Do not expose cast
                 equip(((Gear) entity).getEquipment());
                 return;
             }
             if (WorldUtilities.isTool(entity)) {
+                // TODO: Do not expose cast
                 primaryTool = (Tool) entity;
                 world.removeEntity(entity);
             }

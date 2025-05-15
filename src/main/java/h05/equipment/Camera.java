@@ -52,6 +52,7 @@ public class Camera extends AbstractUpgradeableEquipment {
         super.reduceDurability(amount);
         for (AttachableEquipment upgrade : getUpgrades()) {
             if (upgrade.getName().equals("TelephotoLense")) {
+                // TODO: Do not expose cast
                 TelephotoLense lense = (TelephotoLense) upgrade;
                 int range = lense.getRangeEnhancement();
                 if (lense.getDurability() <= range) {

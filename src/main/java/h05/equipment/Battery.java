@@ -33,6 +33,7 @@ public class Battery extends AbstractUpgradeableEquipment {
         super.reduceDurability(amount);
         for (AttachableEquipment upgrade : getUpgrades()) {
             if (upgrade.getName().equals("Powerbank")) {
+                // TODO: Do not expose cast
                 Powerbank powerbank = (Powerbank) upgrade;
                 int reduce = ThreadLocalRandom.current().nextBoolean() ? amount : 0;
                 if (powerbank.getDurability() <= reduce) {

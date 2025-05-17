@@ -43,7 +43,11 @@ public final class WorldUtilities {
         if (World.getGlobalWorld().getField(x, y).getEntities().isEmpty()) {
             return null;
         }
-        return (AbstractMinableEntity) World.getGlobalWorld().getField(x, y).getEntities().getFirst();
+        var entity = World.getGlobalWorld().getField(x, y).getEntities().getFirst();
+        if (!(entity instanceof AbstractMinableEntity)) {
+            return null;
+        }
+        return (AbstractMinableEntity) entity;
     }
 
     public static Point getPointInFront(int x, int y, Direction dir) {

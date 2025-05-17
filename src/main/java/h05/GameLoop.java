@@ -8,6 +8,7 @@ import h05.entity.MiningRobot;
 import h05.AbstractMinableEntity.AbstractMinableEntity;
 import h05.AbstractMinableEntity.Rock;
 import h05.AbstractMinableEntity.Tree;
+import h05.equipment.Battery;
 import h05.ui.*;
 
 import java.util.*;
@@ -75,12 +76,82 @@ public class GameLoop {
             }
         }
         World.getGlobalWorld().placeEntity(new Tree(4, 4));
-        World.getGlobalWorld().placeEntity(new Rock(4, 5));
+        World.getGlobalWorld().placeEntity(new Rock(4, 3));
+        World.getGlobalWorld().placeEntity(new Gear(3, 4, new Battery()));
+
+        World.placeHorizontalWall(0, 0);
+        World.placeHorizontalWall(0, 1);
+        World.placeHorizontalWall(0, 2);
+        World.placeHorizontalWall(0, 3);
+        World.placeHorizontalWall(0, 4);
+        World.placeHorizontalWall(0, 5);
+        World.placeHorizontalWall(0, 6);
+        World.placeHorizontalWall(0, 7);
+        World.placeHorizontalWall(0, 8);
+        World.placeHorizontalWall(0, 9);
+
+        World.placeHorizontalWall(1, 3);
+        World.placeHorizontalWall(1, 4);
+        World.placeHorizontalWall(1, 5);
+        World.placeHorizontalWall(1, 6);
+        World.placeHorizontalWall(1, 7);
+
+        World.placeHorizontalWall(2, 0);
+        World.placeHorizontalWall(2, 1);
+        World.placeHorizontalWall(2, 2);
+        World.placeHorizontalWall(2, 3);
+        World.placeHorizontalWall(2, 4);
+        World.placeHorizontalWall(2, 5);
+        World.placeHorizontalWall(2, 6);
+        World.placeHorizontalWall(2, 7);
+        World.placeHorizontalWall(2, 8);
+        World.placeHorizontalWall(2, 9);
+
+        World.placeHorizontalWall(3, 1);
+        World.placeHorizontalWall(3, 3);
+        World.placeHorizontalWall(3, 4);
+        World.placeHorizontalWall(3, 6);
+
+        World.placeHorizontalWall(4, 0);
+        World.placeHorizontalWall(4, 1);
+        World.placeHorizontalWall(4, 2);
+        World.placeHorizontalWall(4, 3);
+        World.placeHorizontalWall(4, 4);
+        World.placeHorizontalWall(4, 5);
+        World.placeHorizontalWall(4, 6);
+        World.placeHorizontalWall(4, 7);
+        World.placeHorizontalWall(4, 8);
+        World.placeHorizontalWall(4, 9);
+
+        World.placeVerticalWall(1, 1);
+        World.placeVerticalWall(2, 0);
+        World.placeVerticalWall(2, 1);
+        World.placeVerticalWall(2, 2);
+        World.placeVerticalWall(3, 1);
+        World.placeVerticalWall(3, 3);
+        World.placeVerticalWall(4, 2);
+        World.placeVerticalWall(4, 4);
+        World.placeVerticalWall(5, 0);
+        World.placeVerticalWall(5, 1);
+        World.placeVerticalWall(5, 2);
+        World.placeVerticalWall(5, 3);
+        World.placeVerticalWall(5, 4);
+        World.placeVerticalWall(6, 1);
+        World.placeVerticalWall(6, 3);
+        World.placeVerticalWall(7, 2);
+        World.placeVerticalWall(7, 4);
+        World.placeVerticalWall(8, 0);
+        World.placeVerticalWall(8, 1);
+        World.placeVerticalWall(8, 2);
+        World.placeVerticalWall(8, 3);
+        World.placeVerticalWall(8, 4);
+
     }
 
     protected void setupRobots() {
-        MiningRobot miner = new MiningRobot(5, 5);
+        MiningRobot miner = new MiningRobot(0, 0);
         miner.equip(new WallBreaker());
+        miner.equip(new MiningDetector());
         robots.add(miner);
     }
 

@@ -1,7 +1,6 @@
 package h05.equipment;
 
 import h05.AttachableEquipment;
-import h05.TelephotoLense;
 
 public class Camera extends AbstractUpgradeableEquipment {
 
@@ -33,7 +32,7 @@ public class Camera extends AbstractUpgradeableEquipment {
     public void attach(AttachableEquipment upgrade) {
         super.attach(upgrade);
         if (upgrade.getName().equals("TelephotoLense")) {
-            TelephotoLense lense = (TelephotoLense) upgrade;
+            TelephotoLens lense = (TelephotoLens) upgrade;
             setVisibilityRange(getVisibilityRange() + lense.getRangeEnhancement());
         }
     }
@@ -42,7 +41,7 @@ public class Camera extends AbstractUpgradeableEquipment {
     public void detach(AttachableEquipment upgrade) {
         super.detach(upgrade);
         if (upgrade.getName().equals("TelephotoLense")) {
-            TelephotoLense lense = (TelephotoLense) upgrade;
+            TelephotoLens lense = (TelephotoLens) upgrade;
             setVisibilityRange(getVisibilityRange() - lense.getRangeEnhancement());
         }
     }
@@ -53,7 +52,7 @@ public class Camera extends AbstractUpgradeableEquipment {
         for (AttachableEquipment upgrade : getUpgrades()) {
             if (upgrade.getName().equals("TelephotoLense")) {
                 // TODO: Do not expose cast
-                TelephotoLense lense = (TelephotoLense) upgrade;
+                TelephotoLens lense = (TelephotoLens) upgrade;
                 int range = lense.getRangeEnhancement();
                 if (lense.getDurability() <= range) {
                     lense.reduceDurability(range);

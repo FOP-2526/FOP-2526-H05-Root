@@ -73,9 +73,9 @@ public class GameInputHandler {
     protected void updateKeysPressed() {
         Set<Integer> keysPressed = World.getGlobalWorld().getInputHandler().getKeysPressed();
         this.mine.set(keysPressed.contains(KeyEvent.VK_SPACE));
+        this.pickGear.set(keysPressed.contains(KeyEvent.VK_E));
         this.direction.set(mapKeyToDirection(keysPressed));
         this.selection.set(mapKeyToSelection(keysPressed));
-        this.pickGear.set(keysPressed.contains(KeyEvent.VK_E));
     }
 
     public Direction getDirection() {

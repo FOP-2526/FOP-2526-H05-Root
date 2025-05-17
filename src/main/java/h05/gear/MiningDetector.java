@@ -1,15 +1,13 @@
-package h05;
+package h05.equipment;
 
 import fopbot.Direction;
 import fopbot.Field;
 import fopbot.World;
+import h05.entity.Fog;
+import h05.entity.Gear;
 import h05.entity.Loot;
-import h05.gear.AbstractEquipment;
-import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
-
-public class MiningDetector extends AbstractEquipment implements UsableEquipment {
+public class MiningDetector extends AbstractUsableEquipment {
 
     public static final int DEFAULT_VISIBILITY_RANGE = 3;
 
@@ -25,24 +23,32 @@ public class MiningDetector extends AbstractEquipment implements UsableEquipment
     }
 
     @Override
-    public void use(int x, int y, @NotNull Direction direction) {
+    public void use(int x, int y, Direction direction) {
         if (getCondition() == Condition.BROKEN) {
             return;
         }
         for (int dx = -radius; dx <= radius; dx++) {
+            int newX = x + dx;
+            if (newX < 0 || newX >= World.getWidth()) {
+                continue;
+            }
             for (int dy = -radius; dy <= radius; dy++) {
-                int newX = x + dx;
                 int newY = y + dy;
-                if (newX < 0 || newX >= World.getWidth() || newY < 0 || newY >= World.getHeight()) {
+                if (newY < 0 || newY >= World.getHeight()) {
                     continue;
                 }
                 Field field = World.getGlobalWorld().getField(newX, newY);
                 if (field.contains(Loot.class)) {
-                    field.setFieldColor(Color.GREEN);
                     reduceDurability(5);
+                    if (field.contains(Fog.class)) {
+                        reduceDurability(20);
+                        field.removeEntity(Fog.class);
+                        World.getGlobalWorld().getGuiPanel().updateGui();
+                        return;
+                    }
                 }
             }
         }
-        reduceDurability(20);
+
     }
 }

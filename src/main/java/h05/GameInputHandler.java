@@ -18,25 +18,25 @@ import java.util.stream.Collectors;
 public class GameInputHandler {
 
     private static final Map<Integer, Direction> KEY_TO_DIRECTION = Map.ofEntries(
-                    Map.entry(Direction.UP, Set.of(KeyEvent.VK_UP, KeyEvent.VK_W)),
-                    Map.entry(Direction.RIGHT, Set.of(KeyEvent.VK_RIGHT, KeyEvent.VK_D)),
-                    Map.entry(Direction.DOWN, Set.of(KeyEvent.VK_DOWN, KeyEvent.VK_S)),
-                    Map.entry(Direction.LEFT, Set.of(KeyEvent.VK_LEFT, KeyEvent.VK_A))
-            ).entrySet()
-            .stream()
-            .flatMap(entry -> entry.getValue().stream().map(value -> Map.entry(value, entry.getKey())))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            Map.entry(Direction.UP, Set.of(KeyEvent.VK_UP, KeyEvent.VK_W)),
+            Map.entry(Direction.RIGHT, Set.of(KeyEvent.VK_RIGHT, KeyEvent.VK_D)),
+            Map.entry(Direction.DOWN, Set.of(KeyEvent.VK_DOWN, KeyEvent.VK_S)),
+            Map.entry(Direction.LEFT, Set.of(KeyEvent.VK_LEFT, KeyEvent.VK_A))
+        ).entrySet()
+        .stream()
+        .flatMap(entry -> entry.getValue().stream().map(value -> Map.entry(value, entry.getKey())))
+        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     private static final Map<Integer, Integer> KEY_TO_SELECTION = Map.ofEntries(
-            Map.entry(KeyEvent.VK_1, 1),
-            Map.entry(KeyEvent.VK_2, 2),
-            Map.entry(KeyEvent.VK_3, 3),
-            Map.entry(KeyEvent.VK_4, 4),
-            Map.entry(KeyEvent.VK_5, 5),
-            Map.entry(KeyEvent.VK_6, 6),
-            Map.entry(KeyEvent.VK_7, 7),
-            Map.entry(KeyEvent.VK_8, 8),
-            Map.entry(KeyEvent.VK_9, 9)
+        Map.entry(KeyEvent.VK_1, 1),
+        Map.entry(KeyEvent.VK_2, 2),
+        Map.entry(KeyEvent.VK_3, 3),
+        Map.entry(KeyEvent.VK_4, 4),
+        Map.entry(KeyEvent.VK_5, 5),
+        Map.entry(KeyEvent.VK_6, 6),
+        Map.entry(KeyEvent.VK_7, 7),
+        Map.entry(KeyEvent.VK_8, 8),
+        Map.entry(KeyEvent.VK_9, 9)
     );
 
     private final AtomicReference<Direction> direction = new AtomicReference<Direction>(null);
@@ -78,6 +78,13 @@ public class GameInputHandler {
         this.selection.set(mapKeyToSelection(keysPressed));
     }
 
+    protected void updateKeysReleased() {
+        this.mine.set(false);
+        this.pickGear.set(false);
+        this.direction.set(null);
+        this.selection.set(-1);
+    }
+
     public Direction getDirection() {
         return direction.get();
     }
@@ -100,23 +107,23 @@ public class GameInputHandler {
 
     public void install() {
         World.getGlobalWorld().getInputHandler().addKeyListener(
-                new KeyListener() {
+            new KeyListener() {
 
-                    @Override
-                    public void keyTyped(KeyEvent e) {
-                        updateKeysPressed();
-                    }
-
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                        updateKeysPressed();
-                    }
-
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                        updateKeysPressed();
-                    }
+                @Override
+                public void keyTyped(KeyEvent e) {
+                    updateKeysPressed();
                 }
+
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    updateKeysPressed();
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    updateKeysReleased();
+                }
+            }
         );
     }
 }

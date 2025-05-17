@@ -5,10 +5,12 @@ import fopbot.FieldEntity;
 import fopbot.World;
 import h05.entity.Fog;
 import h05.entity.Gear;
+import h05.equipment.Battery;
 import h05.equipment.Tool;
 import h05.AbstractMinableEntity.AbstractMinableEntity;
 
 import java.awt.*;
+import java.util.Random;
 
 public final class WorldUtilities {
 
@@ -49,6 +51,9 @@ public final class WorldUtilities {
         }
         return (AbstractMinableEntity) entity;
     }
+    public static void placePrimaryTool(int x, int y, Tool primaryTool) {
+        World.getGlobalWorld().placeEntity(new Gear(x, y, primaryTool));
+    }
 
     public static Point getPointInFront(int x, int y, Direction dir) {
         int newX = x + dir.getDx();
@@ -57,5 +62,16 @@ public final class WorldUtilities {
             return null;
         }
         return new Point(newX, newY);
+    }
+
+    public static void placeNewBattery() {
+        var fields = World.getGlobalWorld().getFields();
+        var emptyFields = fields.stream().filter(field -> field.getEntities().isEmpty()).toList();
+        Random random = new Random();
+        var randomField = emptyFields.isEmpty() ? null : emptyFields.get(random.nextInt(emptyFields.size()));
+        if (randomField == null) {
+            return;
+        }
+        World.getGlobalWorld().placeEntity(new Gear(randomField.getX(),randomField.getY(), new Battery()));
     }
 }

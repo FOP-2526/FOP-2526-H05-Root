@@ -10,5 +10,4 @@ public interface Tool extends Equipment {
     default boolean isUsable() {
         return false;
     }
-
 }

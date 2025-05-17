@@ -2,12 +2,11 @@ package h05.equipment;
 
 public class Axe implements Tool {
     private final String name;
-    private int durability;
+    private int durability = 100;
 
     public Axe() {
         super();
         this.name = "axe";
-        this.durability = 100;
     }
 
     public String getName() {

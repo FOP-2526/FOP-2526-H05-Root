@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
+import static h05.RobotUtilities.*;
 import static h05.WorldUtilities.getPointInFront;
 
 public class MiningRobot extends Robot implements Miner {
@@ -66,8 +67,16 @@ public class MiningRobot extends Robot implements Miner {
     @Override
     public void equip(Equipment equipment) {
         String name = equipment.getName();
+        if (name.equals("pickaxe") || name.equals("axe")) {
+            var oldPrimaryTool = primaryTool;
+            primaryTool = getAsTool(equipment);
+            if (oldPrimaryTool != null && !oldPrimaryTool.getName().equals(primaryTool.getName())) {
+                WorldUtilities.placePrimaryTool(getX(), getY(), oldPrimaryTool);
+            }
+        }
         if (name.equals(getBattery().getName())) {
             storage[0] = equipment;
+            WorldUtilities.placeNewBattery();
         } else if (name.equals(getCamera().getName())) {
             storage[1] = equipment;
         } else if (equipmentCount == storage.length) {
@@ -76,8 +85,7 @@ public class MiningRobot extends Robot implements Miner {
             storage[equipmentCount++] = equipment;
         }
         if (equipment.isUsable()) {
-            // TODO: Do not expose cast
-            usableEquipments[usableEquipmentsCount++] = (UsableEquipment) equipment;
+            usableEquipments[usableEquipmentsCount++] = getAsUsableEquipment(equipment);
         }
     }
 
@@ -153,7 +161,6 @@ public class MiningRobot extends Robot implements Miner {
         return visibleFields;
     }
 
-
     void updateVision(int visibilityRange, int oldX, int oldY, int newX, int newY) {
         int[][] oldPoints = getVision(visibilityRange, oldX, oldY);
         int[][] newPoints = getVision(visibilityRange, newX, newY);
@@ -207,9 +214,6 @@ public class MiningRobot extends Robot implements Miner {
         var amountMined = node.getMined(primaryTool);
         var inventoryAfterMining = currentInventory + amountMined;
         currentInventory = Math.min(inventoryAfterMining, INVENTORY_SIZE);
-        System.out.println(node.getDurability());
-        System.out.println(node.getState());
-
     }
 
     @Override
@@ -223,17 +227,11 @@ public class MiningRobot extends Robot implements Miner {
         for (FieldEntity entity : WorldUtilities.getEntities(getX(), getY())) {
             if (WorldUtilities.isGear(entity)) {
                 world.removeEntity(entity);
-                // TODO: Do not expose cast
-                equip(((Gear) entity).getEquipment());
+                var gear = getAsGear(entity);
+                equip(gear.getEquipment());
                 return;
             }
-            if (WorldUtilities.isTool(entity)) {
-                // TODO: Do not expose cast
-                primaryTool = (Tool) entity;
-                world.removeEntity(entity);
-            }
         }
-        crash();
     }
 
     @Override

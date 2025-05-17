@@ -28,9 +28,9 @@ public abstract class AbstractMinableEntity extends Block implements Mineable {
             amountToReduceDurabilityBy = 5;
         } else if
         (getName().equals("rock") && tool.getName().equals("pickaxe")) {
-            amountToReduceDurabilityBy = 10;
+            amountToReduceDurabilityBy = 20;
         } else if (getName().equals("tree") && tool.getName().equals("axe")) {
-            amountToReduceDurabilityBy = 10;
+            amountToReduceDurabilityBy = 20;
         }
         reduceDurability(amountToReduceDurabilityBy);
         updateAfterMining();

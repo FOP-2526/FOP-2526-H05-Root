@@ -8,35 +8,46 @@ import h05.entity.Loot;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.awt.Image;
+import java.util.List;
 
 @DoNotTouch
 public class LootDrawing extends SvgBasedDrawing<Loot> {
 
+    // TODO: Add your own mineable classes to the list
+    public static final List<Class<? extends Mineable>> AVAILABLE_MINEABLES = List.of(
+    );
+
     @DoNotTouch
     public LootDrawing() {
-        super(Mineable.State.values().length);
+        super(AVAILABLE_MINEABLES.size() * Mineable.State.values().length);
     }
 
     @DoNotTouch
     @Override
     protected Image getCurrentDrawingImage(Loot entity) {
-        return getImage(entity.getMineable().getState().ordinal());
+        Mineable mineable = entity.getMineable();
+        Class<? extends Mineable> clazz = mineable.getClass();
+        return getImage(
+            AVAILABLE_MINEABLES.indexOf(clazz)
+                * Mineable.State.values().length
+                + mineable.getState().ordinal()
+        );
     }
 
     @DoNotTouch
     @Override
     protected void loadImages(int targetSize, DrawingContext<? extends Loot> context) {
-        Loot entity = context.entity();
-        Mineable mineable = entity.getMineable();
         Mineable.State[] states = Mineable.State.values();
-        for (Mineable.State state : states) {
-            String path = mineable.getName() + "_" + state.name().toLowerCase() + EXTENSION;
-            Image image = PaintUtils.loadFieldImage(
-                Thread.currentThread().getContextClassLoader().getResourceAsStream(path),
-                0,
-                targetSize
-            );
-            setImage(state.ordinal(), image);
+        for (Class<? extends Mineable> clazz : AVAILABLE_MINEABLES) {
+            for (Mineable.State state : states) {
+                String path = clazz.getSimpleName() + "_" + state.name().toLowerCase() + EXTENSION;
+                Image image = PaintUtils.loadFieldImage(
+                    Thread.currentThread().getContextClassLoader().getResourceAsStream(path),
+                    0,
+                    targetSize
+                );
+                setImage(AVAILABLE_MINEABLES.indexOf(clazz) * states.length + state.ordinal(), image);
+            }
         }
     }
 }

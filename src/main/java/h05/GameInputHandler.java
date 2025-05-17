@@ -47,6 +47,21 @@ public class GameInputHandler {
 
     private final AtomicBoolean mine = new AtomicBoolean(false);
 
+    private final AtomicBoolean info = new AtomicBoolean(false);
+
+    private static @Nullable Direction mapKeyToDirection(Key key) {
+        if (key == Key.UP) {
+            return Direction.UP;
+        } else if (key == Key.RIGHT) {
+            return Direction.RIGHT;
+        } else if (key == Key.DOWN) {
+            return Direction.DOWN;
+        } else if (key == Key.LEFT) {
+            return Direction.LEFT;
+        }
+        return null;
+    }
+
     protected @Nullable Direction mapKeyToDirection(Set<Integer> keysPressed) {
         @NotNull Set<Direction> directions = keysPressed.stream().map(KEY_TO_DIRECTION::get).collect(Collectors.toSet());
         return directions.size() == 1 ? directions.iterator().next() : null;
@@ -59,24 +74,19 @@ public class GameInputHandler {
 
     protected void updateKeysPressed() {
         Set<Integer> keysPressed = World.getGlobalWorld().getInputHandler().getKeysPressed();
+        this.info.set(keysPressed.contains(KeyEvent.VK_I));
         this.mine.set(keysPressed.contains(KeyEvent.VK_SPACE));
         this.pickGear.set(keysPressed.contains(KeyEvent.VK_E));
         this.direction.set(mapKeyToDirection(keysPressed));
         this.selection.set(mapKeyToSelection(keysPressed));
     }
 
-    protected void updateKeysReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            mine.set(false);
-        } else if (e.getKeyCode() == KeyEvent.VK_E) {
-            pickGear.set(false);
-        } else if (KEY_TO_DIRECTION.containsKey(e.getKeyCode()) &&
-            direction.get() == KEY_TO_DIRECTION.get(e.getKeyCode())) {
-            direction.set(null);
-        } else if (KEY_TO_SELECTION.containsKey(e.getKeyCode()) &&
-            selection.get() == KEY_TO_SELECTION.get(e.getKeyCode())) {
-            selection.set(-1);
-        }
+    protected void updateKeysReleased() {
+        this.mine.set(false);
+        this.pickGear.set(false);
+        this.direction.set(null);
+        this.selection.set(-1);
+        this.info.set(false);
     }
 
     public Direction getDirection() {
@@ -111,12 +121,21 @@ public class GameInputHandler {
         return isMine;
     }
 
+    public boolean isInfo() {
+        var isInfo = info.get();
+        if (isInfo) {
+            this.info.set(false);
+        }
+        return isInfo;
+    }
+
     public void install() {
         World.getGlobalWorld().getInputHandler().addKeyListener(
             new KeyListener() {
 
                 @Override
                 public void keyTyped(KeyEvent e) {
+                    updateKeysPressed();
                 }
 
                 @Override
@@ -126,7 +145,7 @@ public class GameInputHandler {
 
                 @Override
                 public void keyReleased(KeyEvent e) {
-                    updateKeysReleased(e);
+                    updateKeysReleased();
                 }
             }
         );

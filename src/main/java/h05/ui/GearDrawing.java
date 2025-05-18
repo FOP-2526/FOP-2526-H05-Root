@@ -74,7 +74,7 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
                 0,
                 targetSize
             );
-            setImage(offset + AVAILABLE_TOOLS.indexOf(clazz) * conditions.length, image);
+            setImage(offset + AVAILABLE_TOOLS.indexOf(clazz), image);
         }
     }
 }

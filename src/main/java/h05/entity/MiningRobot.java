@@ -17,7 +17,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
-import static h05.RobotUtilities.*;
+import static h05.RobotUtilities.getAsGear;
+import static h05.RobotUtilities.getAsTool;
+import static h05.RobotUtilities.getAsUsableEquipment;
 import static h05.WorldUtilities.getPointInFront;
 
 public class MiningRobot extends Robot implements Miner {
@@ -126,6 +128,10 @@ public class MiningRobot extends Robot implements Miner {
         getUsableEquipments()[index].use(getX(), getY(), getDirection());
     }
 
+    public boolean isCameraBroken() {
+        return getCamera().getCondition() == Equipment.Condition.BROKEN;
+    }
+
     public boolean isBatteryBroken() {
         return getBattery().getCondition() == Equipment.Condition.BROKEN;
     }
@@ -133,10 +139,13 @@ public class MiningRobot extends Robot implements Miner {
     private int[][] getVision(int visibilityRange, int x, int y) {
         int fieldCount = 0;
         for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
+            int newX = x + dx;
+            if (newX < 0 || newX >= World.getWidth()) {
+                continue;
+            }
             for (int dy = -visibilityRange; dy <= visibilityRange; dy++) {
-                int newX = x + dx;
                 int newY = y + dy;
-                if (newX < 0 || newX >= World.getWidth() || newY < 0 || newY >= World.getHeight()) {
+                if (newY < 0 || newY >= World.getHeight()) {
                     continue;
                 }
                 fieldCount++;
@@ -147,10 +156,13 @@ public class MiningRobot extends Robot implements Miner {
         int index = 0;
 
         for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
+            int newX = x + dx;
+            if (newX < 0 || newX >= World.getWidth()) {
+                continue;
+            }
             for (int dy = -visibilityRange; dy <= visibilityRange; dy++) {
-                int newX = x + dx;
                 int newY = y + dy;
-                if (newX < 0 || newX >= World.getWidth() || newY < 0 || newY >= World.getHeight()) {
+                if (newY < 0 || newY >= World.getHeight()) {
                     continue;
                 }
                 visibleFields[index][0] = newX;

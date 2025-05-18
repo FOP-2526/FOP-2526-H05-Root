@@ -1,19 +1,34 @@
 package h05;
 
-import fopbot.*;
+import fopbot.DrawingRegistry;
+import fopbot.FieldEntity;
+import fopbot.Robot;
+import fopbot.Wall;
+import fopbot.World;
+import h05.AbstractMinableEntity.AbstractMinableEntity;
+import h05.AbstractMinableEntity.Rock;
+import h05.AbstractMinableEntity.Tree;
 import h05.entity.Fog;
 import h05.entity.Gear;
 import h05.entity.Loot;
 import h05.entity.MiningRobot;
-import h05.AbstractMinableEntity.AbstractMinableEntity;
-import h05.AbstractMinableEntity.Rock;
-import h05.AbstractMinableEntity.Tree;
-import h05.equipment.Axe;
+import h05.entity.RepairBot;
 import h05.equipment.Battery;
-import h05.equipment.Pickaxe;
-import h05.ui.*;
+import h05.equipment.Camera;
+import h05.ui.FogDrawing;
+import h05.ui.GearDrawing;
+import h05.ui.LootDrawing;
+import h05.ui.MineBotDrawing;
+import h05.ui.NodeDrawing;
+import h05.ui.WallFogDrawing;
 
-import java.util.*;
+import java.awt.Point;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameLoop {
 
@@ -28,6 +43,12 @@ public class GameLoop {
             for (Robot robot : robots) {
                 if (robot instanceof Miner miner) {
                     miner.handleKeyInput(inputHandler.getDirection(), inputHandler.getSelection(), inputHandler.isPickGear(), inputHandler.isMine());
+                }
+                if (robot instanceof Repairer repairer) {
+                    Point point = repairer.scan();
+                    if (point != null) {
+                        repairer.repair(point);
+                    }
                 }
             }
         }
@@ -77,8 +98,8 @@ public class GameLoop {
                 World.getGlobalWorld().placeEntity(new Fog(x, y));
             }
         }
-        World.getGlobalWorld().placeEntity(new Tree(4, 4));
-        World.getGlobalWorld().placeEntity(new Rock(4, 3));
+        World.getGlobalWorld().placeEntity(new Gear(4, 4, new Battery()));
+        World.getGlobalWorld().placeEntity(new Gear(4, 3, new Camera()));
 //        World.getGlobalWorld().placeEntity(new Gear(1, 0, new Pickaxe()));
 //        World.getGlobalWorld().placeEntity(new Gear(0, 1, new Axe()));
 //        World.getGlobalWorld().placeEntity(new Gear(8, 1, new Battery()));
@@ -153,6 +174,8 @@ public class GameLoop {
         miner.equip(new WallBreaker());
         miner.equip(new MiningDetector());
         robots.add(miner);
+        RepairBot repairer = new RepairBot(3, 3, 3);
+        robots.add(repairer);
     }
 
     public void setup() {

@@ -5,7 +5,7 @@ public class TelephotoLens extends AbstractAttachableEquipment {
     private final int rangeEnhancement;
 
     public TelephotoLens(int rangeEnhancement) {
-        super("Telephoto Lens");
+        super("TelephotoLens");
         this.rangeEnhancement = rangeEnhancement;
     }
 

@@ -6,6 +6,7 @@ import fopbot.World;
 import h05.entity.Fog;
 import h05.entity.Gear;
 import h05.entity.Loot;
+import org.jetbrains.annotations.NotNull;
 
 public class MiningDetector extends AbstractUsableEquipment {
 
@@ -23,7 +24,7 @@ public class MiningDetector extends AbstractUsableEquipment {
     }
 
     @Override
-    public void use(int x, int y, Direction direction) {
+    public void use(int x, int y, @NotNull Direction direction) {
         if (getCondition() == Condition.BROKEN) {
             return;
         }

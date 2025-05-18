@@ -4,6 +4,7 @@ import fopbot.Block;
 import fopbot.World;
 import h05.Mineable;
 import h05.equipment.Tool;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractMinableEntity extends Block implements Mineable {
     private State miningState;
@@ -18,12 +19,12 @@ public abstract class AbstractMinableEntity extends Block implements Mineable {
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return name;
     }
 
     @Override
-    public int onMined(Tool tool) {
+    public int onMined(@NotNull Tool tool) {
         int amountToReduceDurabilityBy = 0;
         if (tool == null) {
             amountToReduceDurabilityBy = 5;
@@ -52,7 +53,7 @@ public abstract class AbstractMinableEntity extends Block implements Mineable {
     }
 
 
-    public State getState() {
+    public @NotNull State getState() {
         return miningState;
     }
 

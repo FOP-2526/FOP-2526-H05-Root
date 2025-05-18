@@ -14,6 +14,7 @@ import h05.equipment.Battery;
 import h05.equipment.Camera;
 import h05.equipment.Tool;
 import h05.ui.InfoPopup;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -31,10 +32,10 @@ public class MiningRobot extends Robot implements Miner {
     private static final int EQUIPMENTS_OFFSET = 2;
     private static final int INVENTORY_SIZE = 1000;
 
-    private final Equipment[] storage = new Equipment[MAX_EQUIPMENTS + EQUIPMENTS_OFFSET];
-    private final UsableEquipment[] usableEquipments = new UsableEquipment[MAX_EQUIPMENTS];
+    private final @NotNull Equipment[] storage = new Equipment[MAX_EQUIPMENTS + EQUIPMENTS_OFFSET];
+    private final @NotNull UsableEquipment[] usableEquipments = new UsableEquipment[MAX_EQUIPMENTS];
     private int currentInventory;
-    private Tool primaryTool;
+    private @Nullable Tool tool;
 
 
     private int equipmentCount;
@@ -51,35 +52,39 @@ public class MiningRobot extends Robot implements Miner {
         }
     }
 
-    public Battery getBattery() {
+    public @NotNull Battery getBattery() {
         return (Battery) storage[0];
     }
 
-    public Camera getCamera() {
+    @Override
+    public @Nullable Tool getTool() {
+        return tool;
+    }
+
+    public @NotNull Camera getCamera() {
         return (Camera) storage[1];
     }
 
     @Override
-    public Equipment[] getStorage() {
+    public @NotNull Equipment[] getStorage() {
         return Arrays.copyOf(storage, storage.length);
     }
 
     @Override
-    public UsableEquipment[] getUsableEquipments() {
+    public @NotNull UsableEquipment[] getUsableEquipments() {
         return Arrays.copyOf(usableEquipments, usableEquipmentsCount);
     }
 
     @Override
-    public void equip(Equipment equipment) {
+    public void equip(@NotNull Equipment equipment) {
         String name = equipment.getName();
-        if (name.equals("pickaxe") || name.equals("axe")) {
-            var oldPrimaryTool = primaryTool;
-            primaryTool = getAsTool(equipment);
-            if (oldPrimaryTool != null && !oldPrimaryTool.getName().equals(primaryTool.getName())) {
-                WorldUtilities.placePrimaryTool(getX(), getY(), oldPrimaryTool);
+        if (equipment.isTool()) {
+            Tool oldTool = tool;
+            tool = getAsTool(equipment);
+            if (oldTool != null && !oldTool.getName().equals(tool.getName())) {
+                WorldUtilities.placePrimaryTool(getX(), getY(), oldTool);
             }
-        }
-        if (name.equals(getBattery().getName())) {
+        } else if (name.equals(getBattery().getName())) {
             storage[0] = equipment;
             WorldUtilities.placeNewBattery();
         } else if (name.equals(getCamera().getName())) {
@@ -131,11 +136,7 @@ public class MiningRobot extends Robot implements Miner {
         getUsableEquipments()[index].use(getX(), getY(), getDirection());
     }
 
-    public boolean isBatteryBroken() {
-        return getBattery().getCondition() == Equipment.Condition.BROKEN;
-    }
-
-    private int[][] getVision(int visibilityRange, int x, int y) {
+    private int[] @NotNull [] getVision(int visibilityRange, int x, int y) {
         int fieldCount = 0;
         for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
             for (int dy = -visibilityRange; dy <= visibilityRange; dy++) {
@@ -216,7 +217,7 @@ public class MiningRobot extends Robot implements Miner {
             System.out.println("Inventory is full");
             return;
         }
-        var amountMined = node.onMined(primaryTool);
+        var amountMined = node.onMined(tool);
         var inventoryAfterMining = currentInventory + amountMined;
         currentInventory = Math.min(inventoryAfterMining, INVENTORY_SIZE);
     }

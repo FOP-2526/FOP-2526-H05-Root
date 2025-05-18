@@ -8,7 +8,7 @@ public abstract class AbstractEquipment extends AbstractDurableObject implements
 
     private final String name;
 
-    public AbstractEquipment(String name) {
+    public AbstractEquipment(@NotNull String name) {
         this.name = name;
     }
 

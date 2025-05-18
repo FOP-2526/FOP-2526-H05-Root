@@ -1,18 +1,33 @@
 package h05;
 
 import fopbot.Direction;
+import h05.equipment.Battery;
+import h05.equipment.Camera;
+import h05.equipment.Tool;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
-@DoNotTouch
 public interface Miner extends Equipable {
 
-    @DoNotTouch
+    @NotNull Camera getCamera();
+
+    @NotNull Battery getBattery();
+
+    @Nullable Tool getTool();
+
+    default boolean isCameraBroken() {
+        return getCamera().getCondition() == Equipment.Condition.BROKEN;
+    }
+
+    default boolean isBatteryBroken() {
+        return getBattery().getCondition() == Equipment.Condition.BROKEN;
+    }
+
     void mine();
 
-    @DoNotTouch
+    boolean isOnGear();
+
     void pickGear();
 
-    @DoNotTouch
-    void handleKeyInput(@Nullable Direction direction, int selection, boolean pickGear, boolean mine);
+    void handleKeyInput(@Nullable Direction direction, int selection, boolean pickGear, boolean mine, boolean info);
 }

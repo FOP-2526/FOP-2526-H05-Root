@@ -13,8 +13,10 @@ import h05.entity.Gear;
 import h05.entity.Loot;
 import h05.entity.MiningRobot;
 import h05.entity.RepairBot;
+import h05.equipment.Axe;
 import h05.equipment.Battery;
 import h05.equipment.Camera;
+import h05.equipment.Pickaxe;
 import h05.ui.FogDrawing;
 import h05.ui.GearDrawing;
 import h05.ui.LootDrawing;
@@ -100,9 +102,9 @@ public class GameLoop {
         }
         World.getGlobalWorld().placeEntity(new Gear(4, 4, new Battery()));
         World.getGlobalWorld().placeEntity(new Gear(4, 3, new Camera()));
-//        World.getGlobalWorld().placeEntity(new Gear(1, 0, new Pickaxe()));
-//        World.getGlobalWorld().placeEntity(new Gear(0, 1, new Axe()));
-//        World.getGlobalWorld().placeEntity(new Gear(8, 1, new Battery()));
+        World.getGlobalWorld().placeEntity(new Gear(1, 0, new Pickaxe()));
+        World.getGlobalWorld().placeEntity(new Gear(0, 1, new Axe()));
+        World.getGlobalWorld().placeEntity(new Tree(3,4));
         WorldUtilities.placeNewBattery();
 
         World.placeHorizontalWall(0, 1);

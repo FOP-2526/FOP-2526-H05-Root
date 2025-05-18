@@ -22,36 +22,6 @@ public abstract class AbstractMinableEntity extends Block implements Mineable {
         return name;
     }
 
-    public int getMined(Tool tool) {
-        int amountToReduceDurabilityBy = 0;
-        if (tool == null) {
-            amountToReduceDurabilityBy = 5;
-        } else if
-        (getName().equals("rock") && tool.getName().equals("pickaxe")) {
-            amountToReduceDurabilityBy = 20;
-        } else if (getName().equals("tree") && tool.getName().equals("axe")) {
-            amountToReduceDurabilityBy = 20;
-        }
-        reduceDurability(amountToReduceDurabilityBy);
-        updateAfterMining();
-        return amountToReduceDurabilityBy;
-    }
-
-    public void updateAfterMining() {
-        if (durability < 100 && durability > 50) {
-            setMiningState(State.HALF_MINED);
-            World.getGlobalWorld().getGuiPanel().repaint();
-        } else if (durability <= 50 && durability > 0) {
-            setMiningState(State.FULLY_MINED);
-            World.getGlobalWorld().getGuiPanel().repaint();
-        }
-        else if (durability <= 0) {
-            World.getGlobalWorld().removeEntity(getX(), getY(), getClass());
-
-        }
-    }
-
-
     public State getState() {
         return miningState;
     }

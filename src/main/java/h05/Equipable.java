@@ -2,7 +2,7 @@ package h05;
 
 public interface Equipable {
 
-    Equipment[] getStorage();
+    Equipment[] getEquipmentStorage();
 
     UsableEquipment[] getUsableEquipments();
 

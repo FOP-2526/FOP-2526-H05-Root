@@ -26,39 +26,40 @@ public class MiningRobot extends Robot implements Miner {
 
     private static final int MAX_EQUIPMENTS = 2;
     private static final int EQUIPMENTS_OFFSET = 2;
-    private static final int INVENTORY_SIZE = 1000;
+    private static final int INVENTORY_SIZE = 6;
 
-    private final Equipment[] storage = new Equipment[MAX_EQUIPMENTS + EQUIPMENTS_OFFSET];
+    private final Equipment[] equipmentStorage = new Equipment[MAX_EQUIPMENTS + EQUIPMENTS_OFFSET];
+    private final AbstractMinableEntity[] lootStorage = new AbstractMinableEntity[INVENTORY_SIZE];
     private final UsableEquipment[] usableEquipments = new UsableEquipment[MAX_EQUIPMENTS];
-    private int currentInventory;
     private Tool primaryTool;
 
 
     private int equipmentCount;
+    private int lootCount;
     private int usableEquipmentsCount;
 
     public MiningRobot(int x, int y) {
         super(x, y);
-        storage[0] = new Battery();
-        storage[1] = new Camera();
+        equipmentStorage[0] = new Battery();
+        equipmentStorage[1] = new Camera();
         equipmentCount = EQUIPMENTS_OFFSET;
-        currentInventory = 0;
+        lootCount = 0;
         for (int[] points : getVision(getCamera().getVisibilityRange(), x, y)) {
             WorldUtilities.removeFog(points[0], points[1]);
         }
     }
 
     public Battery getBattery() {
-        return (Battery) storage[0];
+        return (Battery) equipmentStorage[0];
     }
 
     public Camera getCamera() {
-        return (Camera) storage[1];
+        return (Camera) equipmentStorage[1];
     }
 
     @Override
-    public Equipment[] getStorage() {
-        return Arrays.copyOf(storage, storage.length);
+    public Equipment[] getEquipmentStorage() {
+        return Arrays.copyOf(equipmentStorage, equipmentStorage.length);
     }
 
     @Override
@@ -74,17 +75,18 @@ public class MiningRobot extends Robot implements Miner {
             primaryTool = getAsTool(equipment);
             if (oldPrimaryTool != null && !oldPrimaryTool.getName().equals(primaryTool.getName())) {
                 WorldUtilities.placePrimaryTool(getX(), getY(), oldPrimaryTool);
+            } else {
+                WorldUtilities.removeTool(getX(), getY());
             }
-        }
-        if (name.equals(getBattery().getName())) {
-            storage[0] = equipment;
-            WorldUtilities.placeNewBattery();
+
+        } else if (name.equals(getBattery().getName())) {
+            equipmentStorage[0] = equipment;
         } else if (name.equals(getCamera().getName())) {
-            storage[1] = equipment;
-        } else if (equipmentCount == storage.length) {
-            storage[equipmentCount - 1] = equipment;
+            equipmentStorage[1] = equipment;
+        } else if (equipmentCount == equipmentStorage.length) {
+            equipmentStorage[equipmentCount - 1] = equipment;
         } else {
-            storage[equipmentCount++] = equipment;
+            equipmentStorage[equipmentCount++] = equipment;
         }
         if (equipment.isUsable()) {
             usableEquipments[usableEquipmentsCount++] = getAsUsableEquipment(equipment);
@@ -93,7 +95,7 @@ public class MiningRobot extends Robot implements Miner {
 
     @Override
     public void unequip(int index) {
-        Equipment equipment = storage[index + EQUIPMENTS_OFFSET];
+        Equipment equipment = equipmentStorage[index + EQUIPMENTS_OFFSET];
         if (equipment.isUsable()) {
             int i = 0;
             for (; i < usableEquipmentsCount; i++) {
@@ -105,13 +107,13 @@ public class MiningRobot extends Robot implements Miner {
             for (; i < usableEquipmentsCount - 1; i++) {
                 usableEquipments[i] = usableEquipments[i + 1];
             }
-            storage[equipmentCount - 1] = null;
+            equipmentStorage[equipmentCount - 1] = null;
             usableEquipmentsCount--;
         }
         for (int i = index + EQUIPMENTS_OFFSET; i < equipmentCount - 1; i++) {
-            storage[i] = storage[i + 1];
+            equipmentStorage[i] = equipmentStorage[i + 1];
         }
-        storage[equipmentCount - 1] = null;
+        equipmentStorage[equipmentCount - 1] = null;
         equipmentCount--;
     }
 
@@ -214,18 +216,19 @@ public class MiningRobot extends Robot implements Miner {
         if (pointToMineAt == null) {
             return;
         }
-
-        AbstractMinableEntity node = WorldUtilities.getNode(pointToMineAt.x, pointToMineAt.y);
-        if (node == null) {
+        AbstractMinableEntity objectToMine = WorldUtilities.getMinableEntity(pointToMineAt.x, pointToMineAt.y);
+        if (objectToMine == null) {
             return;
         }
-        if (currentInventory >= INVENTORY_SIZE) {
+        if (lootCount >= lootStorage.length) {
             System.out.println("Inventory is full");
             return;
         }
-        var amountMined = node.getMined(primaryTool);
-        var inventoryAfterMining = currentInventory + amountMined;
-        currentInventory = Math.min(inventoryAfterMining, INVENTORY_SIZE);
+        boolean gotMinedToCompletion = WorldUtilities.mineEntity(objectToMine, primaryTool);
+        if (gotMinedToCompletion) {
+            lootStorage[lootCount] = objectToMine;
+            WorldUtilities.removeMinedEntity(objectToMine);
+        }
     }
 
     @Override
@@ -250,19 +253,16 @@ public class MiningRobot extends Robot implements Miner {
     public void handleKeyInput(@Nullable Direction direction, int selection, boolean pickGear, boolean mine) {
         if (mine) {
             mine();
-        }
-        if (direction != null) {
+        } else if (direction != null) {
             while (getDirection() != direction) {
                 turnLeft();
             }
             if (isFrontClear()) {
                 move();
             }
-        }
-        if (selection != -1 && selection < getEquipmentCount()) {
+        } else if (selection != -1 && selection < getEquipmentCount()) {
             useEquipment(selection - 1);
-        }
-        if (pickGear) {
+        } else if (pickGear) {
             pickGear();
         }
     }

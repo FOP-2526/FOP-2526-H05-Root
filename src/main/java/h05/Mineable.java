@@ -15,7 +15,9 @@ public interface Mineable extends Durable {
     @DoNotTouch
     void setState(@NotNull State state);
 
+    @DoNotTouch
     enum State {
+
         NOT_MINED,
         HALF_MINED,
         FULLY_MINED

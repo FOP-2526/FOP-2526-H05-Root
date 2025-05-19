@@ -31,6 +31,7 @@ public interface Equipment extends Durable {
     @DoNotTouch
     boolean isTool();
 
+    @DoNotTouch
     enum Condition {
         NEW,
         USED,

@@ -19,6 +19,7 @@ import java.util.List;
 public class GearDrawing extends SvgBasedDrawing<Gear> {
 
     // TODO: Add your own equipment classes to the list
+    @DoNotTouch
     public static final List<Class<? extends Equipment>> AVAILABLE_EQUIPMENTS = List.of(
         Battery.class,
         Camera.class
@@ -26,6 +27,7 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
         //TelephotoLens.class
     );
 
+    @DoNotTouch
     public static final List<Class<? extends Tool>> AVAILABLE_TOOLS = List.of(
         Axe.class,
         Pickaxe.class

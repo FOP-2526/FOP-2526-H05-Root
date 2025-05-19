@@ -17,6 +17,7 @@ import java.awt.Point;
 @DoNotTouch
 public class MineBotDrawing implements Drawable<MiningRobot> {
 
+    @DoNotTouch
     private static final double EQUIPMENT_SIZE_SCALE = 15d;
 
     @DoNotTouch
@@ -67,6 +68,7 @@ public class MineBotDrawing implements Drawable<MiningRobot> {
         g2d.drawImage(batteryImage, (int) x, (int) y, (int) equipmentSize, (int) equipmentSize, null);
     }
 
+    @DoNotTouch
     private Image loadEquipmentImage(Equipment equipment, DrawingContext<? extends FieldEntity> context, int rotationDegrees) {
         String path = equipment.getName() + "_" + equipment.getCondition().name().toLowerCase() + ".svg";
         return PaintUtils.loadFieldImage(Thread.currentThread().getContextClassLoader().getResourceAsStream(path), rotationDegrees, (int) scale(EQUIPMENT_SIZE_SCALE, context));

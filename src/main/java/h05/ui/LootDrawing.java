@@ -15,6 +15,7 @@ import java.util.List;
 @DoNotTouch
 public class LootDrawing extends SvgBasedDrawing<Loot> {
 
+    @DoNotTouch
     public static final List<Class<? extends Mineable>> AVAILABLE_MINEABLES = List.of(
         Tree.class, Rock.class
     );

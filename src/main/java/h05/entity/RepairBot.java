@@ -9,6 +9,7 @@ import h05.Repairer;
 import h05.WorldUtilities;
 import h05.gear.Battery;
 import h05.gear.Camera;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.Point;
@@ -54,7 +55,7 @@ public class RepairBot extends Robot implements Repairer {
     }
 
     @Override
-    public void repair(Point point) {
+    public void repair(@NotNull Point point) {
         setField( point.x, point.y);
         FieldEntity[] entities = WorldUtilities.getEntities(getX(), getY());
         for (FieldEntity entity : entities) {

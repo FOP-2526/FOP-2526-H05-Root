@@ -5,14 +5,14 @@ import fopbot.FieldEntity;
 import fopbot.KarelWorld;
 import fopbot.Robot;
 import fopbot.World;
-import h05.AbstractMinableEntity.AbstractMinableEntity;
 import h05.Equipment;
 import h05.Miner;
 import h05.UsableEquipment;
 import h05.WorldUtilities;
-import h05.equipment.Battery;
-import h05.equipment.Camera;
-import h05.equipment.Tool;
+import h05.gear.Battery;
+import h05.gear.Camera;
+import h05.gear.Tool;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -68,7 +68,7 @@ public class MiningRobot extends Robot implements Miner {
     }
 
     @Override
-    public void equip(Equipment equipment) {
+    public void equip(@NotNull Equipment equipment) {
         String name = equipment.getName();
         if (name.equals("Pickaxe") || name.equals("Axe")) {
             var oldPrimaryTool = primaryTool;
@@ -231,11 +231,6 @@ public class MiningRobot extends Robot implements Miner {
             lootCount++;
             WorldUtilities.removeLoot(objectToMine);
         }
-    }
-
-    @Override
-    public boolean isOnGear() {
-        return WorldUtilities.isOnGear(getX(), getY());
     }
 
     @Override

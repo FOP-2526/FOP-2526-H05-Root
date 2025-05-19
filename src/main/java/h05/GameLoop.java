@@ -1,16 +1,17 @@
 package h05;
 
 import fopbot.*;
-import h05.AbstractMinableEntity.Tree;
+import h05.loot.Tree;
 import h05.entity.Fog;
 import h05.entity.Gear;
 import h05.entity.Loot;
 import h05.entity.MiningRobot;
 import h05.entity.RepairBot;
-import h05.equipment.Axe;
-import h05.equipment.Battery;
-import h05.equipment.Camera;
-import h05.equipment.Pickaxe;
+import h05.gear.Axe;
+import h05.gear.Battery;
+import h05.gear.Camera;
+import h05.gear.Pickaxe;
+import h05.gear.WallBreaker;
 import h05.ui.FogDrawing;
 import h05.ui.GearDrawing;
 import h05.ui.LootDrawing;

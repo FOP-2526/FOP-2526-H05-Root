@@ -1,20 +1,25 @@
-package h05;
+package h05.gear;
 
 import fopbot.Direction;
 import fopbot.FieldEntity;
 import fopbot.KarelWorld;
 import fopbot.Wall;
 import fopbot.World;
-import h05.equipment.AbstractUsableEquipment;
+import h05.UsableEquipment;
+import org.jetbrains.annotations.NotNull;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
-public class WallBreaker extends AbstractUsableEquipment {
+@DoNotTouch
+public class WallBreaker extends AbstractEquipment implements UsableEquipment {
 
+    @DoNotTouch
     public WallBreaker() {
         super("Wall Breaker");
     }
 
+    @DoNotTouch
     @Override
-    public void use(int x, int y, Direction direction) {
+    public void use(int x, int y, @NotNull Direction direction) {
         if (getCondition() == Condition.BROKEN) {
             return;
         }

@@ -7,8 +7,8 @@ import fopbot.World;
 import h05.Equipment;
 import h05.Repairer;
 import h05.WorldUtilities;
-import h05.equipment.Battery;
-import h05.equipment.Camera;
+import h05.gear.Battery;
+import h05.gear.Camera;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.Point;

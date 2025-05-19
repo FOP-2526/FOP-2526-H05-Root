@@ -1,10 +1,16 @@
 package h05;
 
+import org.jetbrains.annotations.NotNull;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
+
+@DoNotTouch
 public interface Equipment extends Durable {
 
-    String getName();
+    @DoNotTouch
+    @NotNull String getName();
 
-    default Condition getCondition() {
+    @DoNotTouch
+    default @NotNull Condition getCondition() {
         int durability = getDurability();
         if (durability > 80) {
             return Condition.NEW;
@@ -16,9 +22,14 @@ public interface Equipment extends Durable {
         return Condition.BROKEN;
     }
 
+    @DoNotTouch
     boolean isUpgrade();
 
+    @DoNotTouch
     boolean isUsable();
+
+    @DoNotTouch
+    boolean isTool();
 
     enum Condition {
         NEW,

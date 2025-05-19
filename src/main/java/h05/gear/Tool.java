@@ -1,24 +1,23 @@
-package h05;
+package h05.gear;
 
+import h05.Equipment;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 @DoNotTouch
-public interface AttachableEquipment extends Equipment {
+public interface Tool extends Equipment {
 
-    @Override
+    @DoNotTouch
     default boolean isUpgrade() {
-        return true;
+        return false;
     }
 
     @DoNotTouch
-    @Override
     default boolean isUsable() {
         return false;
     }
 
     @DoNotTouch
-    @Override
     default boolean isTool() {
-        return false;
+        return true;
     }
 }

@@ -1,12 +1,19 @@
 package h05;
 
+import org.jetbrains.annotations.NotNull;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
+
+@DoNotTouch
 public interface Mineable extends Durable {
 
-    String getName();
+    @DoNotTouch
+    @NotNull String getName();
 
-    State getState();
+    @DoNotTouch
+    @NotNull State getState();
 
-    void setState(State state);
+    @DoNotTouch
+    void setState(@NotNull State state);
 
     enum State {
         NOT_MINED,

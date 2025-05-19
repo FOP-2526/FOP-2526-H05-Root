@@ -1,54 +1,61 @@
-package h05.equipment;
+package h05.gear;
 
 import h05.AttachableEquipment;
 import h05.UpgradeableEquipment;
+import org.jetbrains.annotations.NotNull;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
+import org.tudalgo.algoutils.student.annotation.SolutionOnly;
+import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
 import java.util.Arrays;
 
+@DoNotTouch
 public abstract class AbstractUpgradeableEquipment extends AbstractEquipment implements UpgradeableEquipment {
 
+    @DoNotTouch
     private static final int DEFAULT_CAPACITY = 5;
 
+    @DoNotTouch
     private final AttachableEquipment[] upgrades;
 
+    @SolutionOnly
     private int numberOfUpgrades;
 
-    public AbstractUpgradeableEquipment(String name, int capacity) {
+    @DoNotTouch
+    public AbstractUpgradeableEquipment(@NotNull String name, int capacity) {
         super(name);
         this.upgrades = new AttachableEquipment[capacity];
     }
 
-    public AbstractUpgradeableEquipment(String name) {
+    @DoNotTouch
+    public AbstractUpgradeableEquipment(@NotNull String name) {
         this(name, DEFAULT_CAPACITY);
     }
 
+    @StudentImplementationRequired
     @Override
     public AttachableEquipment[] getUpgrades() {
         return Arrays.copyOf(upgrades, numberOfUpgrades);
     }
 
+    @DoNotTouch
     @Override
     public int getNumberOfUpgrades() {
         return numberOfUpgrades;
     }
 
+    @StudentImplementationRequired
     @Override
-    public boolean isUpgrade() {
-        return false;
-    }
-
-    @Override
-    public boolean isUsable() {
-        return false;
-    }
-
-    @Override
-    public void attach(AttachableEquipment upgrade) {
+    public void attach(@NotNull AttachableEquipment upgrade) {
+        if (numberOfUpgrades == upgrades.length) {
+            return;
+        }
         upgrades[numberOfUpgrades++] = upgrade;
     }
 
+    @StudentImplementationRequired
     @Override
-    public void detach(AttachableEquipment upgrade) {
+    public void detach(@NotNull AttachableEquipment upgrade) {
         int i = 0;
         for (; i < numberOfUpgrades; i++) {
             if (upgrades[i] == upgrade) {

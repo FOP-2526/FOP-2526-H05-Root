@@ -5,11 +5,11 @@ import fopbot.PaintUtils;
 import fopbot.SvgBasedDrawing;
 import h05.Equipment;
 import h05.entity.Gear;
-import h05.equipment.Axe;
-import h05.equipment.Battery;
-import h05.equipment.Camera;
-import h05.equipment.Pickaxe;
-import h05.equipment.Tool;
+import h05.gear.Axe;
+import h05.gear.Battery;
+import h05.gear.Camera;
+import h05.gear.Pickaxe;
+import h05.gear.Tool;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.awt.Image;

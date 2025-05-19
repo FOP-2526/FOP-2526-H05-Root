@@ -3,12 +3,13 @@ package h05.equipment;
 import fopbot.Direction;
 import fopbot.Field;
 import fopbot.World;
+import h05.UsableEquipment;
 import h05.entity.Fog;
-import h05.entity.Gear;
 import h05.entity.Loot;
+import h05.gear.AbstractEquipment;
 import org.jetbrains.annotations.NotNull;
 
-public class MiningDetector extends AbstractUsableEquipment {
+public class MiningDetector extends AbstractEquipment implements UsableEquipment {
 
     public static final int DEFAULT_VISIBILITY_RANGE = 3;
 

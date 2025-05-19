@@ -1,7 +1,10 @@
 package h05;
 
-import fopbot.*;
-import h05.loot.Tree;
+import fopbot.DrawingRegistry;
+import fopbot.FieldEntity;
+import fopbot.Robot;
+import fopbot.Wall;
+import fopbot.World;
 import h05.entity.Fog;
 import h05.entity.Gear;
 import h05.entity.Loot;
@@ -12,6 +15,7 @@ import h05.gear.Battery;
 import h05.gear.Camera;
 import h05.gear.Pickaxe;
 import h05.gear.WallBreaker;
+import h05.loot.Tree;
 import h05.ui.FogDrawing;
 import h05.ui.GearDrawing;
 import h05.ui.LootDrawing;
@@ -19,7 +23,12 @@ import h05.ui.MineBotDrawing;
 import h05.ui.WallFogDrawing;
 
 import java.awt.Point;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameLoop {
 
@@ -33,7 +42,7 @@ public class GameLoop {
         public void run() {
             for (Robot robot : robots) {
                 if (robot instanceof Miner miner) {
-                    miner.handleKeyInput(inputHandler.getDirection(), inputHandler.getSelection(), inputHandler.isPickGear(), inputHandler.isMine());
+                    miner.handleKeyInput(inputHandler.getDirection(), inputHandler.getSelection(), inputHandler.isPickGear(), inputHandler.isMine(), inputHandler.isInfo());
                 }
                 if (robot instanceof Repairer repairer) {
                     Point point = repairer.scan();
@@ -94,6 +103,7 @@ public class GameLoop {
         WorldUtilities.placeNewBattery();
         generateMaze(width, height);
     }
+
     protected void generateMaze(int width, int height) {
         for (int x = 0; x < width; x++) {
             World.placeHorizontalWall(x, 0);
@@ -122,7 +132,7 @@ public class GameLoop {
     protected void setupRobots() {
         MiningRobot miner = new MiningRobot(0, 0);
         miner.equip(new WallBreaker());
-        miner.equip(new MiningDetector());
+        miner.equip(new h05.equipment.MiningDetector());
         robots.add(miner);
         RepairBot repairer = new RepairBot(3, 3, 3);
         robots.add(repairer);

@@ -1,9 +1,9 @@
 package h05;
 
 import fopbot.Direction;
-import h05.equipment.Battery;
-import h05.equipment.Camera;
-import h05.equipment.Tool;
+import h05.gear.Battery;
+import h05.gear.Camera;
+import h05.gear.Tool;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

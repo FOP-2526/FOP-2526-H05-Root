@@ -65,7 +65,7 @@ public class RepairBot extends Robot implements Repairer {
                 if (miner.isCameraBroken()) {
                     miner.equip(new Camera());
                 }
-                Equipment[] storage = miner.getEquipmentStorage();
+                Equipment[] storage = miner.getStorage();
                 for (int i = 0; i < miner.getEquipmentCount(); i++) {
                     Equipment equipment = storage[i];
                     if (equipment.getCondition() == Equipment.Condition.BROKEN) {

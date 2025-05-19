@@ -7,7 +7,7 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 public interface Equipable {
 
     @DoNotTouch
-    Equipment[] getEquipmentStorage();
+    Equipment[] getStorage();
 
     @DoNotTouch
     UsableEquipment[] getUsableEquipments();

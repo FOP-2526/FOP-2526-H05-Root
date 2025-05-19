@@ -2,7 +2,7 @@ package h05;
 
 import fopbot.FieldEntity;
 import h05.entity.Gear;
-import h05.equipment.Tool;
+import h05.gear.Tool;
 import org.jetbrains.annotations.Nullable;
 
 public final class RobotUtilities {

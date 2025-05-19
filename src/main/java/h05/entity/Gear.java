@@ -2,7 +2,7 @@ package h05.entity;
 
 import fopbot.FieldEntity;
 import fopbot.World;
-import h05.Equipment;
+import h05.gear.Equipment;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 

@@ -1,29 +1,34 @@
-package h05.equipment;
+package h05.gear;
 
 import fopbot.Direction;
 import fopbot.Field;
 import fopbot.World;
-import h05.UsableEquipment;
 import h05.entity.Fog;
 import h05.entity.Loot;
-import h05.gear.AbstractEquipment;
 import org.jetbrains.annotations.NotNull;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
+@DoNotTouch
 public class MiningDetector extends AbstractEquipment implements UsableEquipment {
 
+    @DoNotTouch
     public static final int DEFAULT_VISIBILITY_RANGE = 3;
 
+    @DoNotTouch
     private final int radius;
 
+    @DoNotTouch
     public MiningDetector(int radius) {
-        super("Mining Detector");
+        super("MiningDetector");
         this.radius = radius;
     }
 
+    @DoNotTouch
     public MiningDetector() {
         this(DEFAULT_VISIBILITY_RANGE);
     }
 
+    @DoNotTouch
     @Override
     public void use(int x, int y, @NotNull Direction direction) {
         if (getCondition() == Condition.BROKEN) {
@@ -51,6 +56,5 @@ public class MiningDetector extends AbstractEquipment implements UsableEquipment
                 }
             }
         }
-
     }
 }

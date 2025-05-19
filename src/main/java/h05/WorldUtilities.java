@@ -3,18 +3,23 @@ package h05;
 import fopbot.Direction;
 import fopbot.Field;
 import fopbot.FieldEntity;
+import fopbot.Wall;
 import fopbot.World;
-import h05.loot.Rock;
-import h05.loot.Tree;
 import h05.entity.Fog;
 import h05.entity.Gear;
 import h05.entity.Loot;
+import h05.entity.Miner;
 import h05.gear.Axe;
 import h05.gear.Battery;
 import h05.gear.Pickaxe;
 import h05.gear.Tool;
+import h05.loot.Mineable;
+import h05.loot.Rock;
+import h05.loot.Tree;
+import org.jetbrains.annotations.Nullable;
+import org.tudalgo.algoutils.student.annotation.SolutionOnly;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.List;
 import java.util.Random;
 
@@ -58,11 +63,22 @@ public final class WorldUtilities {
         return (Loot) entity;
     }
 
+    public static @Nullable Wall getWallAtPoint(int x, int y) {
+        return (Wall) World.getGlobalWorld().getField(x, y).getEntities().stream().filter(
+            Wall.class::isInstance).findFirst().orElse(null);
+    }
+
+    public static @Nullable Miner getMinerAtPoint(int x, int y) {
+        return (Miner) World.getGlobalWorld().getField(x, y).getEntities().stream().filter(
+            Miner.class::isInstance).findFirst().orElse(null);
+    }
+
     public static void placePrimaryTool(int x, int y, Tool primaryTool) {
         removeTool(x, y);
         World.getGlobalWorld().placeEntity(new Gear(x, y, primaryTool));
     }
 
+    @SolutionOnly
     public static Point getPointInFront(int x, int y, Direction dir) {
         int newX = x + dir.getDx();
         int newY = y + dir.getDy();

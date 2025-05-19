@@ -1,11 +1,9 @@
 package h05.entity;
 
-import fopbot.FieldEntity;
 import fopbot.Robot;
 import fopbot.RobotFamily;
 import fopbot.World;
-import h05.Equipment;
-import h05.Repairer;
+import h05.gear.Equipment;
 import h05.WorldUtilities;
 import h05.gear.Battery;
 import h05.gear.Camera;
@@ -43,11 +41,9 @@ public class RepairBot extends Robot implements Repairer {
                 if (newY < 0 || newY >= World.getHeight()) {
                     continue;
                 }
-                FieldEntity[] entities = WorldUtilities.getEntities(newX, newY);
-                for (FieldEntity entity : entities) {
-                    if (entity instanceof MiningRobot miner && (miner.isCameraBroken() || miner.isBatteryBroken())) {
-                        return new Point(newX, newY);
-                    }
+                Miner miner = WorldUtilities.getMinerAtPoint(newX, newY);
+                if (miner != null && (miner.isCameraBroken() || miner.isBatteryBroken())) {
+                    return new Point(newX, newY);
                 }
             }
         }
@@ -56,23 +52,19 @@ public class RepairBot extends Robot implements Repairer {
 
     @Override
     public void repair(@NotNull Point point) {
-        setField( point.x, point.y);
-        FieldEntity[] entities = WorldUtilities.getEntities(getX(), getY());
-        for (FieldEntity entity : entities) {
-            if (entity instanceof MiningRobot miner) {
-                if (miner.isBatteryBroken()) {
-                    miner.equip(new Battery());
-                }
-                if (miner.isCameraBroken()) {
-                    miner.equip(new Camera());
-                }
-                Equipment[] storage = miner.getStorage();
-                for (int i = 0; i < miner.getEquipmentCount(); i++) {
-                    Equipment equipment = storage[i];
-                    if (equipment.getCondition() == Equipment.Condition.BROKEN) {
-                        miner.unequip(i);
-                    }
-                }
+        setField(point.x, point.y);
+        Miner miner = WorldUtilities.getMinerAtPoint(getX(), getY());
+        if (miner.isBatteryBroken()) {
+            miner.equip(new Battery());
+        }
+        if (miner.isCameraBroken()) {
+            miner.equip(new Camera());
+        }
+        Equipment[] storage = miner.getEquipmentStorage();
+        for (int i = 0; i < miner.getEquipmentCount(); i++) {
+            Equipment equipment = storage[i];
+            if (equipment.getCondition() == Equipment.Condition.BROKEN) {
+                miner.unequip(i);
             }
         }
     }

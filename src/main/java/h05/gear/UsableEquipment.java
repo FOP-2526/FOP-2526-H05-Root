@@ -1,4 +1,4 @@
-package h05;
+package h05.gear;
 
 import fopbot.Direction;
 import org.jetbrains.annotations.NotNull;

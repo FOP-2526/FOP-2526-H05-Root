@@ -1,4 +1,4 @@
-package h05;
+package h05.entity;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

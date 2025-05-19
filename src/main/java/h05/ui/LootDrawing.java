@@ -5,7 +5,7 @@ import fopbot.PaintUtils;
 import fopbot.SvgBasedDrawing;
 import h05.loot.Rock;
 import h05.loot.Tree;
-import h05.Mineable;
+import h05.loot.Mineable;
 import h05.entity.Loot;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 

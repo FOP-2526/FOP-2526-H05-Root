@@ -1,7 +1,5 @@
 package h05.gear;
 
-import h05.AttachableEquipment;
-import h05.UpgradeableEquipment;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.SolutionOnly;

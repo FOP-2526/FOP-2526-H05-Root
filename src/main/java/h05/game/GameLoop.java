@@ -1,18 +1,22 @@
-package h05;
+package h05.game;
 
 import fopbot.DrawingRegistry;
 import fopbot.FieldEntity;
 import fopbot.Robot;
 import fopbot.Wall;
 import fopbot.World;
+import h05.WorldUtilities;
 import h05.entity.Fog;
 import h05.entity.Gear;
 import h05.entity.Loot;
+import h05.entity.Miner;
 import h05.entity.MiningRobot;
 import h05.entity.RepairBot;
+import h05.entity.Repairer;
 import h05.gear.Axe;
 import h05.gear.Battery;
 import h05.gear.Camera;
+import h05.gear.MiningDetector;
 import h05.gear.Pickaxe;
 import h05.gear.WallBreaker;
 import h05.loot.Tree;
@@ -132,7 +136,7 @@ public class GameLoop {
     protected void setupRobots() {
         MiningRobot miner = new MiningRobot(0, 0);
         miner.equip(new WallBreaker());
-        miner.equip(new h05.equipment.MiningDetector());
+        miner.equip(new MiningDetector());
         robots.add(miner);
         RepairBot repairer = new RepairBot(3, 3, 3);
         robots.add(repairer);

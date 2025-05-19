@@ -1,6 +1,7 @@
 package h05.ui;
 
 import fopbot.World;
+import h05.loot.Mineable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.awt.BorderLayout;
@@ -39,6 +40,15 @@ public class InfoPopup extends JDialog {
     public static void showInfo(List<Map.Entry<String, Integer>> data) {
         JFrame parent = World.getGlobalWorld().getGuiFrame();
         InfoPopup infoPopup = new InfoPopup(parent, data);
+        infoPopup.setSize(300, 200);
+        infoPopup.setLocationRelativeTo(parent);
+        infoPopup.setVisible(true);
+    }
+
+    public static void showInfo(Mineable[] mineables){
+        JFrame parent = World.getGlobalWorld().getGuiFrame();
+        // TODO GROUP MINEABLES BY NAME
+        InfoPopup infoPopup = new InfoPopup(parent, List.of());
         infoPopup.setSize(300, 200);
         infoPopup.setLocationRelativeTo(parent);
         infoPopup.setVisible(true);

@@ -1,5 +1,7 @@
-package h05;
+package h05.entity;
 
+import h05.gear.Equipment;
+import h05.gear.UsableEquipment;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
@@ -7,7 +9,7 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 public interface Equipable {
 
     @DoNotTouch
-    Equipment[] getStorage();
+    Equipment[] getEquipmentStorage();
 
     @DoNotTouch
     UsableEquipment[] getUsableEquipments();

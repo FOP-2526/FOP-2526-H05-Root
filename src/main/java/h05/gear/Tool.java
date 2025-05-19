@@ -1,6 +1,5 @@
 package h05.gear;
 
-import h05.Equipment;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 @DoNotTouch

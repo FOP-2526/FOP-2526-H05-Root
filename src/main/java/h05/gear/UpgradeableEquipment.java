@@ -1,4 +1,4 @@
-package h05;
+package h05.gear;
 
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;

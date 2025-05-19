@@ -1,11 +1,9 @@
 package h05.gear;
 
 import fopbot.Direction;
-import fopbot.FieldEntity;
-import fopbot.KarelWorld;
 import fopbot.Wall;
 import fopbot.World;
-import h05.UsableEquipment;
+import h05.WorldUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
@@ -34,13 +32,10 @@ public class WallBreaker extends AbstractEquipment implements UsableEquipment {
             return;
         }
         boolean isHorizontal = direction == Direction.UP || direction == Direction.DOWN;
-        KarelWorld world = World.getGlobalWorld();
-        for (FieldEntity entity : world.getField(removeX, removeY).getEntities()) {
-            // TODO: Do not expose instanceof
-            if (entity instanceof Wall wall && wall.isHorizontal() == isHorizontal) {
-                world.removeEntity(wall);
-                return;
-            }
+        Wall wall = WorldUtilities.getWallAtPoint(removeX, removeY);
+        if (wall != null && wall.isHorizontal() == isHorizontal) {
+            World.getGlobalWorld().removeEntity(wall);
+            reduceDurability(100);
         }
     }
 }

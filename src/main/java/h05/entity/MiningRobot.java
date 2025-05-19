@@ -5,23 +5,20 @@ import fopbot.FieldEntity;
 import fopbot.KarelWorld;
 import fopbot.Robot;
 import fopbot.World;
-import h05.Equipment;
-import h05.Miner;
-import h05.UsableEquipment;
+import h05.gear.Equipment;
+import h05.loot.Mineable;
+import h05.gear.UsableEquipment;
 import h05.WorldUtilities;
 import h05.gear.Battery;
 import h05.gear.Camera;
 import h05.gear.Tool;
-import h05.loot.AbstractMinableEntity;
 import h05.ui.InfoPopup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-import java.awt.*;
 import java.awt.Point;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 import static h05.RobotUtilities.getAsGear;
 import static h05.RobotUtilities.getAsTool;
@@ -32,11 +29,11 @@ public class MiningRobot extends Robot implements Miner {
 
     private static final int MAX_EQUIPMENTS = 2;
     private static final int EQUIPMENTS_OFFSET = 2;
-    private static final int INVENTORY_SIZE = 1000;
+    private static final int INVENTORY_SIZE = 5;
 
-    private final @NotNull Equipment[] storage = new Equipment[MAX_EQUIPMENTS + EQUIPMENTS_OFFSET];
-    private final @NotNull UsableEquipment[] usableEquipments = new UsableEquipment[MAX_EQUIPMENTS];
-    private final Loot[] lootStorage = new Loot[INVENTORY_SIZE];
+    private final Equipment[] equipmentStorage;
+    private final UsableEquipment[] usableEquipments;
+    private final Mineable[] lootStorage;
     private @Nullable Tool tool;
 
 
@@ -44,19 +41,26 @@ public class MiningRobot extends Robot implements Miner {
     private int usableEquipmentsCount;
     private int lootCount;
 
-    public MiningRobot(int x, int y) {
+    public MiningRobot(int x, int y, int equipmentStorageSize, int lootStorageSize) {
         super(x, y);
-        storage[0] = new Battery();
-        storage[1] = new Camera();
+        equipmentStorage = new Equipment[equipmentStorageSize];
+        usableEquipments = new UsableEquipment[equipmentStorageSize - 2];
+        lootStorage = new Mineable[lootStorageSize];
+        equipmentStorage[0] = new Battery();
+        equipmentStorage[1] = new Camera();
         equipmentCount = EQUIPMENTS_OFFSET;
         lootCount = 0;
-        for (int[] points : getVision(getCamera().getVisibilityRange(), x, y)) {
-            WorldUtilities.removeFog(points[0], points[1]);
+        for (Point point : getVision(getCamera().getVisibilityRange(), x, y)) {
+            WorldUtilities.removeFog(point.x, point.y);
         }
     }
 
+    public MiningRobot(int x, int y) {
+        this(x, y, MAX_EQUIPMENTS + EQUIPMENTS_OFFSET, INVENTORY_SIZE);
+    }
+
     public @NotNull Battery getBattery() {
-        return (Battery) storage[0];
+        return (Battery) equipmentStorage[0];
     }
 
     @Override
@@ -64,13 +68,18 @@ public class MiningRobot extends Robot implements Miner {
         return tool;
     }
 
+    @Override
+    public Mineable[] getLootStorage() {
+        return Arrays.copyOf(lootStorage, lootCount);
+    }
+
     public @NotNull Camera getCamera() {
-        return (Camera) storage[1];
+        return (Camera) equipmentStorage[1];
     }
 
     @Override
-    public @NotNull Equipment[] getStorage() {
-        return Arrays.copyOf(storage, storage.length);
+    public @NotNull Equipment[] getEquipmentStorage() {
+        return Arrays.copyOf(equipmentStorage, equipmentCount);
     }
 
     @Override
@@ -90,13 +99,13 @@ public class MiningRobot extends Robot implements Miner {
                 WorldUtilities.removeTool(getX(), getY());
             }
         } else if (name.equals(getBattery().getName())) {
-            storage[0] = equipment;
+            equipmentStorage[0] = equipment;
         } else if (name.equals(getCamera().getName())) {
-            storage[1] = equipment;
-        } else if (equipmentCount == storage.length) {
-            storage[equipmentCount - 1] = equipment;
+            equipmentStorage[1] = equipment;
+        } else if (equipmentCount == equipmentStorage.length) {
+            equipmentStorage[equipmentCount - 1] = equipment;
         } else {
-            storage[equipmentCount++] = equipment;
+            equipmentStorage[equipmentCount++] = equipment;
         }
         if (equipment.isUsable()) {
             usableEquipments[usableEquipmentsCount++] = getAsUsableEquipment(equipment);
@@ -105,7 +114,7 @@ public class MiningRobot extends Robot implements Miner {
 
     @Override
     public void unequip(int index) {
-        Equipment equipment = storage[index + EQUIPMENTS_OFFSET];
+        Equipment equipment = equipmentStorage[index + EQUIPMENTS_OFFSET];
         if (equipment.isUsable()) {
             int i = 0;
             for (; i < usableEquipmentsCount; i++) {
@@ -117,13 +126,13 @@ public class MiningRobot extends Robot implements Miner {
             for (; i < usableEquipmentsCount - 1; i++) {
                 usableEquipments[i] = usableEquipments[i + 1];
             }
-            storage[equipmentCount - 1] = null;
+            equipmentStorage[equipmentCount - 1] = null;
             usableEquipmentsCount--;
         }
         for (int i = index + EQUIPMENTS_OFFSET; i < equipmentCount - 1; i++) {
-            storage[i] = storage[i + 1];
+            equipmentStorage[i] = equipmentStorage[i + 1];
         }
-        storage[equipmentCount - 1] = null;
+        equipmentStorage[equipmentCount - 1] = null;
         equipmentCount--;
     }
 
@@ -140,20 +149,25 @@ public class MiningRobot extends Robot implements Miner {
         getUsableEquipments()[index].use(getX(), getY(), getDirection());
     }
 
-    private int[] @NotNull [] getVision(int visibilityRange, int x, int y) {
+    @StudentImplementationRequired
+    private Point[] getVision(int visibilityRange, int x, int y) {
         int fieldCount = 0;
         for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
+            int newX = x + dx;
+            if (newX < 0 || newX >= World.getWidth()) {
+                continue;
+            }
             for (int dy = -visibilityRange; dy <= visibilityRange; dy++) {
-                int newX = x + dx;
+
                 int newY = y + dy;
-                if (newX < 0 || newX >= World.getWidth() || newY < 0 || newY >= World.getHeight()) {
+                if (newY < 0 || newY >= World.getHeight()) {
                     continue;
                 }
                 fieldCount++;
             }
         }
 
-        int[][] visibleFields = new int[fieldCount][2];
+        Point[] points = new Point[fieldCount];
         int index = 0;
 
         for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
@@ -163,30 +177,31 @@ public class MiningRobot extends Robot implements Miner {
                 if (newX < 0 || newX >= World.getWidth() || newY < 0 || newY >= World.getHeight()) {
                     continue;
                 }
-                visibleFields[index][0] = newX;
-                visibleFields[index][1] = newY;
+                points[index] = new Point(newX, newY);
                 index++;
             }
         }
-        return visibleFields;
+        return points;
     }
 
+    @StudentImplementationRequired
     void updateVision(int visibilityRange, int oldX, int oldY, int newX, int newY) {
-        int[][] oldPoints = getVision(visibilityRange, oldX, oldY);
-        int[][] newPoints = getVision(visibilityRange, newX, newY);
-        for (int[] points : oldPoints) {
-            int x = points[0];
-            int y = points[1];
+        Point[] oldPoints = getVision(visibilityRange, oldX, oldY);
+        Point[] newPoints = getVision(visibilityRange, newX, newY);
+        for (Point point : oldPoints) {
+            int x = point.x;
+            int y = point.y;
             if (x == newX && y == newY) {
                 continue;
             }
             WorldUtilities.placeFog(x, y);
         }
-        for (int[] points : newPoints) {
-            WorldUtilities.removeFog(points[0], points[1]);
+        for (Point point : newPoints) {
+            WorldUtilities.removeFog(point.x, point.y);
         }
     }
 
+    @StudentImplementationRequired
     @Override
     public void move() {
         if (isBatteryBroken()) {
@@ -206,6 +221,7 @@ public class MiningRobot extends Robot implements Miner {
         getBattery().reduceDurability(equipmentCount + 2);
     }
 
+    @StudentImplementationRequired
     @Override
     public void mine() {
         Point pointToMineAt = getPointInFront(getX(), getY(), getDirection());
@@ -217,13 +233,15 @@ public class MiningRobot extends Robot implements Miner {
             return;
         }
         if (lootCount >= lootStorage.length) {
-            System.out.println("Inventory is full");
+            System.err.println("Inventory is full");
+            crash();
             return;
         }
         WorldUtilities.mineLoot(objectToMine, tool);
-        boolean gotMinedToCompletion = WorldUtilities.mineLoot(objectToMine, tool);
-        if (gotMinedToCompletion) {
-            lootStorage[lootCount] = objectToMine;
+        Mineable mineable = objectToMine.getMineable();
+        boolean complete = mineable.onMined(tool);
+        if (complete) {
+            lootStorage[lootCount] = objectToMine.getMineable();
             lootCount++;
             WorldUtilities.removeLoot(objectToMine);
         }
@@ -248,6 +266,7 @@ public class MiningRobot extends Robot implements Miner {
         }
     }
 
+    @StudentImplementationRequired
     @Override
     public void handleKeyInput(@Nullable Direction direction, int selection, boolean pickGear, boolean mine, boolean info) {
         if (mine) {
@@ -268,7 +287,7 @@ public class MiningRobot extends Robot implements Miner {
             pickGear();
         }
         if (info) {
-            InfoPopup.showInfo(List.of(Map.entry("Test", 20))); // TODO
+            InfoPopup.showInfo(getLootStorage());
         }
     }
 }

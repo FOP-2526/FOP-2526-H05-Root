@@ -1,9 +1,11 @@
-package h05;
+package h05.entity;
 
 import fopbot.Direction;
 import h05.gear.Battery;
 import h05.gear.Camera;
+import h05.gear.Equipment;
 import h05.gear.Tool;
+import h05.loot.Mineable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
@@ -19,6 +21,9 @@ public interface Miner extends Equipable {
 
     @DoNotTouch
     @Nullable Tool getTool();
+
+    @DoNotTouch
+    Mineable[] getLootStorage();
 
     @DoNotTouch
     default boolean isCameraBroken() {

@@ -1,37 +1,36 @@
 package h05.loot;
 
 import h05.AbstractDurableObject;
-import h05.Mineable;
 import org.jetbrains.annotations.NotNull;
-import org.tudalgo.algoutils.student.annotation.DoNotTouch;
+import org.tudalgo.algoutils.student.annotation.SolutionOnly;
 
-@DoNotTouch
+@SolutionOnly
 public abstract class AbstractMinableEntity extends AbstractDurableObject implements Mineable {
 
-    @DoNotTouch
+    @SolutionOnly
     private final String name;
 
-    @DoNotTouch
+    @SolutionOnly
     private State state;
 
-    @DoNotTouch
+    @SolutionOnly
     public AbstractMinableEntity(String name) {
         this.name = name;
         this.state = State.NOT_MINED;
     }
 
-    @DoNotTouch
+    @SolutionOnly
     @Override
     public @NotNull String getName() {
         return name;
     }
 
-    @DoNotTouch
+    @SolutionOnly
     public @NotNull State getState() {
         return state;
     }
 
-    @DoNotTouch
+    @SolutionOnly
     public void setState(@NotNull State state) {
         this.state = state;
     }

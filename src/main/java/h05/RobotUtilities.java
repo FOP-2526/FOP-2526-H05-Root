@@ -2,10 +2,13 @@ package h05;
 
 import fopbot.FieldEntity;
 import h05.entity.Gear;
+import h05.gear.Equipment;
 import h05.gear.Tool;
+import h05.gear.UsableEquipment;
 import org.jetbrains.annotations.Nullable;
 
 public final class RobotUtilities {
+
     private RobotUtilities() {
     }
 

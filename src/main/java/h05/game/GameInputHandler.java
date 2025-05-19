@@ -1,7 +1,6 @@
-package h05;
+package h05.game;
 
 import fopbot.Direction;
-import fopbot.Key;
 import fopbot.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

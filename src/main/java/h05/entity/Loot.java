@@ -2,7 +2,7 @@ package h05.entity;
 
 import fopbot.Block;
 import fopbot.World;
-import h05.Mineable;
+import h05.loot.Mineable;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 

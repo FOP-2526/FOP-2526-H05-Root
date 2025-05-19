@@ -35,19 +35,20 @@ public class MiningRobot extends Robot implements Miner {
 
     private final @NotNull Equipment[] storage = new Equipment[MAX_EQUIPMENTS + EQUIPMENTS_OFFSET];
     private final @NotNull UsableEquipment[] usableEquipments = new UsableEquipment[MAX_EQUIPMENTS];
-    private int currentInventory;
+    private final Loot[] lootStorage = new Loot[INVENTORY_SIZE];
     private @Nullable Tool tool;
 
 
     private int equipmentCount;
     private int usableEquipmentsCount;
+    private int lootCount;
 
     public MiningRobot(int x, int y) {
         super(x, y);
         storage[0] = new Battery();
         storage[1] = new Camera();
         equipmentCount = EQUIPMENTS_OFFSET;
-        currentInventory = 0;
+        lootCount = 0;
         for (int[] points : getVision(getCamera().getVisibilityRange(), x, y)) {
             WorldUtilities.removeFog(points[0], points[1]);
         }
@@ -84,10 +85,11 @@ public class MiningRobot extends Robot implements Miner {
             tool = getAsTool(equipment);
             if (oldTool != null && !oldTool.getName().equals(tool.getName())) {
                 WorldUtilities.placePrimaryTool(getX(), getY(), oldTool);
+            } else {
+                WorldUtilities.removeTool(getX(), getY());
             }
         } else if (name.equals(getBattery().getName())) {
             storage[0] = equipment;
-            WorldUtilities.placeNewBattery();
         } else if (name.equals(getCamera().getName())) {
             storage[1] = equipment;
         } else if (equipmentCount == storage.length) {
@@ -208,19 +210,23 @@ public class MiningRobot extends Robot implements Miner {
         if (pointToMineAt == null) {
             return;
         }
-
-        AbstractMinableEntity node = WorldUtilities.getNode(pointToMineAt.x, pointToMineAt.y);
-        if (node == null) {
+        var objectToMine = WorldUtilities.getLootAtPoint(pointToMineAt.x, pointToMineAt.y);
+        if (objectToMine == null) {
             return;
         }
-        if (currentInventory >= INVENTORY_SIZE) {
+        if (lootCount >= lootStorage.length) {
             System.out.println("Inventory is full");
             return;
         }
-        var amountMined = node.onMined(tool);
-        var inventoryAfterMining = currentInventory + amountMined;
-        currentInventory = Math.min(inventoryAfterMining, INVENTORY_SIZE);
+        WorldUtilities.mineLoot(objectToMine, tool);
+        boolean gotMinedToCompletion = WorldUtilities.mineLoot(objectToMine, tool);
+        if (gotMinedToCompletion) {
+            lootStorage[lootCount] = objectToMine;
+            lootCount++;
+            WorldUtilities.removeLoot(objectToMine);
+        }
     }
+
 
     @Override
     public boolean isOnGear() {

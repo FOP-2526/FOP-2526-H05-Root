@@ -17,6 +17,7 @@ import h05.ui.InfoPopup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -136,7 +137,7 @@ public class MiningRobot extends Robot implements Miner {
         getUsableEquipments()[index].use(getX(), getY(), getDirection());
     }
 
-    private int[] @NotNull [] getVision(int visibilityRange, int x, int y) {
+    private Point[] getVision(int visibilityRange, int x, int y) {
         int fieldCount = 0;
         for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
             for (int dy = -visibilityRange; dy <= visibilityRange; dy++) {
@@ -149,7 +150,7 @@ public class MiningRobot extends Robot implements Miner {
             }
         }
 
-        int[][] visibleFields = new int[fieldCount][2];
+        Point[] points = new Point[fieldCount];
         int index = 0;
 
         for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
@@ -159,27 +160,26 @@ public class MiningRobot extends Robot implements Miner {
                 if (newX < 0 || newX >= World.getWidth() || newY < 0 || newY >= World.getHeight()) {
                     continue;
                 }
-                visibleFields[index][0] = newX;
-                visibleFields[index][1] = newY;
+                points[index] = new Point(newX, newY);
                 index++;
             }
         }
-        return visibleFields;
+        return points;
     }
 
     void updateVision(int visibilityRange, int oldX, int oldY, int newX, int newY) {
-        int[][] oldPoints = getVision(visibilityRange, oldX, oldY);
-        int[][] newPoints = getVision(visibilityRange, newX, newY);
-        for (int[] points : oldPoints) {
-            int x = points[0];
-            int y = points[1];
+        Point[] oldPoints = getVision(visibilityRange, oldX, oldY);
+        Point[] newPoints = getVision(visibilityRange, newX, newY);
+        for (Point point : oldPoints) {
+            int x = point.x;
+            int y = point.y;
             if (x == newX && y == newY) {
                 continue;
             }
             WorldUtilities.placeFog(x, y);
         }
-        for (int[] points : newPoints) {
-            WorldUtilities.removeFog(points[0], points[1]);
+        for (Point point : newPoints) {
+            WorldUtilities.removeFog(point.x, point.y);
         }
     }
 

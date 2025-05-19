@@ -6,16 +6,15 @@ import h05.Mineable;
 import h05.equipment.Tool;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractMinableEntity extends Block implements Mineable {
-    private State miningState;
+public abstract class AbstractMinableEntity implements Mineable {
     private int durability;
     private final String name;
+    private State miningState;
 
-    public AbstractMinableEntity(int x, int y, String name) {
-        super(x, y);
+    public AbstractMinableEntity(String name) {
         this.name = name;
-        this.miningState = State.NOT_MINED;
         this.durability = 100;
+        this.miningState = State.NOT_MINED;
     }
 
     @Override
@@ -57,8 +56,8 @@ public abstract class AbstractMinableEntity extends Block implements Mineable {
         return miningState;
     }
 
-    public void setMiningState(State miningState) {
-        this.miningState = miningState;
+    public void setState(State state) {
+        this.miningState = state;
     }
 
     public void reduceDurability(int amount) {

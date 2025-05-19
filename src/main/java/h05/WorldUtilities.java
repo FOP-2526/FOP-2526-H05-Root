@@ -1,6 +1,7 @@
 package h05;
 
 import fopbot.Direction;
+import fopbot.Field;
 import fopbot.FieldEntity;
 import fopbot.World;
 import h05.loot.Rock;
@@ -14,6 +15,7 @@ import h05.gear.Pickaxe;
 import h05.gear.Tool;
 
 import java.awt.*;
+import java.util.List;
 import java.util.Random;
 
 public final class WorldUtilities {
@@ -49,7 +51,7 @@ public final class WorldUtilities {
         if (World.getGlobalWorld().getField(x, y).getEntities().isEmpty()) {
             return null;
         }
-        var entity = World.getGlobalWorld().getField(x, y).getEntities().getFirst();
+        FieldEntity entity = World.getGlobalWorld().getField(x, y).getEntities().getFirst();
         if (!(entity instanceof Loot)) {
             return null;
         }
@@ -71,10 +73,10 @@ public final class WorldUtilities {
     }
 
     public static void placeNewBattery() {
-        var fields = World.getGlobalWorld().getFields();
-        var emptyFields = fields.stream().filter(field -> field.getEntities().isEmpty()).toList();
+        List<Field> fields = World.getGlobalWorld().getFields();
+        List<Field> emptyFields = fields.stream().filter(field -> field.getEntities().isEmpty()).toList();
         Random random = new Random();
-        var randomField = emptyFields.isEmpty() ? null : emptyFields.get(random.nextInt(emptyFields.size()));
+        Field randomField = emptyFields.isEmpty() ? null : emptyFields.get(random.nextInt(emptyFields.size()));
         if (randomField == null) {
             return;
         }
@@ -82,7 +84,7 @@ public final class WorldUtilities {
     }
 
     public static void removeTool(int x, int y) {
-        var entity = World.getGlobalWorld().getField(x, y).getEntities().stream().filter(
+        List<FieldEntity> entity = World.getGlobalWorld().getField(x, y).getEntities().stream().filter(
             WorldUtilities::isTool
         ).toList();
         entity.forEach(e -> World.getGlobalWorld().removeEntity(e));
@@ -93,7 +95,7 @@ public final class WorldUtilities {
     }
 
     public static boolean mineLoot(Loot loot, Tool primaryTool) {
-        var mineable = loot.getMineable();
+        Mineable mineable = loot.getMineable();
         switch (primaryTool) {
             case null -> mineable.reduceDurability(5);
             case Axe axe when mineable instanceof Tree -> mineable.reduceDurability(10);
@@ -102,7 +104,7 @@ public final class WorldUtilities {
                 mineable.reduceDurability(5);
             }
         }
-        var durability = mineable.getDurability();
+        int durability = mineable.getDurability();
         if (durability < 100 && durability > 50) {
             mineable.setState(Mineable.State.HALF_MINED);
         } else if (durability <= 50 && durability > 0) {

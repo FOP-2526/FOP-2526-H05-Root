@@ -41,7 +41,7 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
     @DoNotTouch
     @Override
     protected Image getCurrentDrawingImage(Gear entity) {
-        var equipment = entity.getEquipment();
+        Equipment equipment = entity.getEquipment();
         int index;
         Class<? extends Equipment> clazz = equipment.getClass();
         int numberOfConditions = Equipment.Condition.values().length;

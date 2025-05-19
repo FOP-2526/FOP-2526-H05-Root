@@ -111,7 +111,7 @@ public class GameInputHandler {
     }
 
     public boolean isMine() {
-        var isMine = mine.get();
+        boolean isMine = mine.get();
         if (isMine) {
             this.mine.set(false);
         }
@@ -119,7 +119,7 @@ public class GameInputHandler {
     }
 
     public boolean isInfo() {
-        var isInfo = info.get();
+        boolean isInfo = info.get();
         if (isInfo) {
             this.info.set(false);
         }

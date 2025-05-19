@@ -7,6 +7,7 @@ import fopbot.FieldEntity;
 import fopbot.PaintUtils;
 import h05.Equipment;
 import h05.entity.MiningRobot;
+import h05.gear.Tool;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.awt.Graphics;
@@ -66,11 +67,28 @@ public class MineBotDrawing implements Drawable<MiningRobot> {
         };
         final Image batteryImage = loadEquipmentImage(robot.getBattery(), context, rotationDegrees - 90);
         g2d.drawImage(batteryImage, (int) x, (int) y, (int) equipmentSize, (int) equipmentSize, null);
+
+        // Draw overlay tool
+        x = switch (robot.getDirection()) {
+            case UP, RIGHT -> {
+                y = scaledY;
+                yield scaledX + robotSize - equipmentSize;
+            }
+            case DOWN, LEFT -> {
+                y = scaledY + robotSize - equipmentSize;
+                yield scaledX;
+            }
+        };
+        Tool tool = robot.getTool();
+        if (tool != null) {
+            final Image toolImage = loadEquipmentImage(tool, context, 0);
+            g2d.drawImage(toolImage, (int) x, (int) y, (int) equipmentSize, (int) equipmentSize, null);
+        }
     }
 
     @DoNotTouch
-    private Image loadEquipmentImage(Equipment equipment, DrawingContext<? extends FieldEntity> context, int rotationDegrees) {
-        String path = equipment.getName() + "_" + equipment.getCondition().name().toLowerCase() + ".svg";
+    private Image loadEquipmentImage(Equipment equipment, DrawingContext<? extends MiningRobot> context, int rotationDegrees) {
+        String path = equipment.getName() + (equipment instanceof Tool ? "" : "_" + equipment.getCondition().name().toLowerCase()) + ".svg";
         return PaintUtils.loadFieldImage(Thread.currentThread().getContextClassLoader().getResourceAsStream(path), rotationDegrees, (int) scale(EQUIPMENT_SIZE_SCALE, context));
     }
 }

@@ -17,6 +17,7 @@ import h05.ui.InfoPopup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
@@ -139,7 +140,7 @@ public class MiningRobot extends Robot implements Miner {
         getUsableEquipments()[index].use(getX(), getY(), getDirection());
     }
 
-    private Point[] getVision(int visibilityRange, int x, int y) {
+    private int[] @NotNull [] getVision(int visibilityRange, int x, int y) {
         int fieldCount = 0;
         for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
             for (int dy = -visibilityRange; dy <= visibilityRange; dy++) {
@@ -152,7 +153,7 @@ public class MiningRobot extends Robot implements Miner {
             }
         }
 
-        Point[] points = new Point[fieldCount];
+        int[][] visibleFields = new int[fieldCount][2];
         int index = 0;
 
         for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
@@ -162,26 +163,27 @@ public class MiningRobot extends Robot implements Miner {
                 if (newX < 0 || newX >= World.getWidth() || newY < 0 || newY >= World.getHeight()) {
                     continue;
                 }
-                points[index] = new Point(newX, newY);
+                visibleFields[index][0] = newX;
+                visibleFields[index][1] = newY;
                 index++;
             }
         }
-        return points;
+        return visibleFields;
     }
 
     void updateVision(int visibilityRange, int oldX, int oldY, int newX, int newY) {
-        Point[] oldPoints = getVision(visibilityRange, oldX, oldY);
-        Point[] newPoints = getVision(visibilityRange, newX, newY);
-        for (Point point : oldPoints) {
-            int x = point.x;
-            int y = point.y;
+        int[][] oldPoints = getVision(visibilityRange, oldX, oldY);
+        int[][] newPoints = getVision(visibilityRange, newX, newY);
+        for (int[] points : oldPoints) {
+            int x = points[0];
+            int y = points[1];
             if (x == newX && y == newY) {
                 continue;
             }
             WorldUtilities.placeFog(x, y);
         }
-        for (Point point : newPoints) {
-            WorldUtilities.removeFog(point.x, point.y);
+        for (int[] points : newPoints) {
+            WorldUtilities.removeFog(points[0], points[1]);
         }
     }
 
@@ -206,11 +208,11 @@ public class MiningRobot extends Robot implements Miner {
 
     @Override
     public void mine() {
-        var pointToMineAt = getPointInFront(getX(), getY(), getDirection());
+        Point pointToMineAt = getPointInFront(getX(), getY(), getDirection());
         if (pointToMineAt == null) {
             return;
         }
-        var objectToMine = WorldUtilities.getLootAtPoint(pointToMineAt.x, pointToMineAt.y);
+        Loot objectToMine = WorldUtilities.getLootAtPoint(pointToMineAt.x, pointToMineAt.y);
         if (objectToMine == null) {
             return;
         }
@@ -239,7 +241,7 @@ public class MiningRobot extends Robot implements Miner {
         for (FieldEntity entity : WorldUtilities.getEntities(getX(), getY())) {
             if (WorldUtilities.isGear(entity)) {
                 world.removeEntity(entity);
-                var gear = getAsGear(entity);
+                Gear gear = getAsGear(entity);
                 equip(gear.getEquipment());
                 return;
             }

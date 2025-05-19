@@ -1,8 +1,6 @@
 package h05;
 
 import fopbot.*;
-import h05.AbstractMinableEntity.AbstractMinableEntity;
-import h05.AbstractMinableEntity.Rock;
 import h05.AbstractMinableEntity.Tree;
 import h05.entity.Fog;
 import h05.entity.Gear;
@@ -20,12 +18,7 @@ import h05.ui.MineBotDrawing;
 import h05.ui.WallFogDrawing;
 
 import java.awt.Point;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class GameLoop {
 
@@ -98,68 +91,31 @@ public class GameLoop {
         World.getGlobalWorld().placeEntity(new Gear(0, 1, new Axe()));
         World.getGlobalWorld().placeEntity(new Loot(3, 4, new Tree()));
         WorldUtilities.placeNewBattery();
-
-        World.placeHorizontalWall(0, 1);
-        World.placeHorizontalWall(0, 2);
-        World.placeHorizontalWall(0, 3);
-        World.placeHorizontalWall(0, 4);
-        World.placeHorizontalWall(0, 5);
-        World.placeHorizontalWall(0, 6);
-        World.placeHorizontalWall(0, 7);
-        World.placeHorizontalWall(0, 8);
-        World.placeHorizontalWall(0, 9);
-        World.placeHorizontalWall(1, 3);
-        World.placeHorizontalWall(1, 4);
-        World.placeHorizontalWall(1, 5);
-        World.placeHorizontalWall(1, 6);
-        World.placeHorizontalWall(1, 7);
-        World.placeHorizontalWall(2, 0);
-        World.placeHorizontalWall(2, 1);
-        World.placeHorizontalWall(2, 2);
-        World.placeHorizontalWall(2, 3);
-        World.placeHorizontalWall(2, 4);
-        World.placeHorizontalWall(2, 5);
-        World.placeHorizontalWall(2, 6);
-        World.placeHorizontalWall(2, 7);
-        World.placeHorizontalWall(2, 8);
-        World.placeHorizontalWall(2, 9);
-        World.placeHorizontalWall(3, 1);
-        World.placeHorizontalWall(3, 3);
-        World.placeHorizontalWall(3, 4);
-        World.placeHorizontalWall(3, 6);
-        World.placeHorizontalWall(4, 0);
-        World.placeHorizontalWall(4, 1);
-        World.placeHorizontalWall(4, 2);
-        World.placeHorizontalWall(4, 3);
-        World.placeHorizontalWall(4, 4);
-        World.placeHorizontalWall(4, 5);
-        World.placeHorizontalWall(4, 6);
-        World.placeHorizontalWall(4, 7);
-        World.placeHorizontalWall(4, 8);
-        World.placeHorizontalWall(4, 9);
-
-        World.placeVerticalWall(1, 1);
-        World.placeVerticalWall(2, 0);
-        World.placeVerticalWall(2, 1);
-        World.placeVerticalWall(2, 2);
-        World.placeVerticalWall(3, 1);
-        World.placeVerticalWall(3, 3);
-        World.placeVerticalWall(4, 2);
-        World.placeVerticalWall(4, 4);
-        World.placeVerticalWall(5, 0);
-        World.placeVerticalWall(5, 1);
-        World.placeVerticalWall(5, 2);
-        World.placeVerticalWall(5, 3);
-        World.placeVerticalWall(5, 4);
-        World.placeVerticalWall(6, 1);
-        World.placeVerticalWall(6, 3);
-        World.placeVerticalWall(7, 2);
-        World.placeVerticalWall(7, 4);
-        World.placeVerticalWall(8, 0);
-        World.placeVerticalWall(8, 1);
-        World.placeVerticalWall(8, 2);
-        World.placeVerticalWall(8, 3);
-        World.placeVerticalWall(8, 4);
+        generateMaze(width, height);
+    }
+    protected void generateMaze(int width, int height) {
+        for (int x = 0; x < width; x++) {
+            World.placeHorizontalWall(x, 0);
+            World.placeHorizontalWall(x, height - 1);
+        }
+        for (int y = 0; y < height; y++) {
+            World.placeVerticalWall(0, y);
+            World.placeVerticalWall(width - 1, y);
+        }
+        for (int x = 2; x < width; x += 4) {
+            for (int y = 1; y < height; y++) {
+                if (y % 2 == 1) {
+                    World.placeVerticalWall(x, y);
+                }
+            }
+        }
+        for (int y = 2; y < height; y += 4) {
+            for (int x = 1; x < width; x++) {
+                if (x % 2 == 1) {
+                    World.placeHorizontalWall(x, y);
+                }
+            }
+        }
     }
 
     protected void setupRobots() {

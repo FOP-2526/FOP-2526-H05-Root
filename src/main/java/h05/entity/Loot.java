@@ -1,10 +1,10 @@
 package h05.entity;
 
-import fopbot.FieldEntity;
+import fopbot.Block;
 import fopbot.World;
 import h05.Mineable;
 
-public class Loot extends FieldEntity {
+public class Loot extends Block {
 
     private final Mineable mineable;
 

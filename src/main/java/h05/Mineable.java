@@ -4,8 +4,9 @@ public interface Mineable extends Durable {
 
     String getName();
 
-     State getState();
+    State getState();
 
+    void setState(State state);
 
     enum State {
         NOT_MINED,

@@ -1,10 +1,6 @@
 package h05;
 
-import fopbot.DrawingRegistry;
-import fopbot.FieldEntity;
-import fopbot.Robot;
-import fopbot.Wall;
-import fopbot.World;
+import fopbot.*;
 import h05.AbstractMinableEntity.AbstractMinableEntity;
 import h05.AbstractMinableEntity.Rock;
 import h05.AbstractMinableEntity.Tree;
@@ -21,7 +17,6 @@ import h05.ui.FogDrawing;
 import h05.ui.GearDrawing;
 import h05.ui.LootDrawing;
 import h05.ui.MineBotDrawing;
-import h05.ui.NodeDrawing;
 import h05.ui.WallFogDrawing;
 
 import java.awt.Point;
@@ -73,7 +68,6 @@ public class GameLoop {
             case Loot l -> 1;
             case Robot c -> 2;
             case Fog fog -> 3;
-            case AbstractMinableEntity node -> 0;
             default -> -1;
         };
     }
@@ -89,9 +83,7 @@ public class GameLoop {
                     Map.entry(Gear.class, new GearDrawing()),
                     Map.entry(Loot.class, new LootDrawing()),
                     Map.entry(MiningRobot.class, new MineBotDrawing()),
-                    Map.entry(Fog.class, new FogDrawing()),
-                    Map.entry(Tree.class, new NodeDrawing()),
-                    Map.entry(Rock.class, new NodeDrawing())
+                    Map.entry(Fog.class, new FogDrawing())
                 ))
                 .build(Comparator.comparingInt(this::getDrawingPriority))
         );
@@ -104,7 +96,7 @@ public class GameLoop {
         World.getGlobalWorld().placeEntity(new Gear(4, 3, new Camera()));
         World.getGlobalWorld().placeEntity(new Gear(1, 0, new Pickaxe()));
         World.getGlobalWorld().placeEntity(new Gear(0, 1, new Axe()));
-        World.getGlobalWorld().placeEntity(new Tree(3,4));
+        World.getGlobalWorld().placeEntity(new Loot(3, 4, new Tree()));
         WorldUtilities.placeNewBattery();
 
         World.placeHorizontalWall(0, 1);
@@ -168,7 +160,6 @@ public class GameLoop {
         World.placeVerticalWall(8, 2);
         World.placeVerticalWall(8, 3);
         World.placeVerticalWall(8, 4);
-
     }
 
     protected void setupRobots() {

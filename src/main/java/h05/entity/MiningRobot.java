@@ -29,7 +29,7 @@ public class MiningRobot extends Robot implements Miner {
     private static final int INVENTORY_SIZE = 6;
 
     private final Equipment[] equipmentStorage = new Equipment[MAX_EQUIPMENTS + EQUIPMENTS_OFFSET];
-    private final AbstractMinableEntity[] lootStorage = new AbstractMinableEntity[INVENTORY_SIZE];
+    private final Loot[] lootStorage = new Loot[INVENTORY_SIZE];
     private final UsableEquipment[] usableEquipments = new UsableEquipment[MAX_EQUIPMENTS];
     private Tool primaryTool;
 
@@ -70,7 +70,7 @@ public class MiningRobot extends Robot implements Miner {
     @Override
     public void equip(Equipment equipment) {
         String name = equipment.getName();
-        if (name.equals("pickaxe") || name.equals("axe")) {
+        if (name.equals("Pickaxe") || name.equals("Axe")) {
             var oldPrimaryTool = primaryTool;
             primaryTool = getAsTool(equipment);
             if (oldPrimaryTool != null && !oldPrimaryTool.getName().equals(primaryTool.getName())) {
@@ -216,7 +216,7 @@ public class MiningRobot extends Robot implements Miner {
         if (pointToMineAt == null) {
             return;
         }
-        AbstractMinableEntity objectToMine = WorldUtilities.getMinableEntity(pointToMineAt.x, pointToMineAt.y);
+        var objectToMine = WorldUtilities.getLootAtPoint(pointToMineAt.x, pointToMineAt.y);
         if (objectToMine == null) {
             return;
         }
@@ -224,10 +224,12 @@ public class MiningRobot extends Robot implements Miner {
             System.out.println("Inventory is full");
             return;
         }
-        boolean gotMinedToCompletion = WorldUtilities.mineEntity(objectToMine, primaryTool);
+        WorldUtilities.mineLoot(objectToMine, primaryTool);
+        boolean gotMinedToCompletion = WorldUtilities.mineLoot(objectToMine, primaryTool);
         if (gotMinedToCompletion) {
             lootStorage[lootCount] = objectToMine;
-            WorldUtilities.removeMinedEntity(objectToMine);
+            lootCount++;
+            WorldUtilities.removeLoot(objectToMine);
         }
     }
 

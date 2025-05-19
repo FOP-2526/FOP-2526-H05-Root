@@ -7,15 +7,14 @@ import h05.AbstractMinableEntity.Rock;
 import h05.AbstractMinableEntity.Tree;
 import h05.entity.Fog;
 import h05.entity.Gear;
+import h05.entity.Loot;
 import h05.equipment.Axe;
 import h05.equipment.Battery;
 import h05.equipment.Pickaxe;
 import h05.equipment.Tool;
-import h05.AbstractMinableEntity.AbstractMinableEntity;
 
 import java.awt.*;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public final class WorldUtilities {
 
@@ -46,15 +45,15 @@ public final class WorldUtilities {
         return World.getGlobalWorld().getField(x, y).getEntities().toArray(FieldEntity[]::new);
     }
 
-    public static AbstractMinableEntity getMinableEntity(int x, int y) {
+    public static Loot getLootAtPoint(int x, int y) {
         if (World.getGlobalWorld().getField(x, y).getEntities().isEmpty()) {
             return null;
         }
         var entity = World.getGlobalWorld().getField(x, y).getEntities().getFirst();
-        if (!(entity instanceof AbstractMinableEntity)) {
+        if (!(entity instanceof Loot)) {
             return null;
         }
-        return (AbstractMinableEntity) entity;
+        return (Loot) entity;
     }
 
     public static void placePrimaryTool(int x, int y, Tool primaryTool) {
@@ -89,23 +88,25 @@ public final class WorldUtilities {
         entity.forEach(e -> World.getGlobalWorld().removeEntity(e));
     }
 
-    public static void removeMinedEntity(FieldEntity entity) {
+    public static void removeLoot(Loot entity) {
         World.getGlobalWorld().removeEntity(entity);
     }
 
-    public static boolean mineEntity(AbstractMinableEntity entity, Tool primaryTool) {
+    public static boolean mineLoot(Loot loot, Tool primaryTool) {
+        var mineable = loot.getMineable();
         switch (primaryTool) {
-            case Axe axe when entity instanceof Tree -> entity.reduceDurability(10);
-            case Pickaxe pickaxe when entity instanceof Rock -> entity.reduceDurability(10);
+            case null -> mineable.reduceDurability(5);
+            case Axe axe when mineable instanceof Tree -> mineable.reduceDurability(10);
+            case Pickaxe pickaxe when mineable instanceof Rock -> mineable.reduceDurability(10);
             default -> {
-                entity.reduceDurability(5);
+                mineable.reduceDurability(5);
             }
         }
-        var durability = entity.getDurability();
+        var durability = mineable.getDurability();
         if (durability < 100 && durability > 50) {
-            entity.setMiningState(Mineable.State.HALF_MINED);
+            mineable.setState(Mineable.State.HALF_MINED);
         } else if (durability <= 50 && durability > 0) {
-            entity.setMiningState(Mineable.State.FULLY_MINED);
+            mineable.setState(Mineable.State.FULLY_MINED);
         }
         World.getGlobalWorld().getGuiPanel().repaint();
         return durability <= 0;

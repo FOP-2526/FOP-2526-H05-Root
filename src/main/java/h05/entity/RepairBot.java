@@ -2,6 +2,7 @@ package h05.entity;
 
 import fopbot.FieldEntity;
 import fopbot.Robot;
+import fopbot.RobotFamily;
 import fopbot.World;
 import h05.Equipment;
 import h05.Repairer;
@@ -18,6 +19,7 @@ public class RepairBot extends Robot implements Repairer {
 
     public RepairBot(int x, int y, int radius) {
         super(x, y);
+        this.setRobotFamily(RobotFamily.SQUARE_RED);
         this.radius = radius;
     }
 

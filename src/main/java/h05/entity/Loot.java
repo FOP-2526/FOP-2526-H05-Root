@@ -1,7 +1,6 @@
 package h05.entity;
 
 import fopbot.Block;
-import fopbot.World;
 import h05.loot.Mineable;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
@@ -23,7 +22,6 @@ public class Loot extends Block {
     public Loot(int x, int y, @NotNull Mineable mineable) {
         super(x, y);
         this.mineable = mineable;
-        World.getGlobalWorld().placeEntity(this);
     }
 
     @DoNotTouch

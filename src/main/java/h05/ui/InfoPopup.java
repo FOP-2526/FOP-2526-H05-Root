@@ -1,12 +1,10 @@
 package h05.ui;
 
 import fopbot.World;
-import h05.loot.Mineable;
+import h05.loot.Inventory;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.awt.BorderLayout;
-import java.util.List;
-import java.util.Map;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -17,19 +15,15 @@ import javax.swing.table.DefaultTableModel;
 public class InfoPopup extends JDialog {
 
     @DoNotTouch
-    private final String[] columnNames = {"Name", "Mined"};
+    private final String[] columnNames = {"Name", "Amount"};
 
     @DoNotTouch
     private final Object[][] data;
 
     @DoNotTouch
-    public InfoPopup(JFrame parent, List<Map.Entry<String, Integer>> data) {
+    public InfoPopup(JFrame parent, Object[][] data) {
         super(parent, "Mining info", true);
-        this.data = data.stream().map(entry -> new Object[]{
-                entry.getKey(),
-                entry.getValue()
-        }).toArray(Object[][]::new);
-
+        this.data = data;
         DefaultTableModel tableModel = new DefaultTableModel(this.data, columnNames);
         JTable table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
@@ -37,18 +31,16 @@ public class InfoPopup extends JDialog {
     }
 
     @DoNotTouch
-    public static void showInfo(List<Map.Entry<String, Integer>> data) {
+    public static void showInfo(Inventory inventory) {
+        Object[][] data = new Object[inventory.size()][2];
+        String[] names = inventory.getNames();
+        for (int i = 0; i < inventory.size(); i++) {
+            data[i][0] = names[i];
+            data[i][1] = inventory.getAmount(names[i]);
+        }
         JFrame parent = World.getGlobalWorld().getGuiFrame();
-        InfoPopup infoPopup = new InfoPopup(parent, data);
-        infoPopup.setSize(300, 200);
-        infoPopup.setLocationRelativeTo(parent);
-        infoPopup.setVisible(true);
-    }
 
-    public static void showInfo(Mineable[] mineables){
-        JFrame parent = World.getGlobalWorld().getGuiFrame();
-        // TODO GROUP MINEABLES BY NAME
-        InfoPopup infoPopup = new InfoPopup(parent, List.of());
+        InfoPopup infoPopup = new InfoPopup(parent, data);
         infoPopup.setSize(300, 200);
         infoPopup.setLocationRelativeTo(parent);
         infoPopup.setVisible(true);

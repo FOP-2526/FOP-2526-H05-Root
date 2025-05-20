@@ -32,10 +32,12 @@ public class WallBreaker extends AbstractEquipment implements UsableEquipment {
             return;
         }
         boolean isHorizontal = direction == Direction.UP || direction == Direction.DOWN;
-        Wall wall = WorldUtilities.getWallAtPoint(removeX, removeY);
-        if (wall != null && wall.isHorizontal() == isHorizontal) {
-            World.getGlobalWorld().removeEntity(wall);
-            reduceDurability(100);
+        Wall[] walls = WorldUtilities.getWallsAtPoint(removeX, removeY);
+        for (Wall wall : walls) {
+            if (wall.isHorizontal() == isHorizontal) {
+                World.getGlobalWorld().removeEntity(wall);
+                reduceDurability(100);
+            }
         }
     }
 }

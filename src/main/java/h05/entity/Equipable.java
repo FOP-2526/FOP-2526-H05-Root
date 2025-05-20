@@ -9,13 +9,12 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 public interface Equipable {
 
     @DoNotTouch
-    Equipment[] getEquipmentStorage();
+    Equipment[] getEquipments();
+
+    int getNumberOfEquipments();
 
     @DoNotTouch
     UsableEquipment[] getUsableEquipments();
-
-    @DoNotTouch
-    int getEquipmentCount();
 
     @DoNotTouch
     void useEquipment(int index);

@@ -1,25 +1,19 @@
 package h05;
 
-import fopbot.Direction;
 import fopbot.Field;
-import fopbot.FieldEntity;
+import fopbot.KarelWorld;
 import fopbot.Wall;
 import fopbot.World;
 import h05.entity.Fog;
 import h05.entity.Gear;
 import h05.entity.Loot;
 import h05.entity.Miner;
-import h05.gear.Axe;
 import h05.gear.Battery;
-import h05.gear.Pickaxe;
 import h05.gear.Tool;
-import h05.loot.Mineable;
-import h05.loot.Rock;
-import h05.loot.Tree;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.tudalgo.algoutils.student.annotation.SolutionOnly;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
-import java.awt.Point;
 import java.util.List;
 import java.util.Random;
 
@@ -36,58 +30,50 @@ public final class WorldUtilities {
         World.getGlobalWorld().placeEntity(new Fog(x, y));
     }
 
-    public static boolean isOnGear(int x, int y) {
-        return World.getGlobalWorld().getField(x, y).contains(Gear.class);
+    private static <E> @Nullable E getEntityAt(int x, int y, Class<E> clazz) {
+        return World.getGlobalWorld().getField(x, y).getEntities()
+            .stream()
+            .filter(clazz::isInstance)
+            .map(clazz::cast)
+            .findFirst()
+            .orElse(null);
     }
 
-    public static boolean isGear(FieldEntity entity) {
-        return entity instanceof Gear;
+    @DoNotTouch
+    public static @Nullable Miner getMinerAt(int x, int y) {
+        return getEntityAt(x, y, Miner.class);
     }
 
-    public static boolean isTool(FieldEntity entity) {
-        return entity instanceof Gear && ((Gear) entity).getEquipment() instanceof Tool;
+    @DoNotTouch
+    public static Loot getLootAt(int x, int y) {
+        return getEntityAt(x, y, Loot.class);
     }
 
-    public static FieldEntity[] getEntities(int x, int y) {
-        return World.getGlobalWorld().getField(x, y).getEntities().toArray(FieldEntity[]::new);
+    @DoNotTouch
+    public static Wall[] getWallsAtPoint(int x, int y) {
+        return World.getGlobalWorld().getField(x, y).getEntities()
+            .stream()
+            .filter(Wall.class::isInstance)
+            .map(Wall.class::cast)
+            .toArray(Wall[]::new);
     }
 
-    public static Loot getLootAtPoint(int x, int y) {
-        if (World.getGlobalWorld().getField(x, y).getEntities().isEmpty()) {
-            return null;
-        }
-        FieldEntity entity = World.getGlobalWorld().getField(x, y).getEntities().getFirst();
-        if (!(entity instanceof Loot)) {
-            return null;
-        }
-        return (Loot) entity;
-    }
-
-    public static @Nullable Wall getWallAtPoint(int x, int y) {
-        return (Wall) World.getGlobalWorld().getField(x, y).getEntities().stream().filter(
-            Wall.class::isInstance).findFirst().orElse(null);
-    }
-
-    public static @Nullable Miner getMinerAtPoint(int x, int y) {
-        return (Miner) World.getGlobalWorld().getField(x, y).getEntities().stream().filter(
-            Miner.class::isInstance).findFirst().orElse(null);
-    }
-
-    public static void placePrimaryTool(int x, int y, Tool primaryTool) {
+    @DoNotTouch
+    public static void placePrimaryTool(int x, int y, @NotNull Tool primaryTool) {
         removeTool(x, y);
         World.getGlobalWorld().placeEntity(new Gear(x, y, primaryTool));
     }
 
-    @SolutionOnly
-    public static Point getPointInFront(int x, int y, Direction dir) {
-        int newX = x + dir.getDx();
-        int newY = y + dir.getDy();
-        if (newX < 0 || newX >= World.getWidth() || newY < 0 || newY >= World.getHeight()) {
-            return null;
-        }
-        return new Point(newX, newY);
+    @DoNotTouch
+    public static void removeTool(int x, int y) {
+        KarelWorld world = World.getGlobalWorld();
+        world.getField(x, y).getEntities()
+            .stream()
+            .filter(Tool.class::isInstance)
+            .forEach(world::removeEntity);
     }
 
+    @DoNotTouch
     public static void placeNewBattery() {
         List<Field> fields = World.getGlobalWorld().getFields();
         List<Field> emptyFields = fields.stream().filter(field -> field.getEntities().isEmpty()).toList();
@@ -99,34 +85,8 @@ public final class WorldUtilities {
         World.getGlobalWorld().placeEntity(new Gear(randomField.getX(), randomField.getY(), new Battery()));
     }
 
-    public static void removeTool(int x, int y) {
-        List<FieldEntity> entity = World.getGlobalWorld().getField(x, y).getEntities().stream().filter(
-            WorldUtilities::isTool
-        ).toList();
-        entity.forEach(e -> World.getGlobalWorld().removeEntity(e));
-    }
-
+    @DoNotTouch
     public static void removeLoot(Loot entity) {
         World.getGlobalWorld().removeEntity(entity);
-    }
-
-    public static boolean mineLoot(Loot loot, Tool primaryTool) {
-        Mineable mineable = loot.getMineable();
-        switch (primaryTool) {
-            case null -> mineable.reduceDurability(5);
-            case Axe axe when mineable instanceof Tree -> mineable.reduceDurability(10);
-            case Pickaxe pickaxe when mineable instanceof Rock -> mineable.reduceDurability(10);
-            default -> {
-                mineable.reduceDurability(5);
-            }
-        }
-        int durability = mineable.getDurability();
-        if (durability < 100 && durability > 50) {
-            mineable.setState(Mineable.State.HALF_MINED);
-        } else if (durability <= 50 && durability > 0) {
-            mineable.setState(Mineable.State.FULLY_MINED);
-        }
-        World.getGlobalWorld().getGuiPanel().repaint();
-        return durability <= 0;
     }
 }

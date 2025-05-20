@@ -5,7 +5,7 @@ import h05.gear.Battery;
 import h05.gear.Camera;
 import h05.gear.Equipment;
 import h05.gear.Tool;
-import h05.loot.Mineable;
+import h05.loot.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
@@ -14,16 +14,16 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 public interface Miner extends Equipable {
 
     @DoNotTouch
-    @NotNull Camera getCamera();
+    @NotNull Battery getBattery();
 
     @DoNotTouch
-    @NotNull Battery getBattery();
+    @NotNull Camera getCamera();
 
     @DoNotTouch
     @Nullable Tool getTool();
 
     @DoNotTouch
-    Mineable[] getLootStorage();
+    @NotNull Inventory getInventory();
 
     @DoNotTouch
     default boolean isCameraBroken() {
@@ -37,9 +37,6 @@ public interface Miner extends Equipable {
 
     @DoNotTouch
     void mine();
-
-    @DoNotTouch
-    boolean isOnGear();
 
     @DoNotTouch
     void pickGear();

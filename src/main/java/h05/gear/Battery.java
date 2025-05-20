@@ -19,8 +19,7 @@ public class Battery extends AbstractUpgradeableEquipment {
     public void attach(@NotNull AttachableEquipment upgrade) {
         super.attach(upgrade);
         if (upgrade.getName().equals("Powerbank")) {
-            // ToDO: Do not expose cast
-            Powerbank powerbank = (Powerbank) upgrade;
+            Powerbank powerbank = EquipmentUtilities.getAsPowerbank(upgrade);
             setDurability(getDurability() + powerbank.getCapacity());
         }
     }
@@ -30,8 +29,7 @@ public class Battery extends AbstractUpgradeableEquipment {
     public void detach(@NotNull AttachableEquipment upgrade) {
         super.detach(upgrade);
         if (upgrade.getName().equals("Powerbank")) {
-            // TODO: Do not expose cast
-            Powerbank powerbank = (Powerbank) upgrade;
+            Powerbank powerbank = EquipmentUtilities.getAsPowerbank(upgrade);
             setDurability(Math.min(0, getDurability() - powerbank.getCapacity()));
         }
     }
@@ -42,8 +40,7 @@ public class Battery extends AbstractUpgradeableEquipment {
         super.reduceDurability(amount);
         for (AttachableEquipment upgrade : getUpgrades()) {
             if (upgrade.getName().equals("Powerbank")) {
-                // TODO: Do not expose cast
-                Powerbank powerbank = (Powerbank) upgrade;
+                Powerbank powerbank = EquipmentUtilities.getAsPowerbank(upgrade);
                 if (powerbank.getCondition() == Condition.BROKEN) {
                     continue;
                 }

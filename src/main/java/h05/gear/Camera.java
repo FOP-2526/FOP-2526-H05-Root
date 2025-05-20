@@ -41,9 +41,8 @@ public class Camera extends AbstractUpgradeableEquipment {
     public void attach(@NotNull AttachableEquipment upgrade) {
         super.attach(upgrade);
         if (upgrade.getName().equals("TelephotoLens")) {
-            // TODO: Do not expose cast
-            TelephotoLens lense = (TelephotoLens) upgrade;
-            setVisibilityRange(getVisibilityRange() + lense.getRangeEnhancement());
+            TelephotoLens lens = EquipmentUtilities.getAsTelephotoLens(upgrade);
+            setVisibilityRange(getVisibilityRange() + lens.getRangeEnhancement());
         }
     }
 
@@ -51,9 +50,8 @@ public class Camera extends AbstractUpgradeableEquipment {
     public void detach(@NotNull AttachableEquipment upgrade) {
         super.detach(upgrade);
         if (upgrade.getName().equals("TelephotoLens")) {
-            // TODO: Do not expose cast
-            TelephotoLens lense = (TelephotoLens) upgrade;
-            setVisibilityRange(getVisibilityRange() - lense.getRangeEnhancement());
+            TelephotoLens lens = EquipmentUtilities.getAsTelephotoLens(upgrade);
+            setVisibilityRange(getVisibilityRange() - lens.getRangeEnhancement());
         }
     }
 
@@ -62,16 +60,15 @@ public class Camera extends AbstractUpgradeableEquipment {
         super.reduceDurability(amount);
         for (AttachableEquipment upgrade : getUpgrades()) {
             if (upgrade.getName().equals("TelephotoLens")) {
-                // TODO: Do not expose cast
-                TelephotoLens lense = (TelephotoLens) upgrade;
-                if (lense.getCondition() == Condition.BROKEN) {
+                TelephotoLens lens = EquipmentUtilities.getAsTelephotoLens(upgrade);
+                if (lens.getCondition() == Condition.BROKEN) {
                     continue;
                 }
-                int range = lense.getRangeEnhancement();
-                if (lense.getDurability() <= range) {
+                int range = lens.getRangeEnhancement();
+                if (lens.getDurability() <= range) {
                     visibilityRange -= range;
                 }
-                lense.reduceDurability(range);
+                lens.reduceDurability(range);
             }
         }
     }

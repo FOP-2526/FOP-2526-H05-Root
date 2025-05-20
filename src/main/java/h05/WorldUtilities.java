@@ -77,6 +77,7 @@ public final class WorldUtilities {
     public static void placeNewBattery() {
         List<Field> fields = World.getGlobalWorld().getFields();
         List<Field> emptyFields = fields.stream().filter(field -> field.getEntities().isEmpty()).toList();
+        // TODO: Global random constant for testing
         Random random = new Random();
         Field randomField = emptyFields.isEmpty() ? null : emptyFields.get(random.nextInt(emptyFields.size()));
         if (randomField == null) {

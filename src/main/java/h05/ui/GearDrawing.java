@@ -9,6 +9,7 @@ import h05.gear.Axe;
 import h05.gear.Battery;
 import h05.gear.Camera;
 import h05.gear.Pickaxe;
+import h05.gear.TelephotoLens;
 import h05.gear.Tool;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
@@ -22,9 +23,11 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
     @DoNotTouch
     public static final List<Class<? extends Equipment>> AVAILABLE_EQUIPMENTS = List.of(
         Battery.class,
-        Camera.class
+        Camera.class,
+        TelephotoLens.class
         //Powerbank.class,
-        //TelephotoLens.class
+        //MiningDetector.class,
+        //WallBreaker.class
     );
 
     @DoNotTouch

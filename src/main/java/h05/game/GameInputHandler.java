@@ -60,6 +60,8 @@ public class GameInputHandler {
 
     protected void updateKeysPressed() {
         Set<Integer> keysPressed = World.getGlobalWorld().getInputHandler().getKeysPressed();
+        // TODO: Bug for InfoPopup
+        System.out.println("Keys pressed: " + keysPressed);
         this.info.set(keysPressed.contains(KeyEvent.VK_I));
         this.mine.set(keysPressed.contains(KeyEvent.VK_SPACE));
         this.pickGear.set(keysPressed.contains(KeyEvent.VK_E));

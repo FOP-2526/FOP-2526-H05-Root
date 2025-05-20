@@ -5,6 +5,8 @@ import fopbot.World;
 import h05.WorldUtilities;
 import h05.gear.Tool;
 import h05.loot.Mineable;
+import h05.loot.Rock;
+import h05.loot.Tree;
 import h05.ui.InfoPopup;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
@@ -121,7 +123,7 @@ public class MiningRobot extends AbstractMiningRobot implements Miner {
                 System.err.println("Inventory is full");
                 crash();
             }
-            WorldUtilities.removeLoot(objectToMine);
+            World.getGlobalWorld().removeEntity(objectToMine);
         }
     }
 
@@ -146,6 +148,9 @@ public class MiningRobot extends AbstractMiningRobot implements Miner {
             pickGear();
         }
         if (info) {
+            getInventory().add(new Rock());
+            getInventory().add(new Rock());
+            getInventory().add(new Tree());
             InfoPopup.showInfo(getInventory());
         }
     }

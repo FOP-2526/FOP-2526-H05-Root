@@ -78,8 +78,7 @@ public class GameInputHandler {
         } else if (KEY_TO_SELECTION.containsKey(e.getKeyCode()) &&
             selection.get() == KEY_TO_SELECTION.get(e.getKeyCode())) {
             selection.set(-1);
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_I) {
+        } else if (e.getKeyCode() == KeyEvent.VK_I) {
             info.set(false);
         }
     }

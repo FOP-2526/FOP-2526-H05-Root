@@ -84,9 +84,4 @@ public final class WorldUtilities {
         }
         World.getGlobalWorld().placeEntity(new Gear(randomField.getX(), randomField.getY(), new Battery()));
     }
-
-    @DoNotTouch
-    public static void removeLoot(Loot entity) {
-        World.getGlobalWorld().removeEntity(entity);
-    }
 }

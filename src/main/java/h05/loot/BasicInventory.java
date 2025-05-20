@@ -65,6 +65,7 @@ public class BasicInventory implements Inventory {
         amounts[nextIndex] = 1;
         numberOfItems++;
         nextIndex++;
+        size++;
         return true;
     }
 

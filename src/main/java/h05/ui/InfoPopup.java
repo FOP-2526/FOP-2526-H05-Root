@@ -7,8 +7,10 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import java.awt.BorderLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 @DoNotTouch
@@ -26,6 +28,11 @@ public class InfoPopup extends JDialog {
         this.data = data;
         DefaultTableModel tableModel = new DefaultTableModel(this.data, columnNames);
         JTable table = new JTable(tableModel);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int x = 0; x < columnNames.length; x++) {
+            table.getColumnModel().getColumn(x).setCellRenderer(centerRenderer);
+        }
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane, BorderLayout.CENTER);
     }

@@ -12,7 +12,7 @@ public class WallBreaker extends AbstractEquipment implements UsableEquipment {
 
     @DoNotTouch
     public WallBreaker() {
-        super("Wall Breaker");
+        super("WallBreaker");
     }
 
     @DoNotTouch

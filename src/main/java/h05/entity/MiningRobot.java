@@ -129,8 +129,8 @@ public class MiningRobot extends AbstractMiningRobot implements Miner {
 
     @StudentImplementationRequired
     @Override
-    public void handleKeyInput(@Nullable Direction direction, int selection, boolean pickGear, boolean mine, boolean info) {
-        if (mine) {
+    public void handleKeyInput(@Nullable Direction direction, int selection, boolean isPickingGear, boolean isMining, boolean isInfo) {
+        if (isMining) {
             mine();
         }
         if (direction != null) {
@@ -144,10 +144,10 @@ public class MiningRobot extends AbstractMiningRobot implements Miner {
         if (selection != -1 && selection < getNumberOfEquipments()) {
             useEquipment(selection - 1);
         }
-        if (pickGear) {
+        if (isPickingGear) {
             pickGear();
         }
-        if (info) {
+        if (isInfo) {
             getInventory().add(new Rock());
             getInventory().add(new Rock());
             getInventory().add(new Tree());

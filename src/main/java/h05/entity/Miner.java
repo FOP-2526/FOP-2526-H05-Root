@@ -43,5 +43,5 @@ public interface Miner extends Equipable, TickBased {
     void pickGear();
 
     @DoNotTouch
-    void handleKeyInput(@Nullable Direction direction, int selection, boolean pickGear, boolean mine, boolean info);
+    void handleKeyInput(@Nullable Direction direction, int selection, boolean isPickingGear, boolean isMining, boolean isInfo);
 }

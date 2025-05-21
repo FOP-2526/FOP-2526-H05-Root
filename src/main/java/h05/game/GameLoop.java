@@ -13,13 +13,9 @@ import h05.entity.Miner;
 import h05.entity.MiningRobot;
 import h05.entity.RepairBot;
 import h05.entity.Repairer;
-import h05.gear.Axe;
 import h05.gear.Battery;
-import h05.gear.Camera;
 import h05.gear.MiningDetector;
-import h05.gear.Pickaxe;
 import h05.gear.WallBreaker;
-import h05.loot.Tree;
 import h05.ui.FogDrawing;
 import h05.ui.GearDrawing;
 import h05.ui.LootDrawing;
@@ -60,7 +56,7 @@ public class GameLoop {
                 }
                 robotTicks.put(robot, 0);
                 if (robot instanceof Miner miner) {
-                    miner.handleKeyInput(inputHandler.getDirection(), inputHandler.getSelection(), inputHandler.isPickGear(), inputHandler.isMine(), inputHandler.isInfo());
+                    miner.handleKeyInput(inputHandler.getDirection(), inputHandler.getSelection(), inputHandler.isPickingGear(), inputHandler.isMining(), inputHandler.isInfo());
                 }
                 if (robot instanceof Repairer repairer) {
                     Point point = repairer.scan();
@@ -114,10 +110,10 @@ public class GameLoop {
             }
         }
         World.getGlobalWorld().placeEntity(new Gear(4, 4, new Battery()));
-        World.getGlobalWorld().placeEntity(new Gear(4, 3, new Camera()));
-        World.getGlobalWorld().placeEntity(new Gear(1, 0, new Pickaxe()));
-        World.getGlobalWorld().placeEntity(new Gear(0, 1, new Axe()));
-        World.getGlobalWorld().placeEntity(new Loot(3, 4, new Tree()));
+        //  World.getGlobalWorld().placeEntity(new Gear(4, 3, new Camera()));
+        //  World.getGlobalWorld().placeEntity(new Gear(1, 0, new Pickaxe()));
+        //   World.getGlobalWorld().placeEntity(new Gear(0, 1, new Axe()));
+        //  World.getGlobalWorld().placeEntity(new Loot(3, 4, new Tree()));
         WorldUtilities.placeNewBattery();
         generateMaze(width, height);
     }

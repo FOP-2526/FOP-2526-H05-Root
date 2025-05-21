@@ -1,30 +1,26 @@
 package h05.game;
 
 import fopbot.Direction;
-import fopbot.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class GameInputHandler {
 
     private static final Map<Integer, Direction> KEY_TO_DIRECTION = Map.ofEntries(
-            Map.entry(Direction.UP, Set.of(KeyEvent.VK_UP, KeyEvent.VK_W)),
-            Map.entry(Direction.RIGHT, Set.of(KeyEvent.VK_RIGHT, KeyEvent.VK_D)),
-            Map.entry(Direction.DOWN, Set.of(KeyEvent.VK_DOWN, KeyEvent.VK_S)),
-            Map.entry(Direction.LEFT, Set.of(KeyEvent.VK_LEFT, KeyEvent.VK_A))
-        ).entrySet()
-        .stream()
-        .flatMap(entry -> entry.getValue().stream().map(value -> Map.entry(value, entry.getKey())))
-        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        Map.entry(KeyEvent.VK_UP, Direction.UP),
+        Map.entry(KeyEvent.VK_W, Direction.UP),
+        Map.entry(KeyEvent.VK_RIGHT, Direction.RIGHT),
+        Map.entry(KeyEvent.VK_D, Direction.RIGHT),
+        Map.entry(KeyEvent.VK_DOWN, Direction.DOWN),
+        Map.entry(KeyEvent.VK_S, Direction.DOWN),
+        Map.entry(KeyEvent.VK_LEFT, Direction.LEFT),
+        Map.entry(KeyEvent.VK_A, Direction.LEFT)
+    );
 
     private static final Map<Integer, Integer> KEY_TO_SELECTION = Map.ofEntries(
         Map.entry(KeyEvent.VK_1, 1),
@@ -38,112 +34,63 @@ public class GameInputHandler {
         Map.entry(KeyEvent.VK_9, 9)
     );
 
-    private final AtomicReference<Direction> direction = new AtomicReference<Direction>(null);
+    private final Map<Integer, Boolean> keyState = new HashMap<>();
 
-    private final AtomicInteger selection = new AtomicInteger(-1);
+    private Direction direction = null;
+    private int selection = -1;
+    private boolean isPickingGear = false;
+    private boolean isMining = false;
+    private boolean isInfo = false;
 
-    private final AtomicBoolean pickGear = new AtomicBoolean(false);
-
-    private final AtomicBoolean mine = new AtomicBoolean(false);
-
-    private final AtomicBoolean info = new AtomicBoolean(false);
-
-    protected @Nullable Direction mapKeyToDirection(Set<Integer> keysPressed) {
-        @NotNull Set<Direction> directions = keysPressed.stream().map(KEY_TO_DIRECTION::get).collect(Collectors.toSet());
-        return directions.size() == 1 ? directions.iterator().next() : null;
+    public void install() {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
+            int code = e.getKeyCode();
+            switch (e.getID()) {
+                case KeyEvent.KEY_PRESSED -> keyState.put(code, true);
+                case KeyEvent.KEY_RELEASED -> keyState.put(code, false);
+            }
+            refreshKeyState();
+            return false;
+        });
     }
 
-    protected int mapKeyToSelection(Set<Integer> keysPressed) {
-        @NotNull Set<Integer> choices = keysPressed.stream().map(KEY_TO_SELECTION::get).collect(Collectors.toSet());
-        return choices.size() == 1 ? choices.iterator().next() : -1;
-    }
+    private void refreshKeyState() {
+        isInfo = Boolean.TRUE.equals(keyState.get(KeyEvent.VK_I));
+        isMining = Boolean.TRUE.equals(keyState.get(KeyEvent.VK_SPACE));
+        isPickingGear = Boolean.TRUE.equals(keyState.get(KeyEvent.VK_E));
 
-    protected void updateKeysPressed() {
-        Set<Integer> keysPressed = World.getGlobalWorld().getInputHandler().getKeysPressed();
-        // TODO: Bug for InfoPopup
-        System.out.println("Keys pressed: " + keysPressed);
-        this.info.set(keysPressed.contains(KeyEvent.VK_I));
-        this.mine.set(keysPressed.contains(KeyEvent.VK_SPACE));
-        this.pickGear.set(keysPressed.contains(KeyEvent.VK_E));
-        this.direction.set(mapKeyToDirection(keysPressed));
-        this.selection.set(mapKeyToSelection(keysPressed));
-    }
+        var pressedDirections = keyState.entrySet().stream()
+            .filter(Map.Entry::getValue)
+            .map(e -> KEY_TO_DIRECTION.get(e.getKey()))
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
+        direction = pressedDirections.size() == 1 ? pressedDirections.iterator().next() : null;
 
-    protected void updateKeysReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            mine.set(false);
-        } else if (e.getKeyCode() == KeyEvent.VK_E) {
-            pickGear.set(false);
-        } else if (KEY_TO_DIRECTION.containsKey(e.getKeyCode()) &&
-            direction.get() == KEY_TO_DIRECTION.get(e.getKeyCode())) {
-            direction.set(null);
-        } else if (KEY_TO_SELECTION.containsKey(e.getKeyCode()) &&
-            selection.get() == KEY_TO_SELECTION.get(e.getKeyCode())) {
-            selection.set(-1);
-        } else if (e.getKeyCode() == KeyEvent.VK_I) {
-            info.set(false);
-        }
+        var pressedSelections = keyState.entrySet().stream()
+            .filter(Map.Entry::getValue)
+            .map(e -> KEY_TO_SELECTION.get(e.getKey()))
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
+        selection = pressedSelections.size() == 1 ? pressedSelections.iterator().next() : -1;
     }
-
 
     public Direction getDirection() {
-        Direction dir = direction.get();
-        if (dir != null) {
-            direction.set(null);
-        }
-        return dir;
+        return direction;
     }
 
     public int getSelection() {
-        int sel = selection.get();
-        if (sel != -1) {
-            selection.set(-1);
-        }
-        return sel;
+        return selection;
     }
 
-    public boolean isPickGear() {
-        boolean isPick = pickGear.get();
-        if (isPick) {
-            pickGear.set(false);
-        }
-        return isPick;
+    public boolean isPickingGear() {
+        return isPickingGear;
     }
 
-    public boolean isMine() {
-        boolean isMine = mine.get();
-        if (isMine) {
-            this.mine.set(false);
-        }
-        return isMine;
+    public boolean isMining() {
+        return isMining;
     }
 
     public boolean isInfo() {
-        boolean isInfo = info.get();
-        if (isInfo) {
-            this.info.set(false);
-        }
         return isInfo;
-    }
-
-    public void install() {
-        World.getGlobalWorld().getInputHandler().addKeyListener(
-            new KeyListener() {
-
-                @Override
-                public void keyTyped(KeyEvent e) {
-                }
-
-                @Override
-                public void keyPressed(KeyEvent e) {
-                    updateKeysPressed();
-                }
-
-                @Override
-                public void keyReleased(KeyEvent e) {
-                    updateKeysReleased(e);
-                }
-            }
-        );
     }
 }

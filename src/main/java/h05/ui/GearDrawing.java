@@ -3,14 +3,16 @@ package h05.ui;
 import fopbot.DrawingContext;
 import fopbot.PaintUtils;
 import fopbot.SvgBasedDrawing;
-import h05.gear.Equipment;
 import h05.entity.Gear;
 import h05.gear.Axe;
 import h05.gear.Battery;
 import h05.gear.Camera;
+import h05.gear.Equipment;
+import h05.gear.MiningDetector;
 import h05.gear.Pickaxe;
 import h05.gear.TelephotoLens;
 import h05.gear.Tool;
+import h05.gear.WallBreaker;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.awt.Image;
@@ -24,10 +26,10 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
     public static final List<Class<? extends Equipment>> AVAILABLE_EQUIPMENTS = List.of(
         Battery.class,
         Camera.class,
-        TelephotoLens.class
         //Powerbank.class,
-        //MiningDetector.class,
-        //WallBreaker.class
+        TelephotoLens.class,
+        MiningDetector.class,
+        WallBreaker.class
     );
 
     @DoNotTouch

@@ -64,7 +64,7 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
         Equipment.Condition[] conditions = Equipment.Condition.values();
         for (Class<? extends Equipment> clazz : AVAILABLE_EQUIPMENTS) {
             for (Equipment.Condition condition : conditions) {
-                String path = clazz.getSimpleName() + "_" + condition.name().toLowerCase() + EXTENSION;
+                String path = clazz.getSimpleName().toLowerCase() + "_" + condition.name().toLowerCase() + EXTENSION;
                 Image image = PaintUtils.loadFieldImage(
                     Thread.currentThread().getContextClassLoader().getResourceAsStream(path),
                     0,

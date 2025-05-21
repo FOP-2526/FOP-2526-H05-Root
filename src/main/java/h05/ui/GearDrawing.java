@@ -10,6 +10,7 @@ import h05.gear.Camera;
 import h05.gear.Equipment;
 import h05.gear.MiningDetector;
 import h05.gear.Pickaxe;
+import h05.gear.Powerbank;
 import h05.gear.TelephotoLens;
 import h05.gear.Tool;
 import h05.gear.WallBreaker;
@@ -21,12 +22,11 @@ import java.util.List;
 @DoNotTouch
 public class GearDrawing extends SvgBasedDrawing<Gear> {
 
-    // TODO: Add your own equipment classes to the list
     @DoNotTouch
     public static final List<Class<? extends Equipment>> AVAILABLE_EQUIPMENTS = List.of(
         Battery.class,
         Camera.class,
-        //Powerbank.class,
+        Powerbank.class,
         TelephotoLens.class,
         MiningDetector.class,
         WallBreaker.class

@@ -28,6 +28,7 @@ import h05.ui.WallFogDrawing;
 
 import java.awt.Point;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -38,6 +39,8 @@ public class GameLoop {
 
     private static final int TICK_RATE = 1000;
 
+    private final Map<Robot, Integer> robotTicks = new HashMap<>();
+
     private final Timer loop = new Timer();
 
     private final TimerTask loopTask = new TimerTask() {
@@ -45,6 +48,17 @@ public class GameLoop {
         @Override
         public void run() {
             for (Robot robot : robots) {
+                if (!(robot instanceof final TickBased tb)) {
+                    continue;
+                }
+                if (!robotTicks.containsKey(robot)) {
+                    robotTicks.put(robot, 0);
+                }
+                if (robotTicks.get(robot) < tb.getUpdateDelay()) {
+                    robotTicks.put(robot, robotTicks.get(robot) + 1);
+                    continue;
+                }
+                robotTicks.put(robot, 0);
                 if (robot instanceof Miner miner) {
                     miner.handleKeyInput(inputHandler.getDirection(), inputHandler.getSelection(), inputHandler.isPickGear(), inputHandler.isMine(), inputHandler.isInfo());
                 }

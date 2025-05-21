@@ -1,6 +1,7 @@
 package h05.entity;
 
 import fopbot.Direction;
+import h05.game.TickBased;
 import h05.gear.Battery;
 import h05.gear.Camera;
 import h05.gear.Equipment;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 @DoNotTouch
-public interface Miner extends Equipable {
+public interface Miner extends Equipable, TickBased {
 
     @DoNotTouch
     @NotNull Battery getBattery();

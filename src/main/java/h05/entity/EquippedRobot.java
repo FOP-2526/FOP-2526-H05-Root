@@ -11,8 +11,8 @@ public class EquippedRobot extends Robot implements Equipable {
 
     private final Equipment[] equipments;
     private final UsableEquipment[] usableEquipments;
-    private int equipmentCount;
-    private int usableEquipmentCount;
+    protected int equipmentCount;
+    protected int usableEquipmentCount;
     private final int capacity;
 
     public EquippedRobot(int x, int y, int capacity) {
@@ -26,12 +26,12 @@ public class EquippedRobot extends Robot implements Equipable {
     public Equipment[] getEquipments() {
         int length = equipmentCount + usableEquipmentCount;
         Equipment[] equipments = new Equipment[length];
-        System.arraycopy(equipments, 0, equipments, 0, equipmentCount);
+        System.arraycopy(this.equipments, 0, equipments, 0, equipmentCount);
         System.arraycopy(usableEquipments, 0, equipments, equipmentCount, usableEquipmentCount);
         return equipments;
     }
 
-    protected void setEquipment(int index, Equipment equipment) {
+    public void setEquipment(int index, Equipment equipment) {
         equipments[index] = equipment;
     }
 
@@ -64,17 +64,20 @@ public class EquippedRobot extends Robot implements Equipable {
 
     @Override
     public void unequip(int index) {
-        if (index >= equipmentCount) {
+        int totalEquipments = equipmentCount + usableEquipmentCount;
+        if (index < equipmentCount) {
+            // Remove from non-usable equipment
+            for (int i = index; i < equipmentCount - 1; i++) {
+                equipments[i] = equipments[i + 1];
+            }
+            equipments[--equipmentCount] = null;
+        } else {
+            // Remove from usable equipment
             int usableIndex = index - equipmentCount;
             for (int i = usableIndex; i < usableEquipmentCount - 1; i++) {
                 usableEquipments[i] = usableEquipments[i + 1];
             }
-            usableEquipments[usableIndex] = null;
-        } else {
-            for (int i = index; i < equipmentCount - 1; i++) {
-                equipments[i] = equipments[i + 1];
-            }
-            equipments[index] = null;
+            usableEquipments[--usableEquipmentCount] = null;
         }
     }
 }

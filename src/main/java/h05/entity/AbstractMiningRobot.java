@@ -25,6 +25,7 @@ public abstract class AbstractMiningRobot extends EquippedRobot implements Miner
         super(x, y, equipmentCapacity);
         equip(new Battery());
         equip(new Camera());
+        equipmentCount += 2;
         this.inventory = new BasicInventory(inventoryCapacity, BasicInventory.DEFAULT_SIZE);
     }
 
@@ -61,7 +62,7 @@ public abstract class AbstractMiningRobot extends EquippedRobot implements Miner
             setEquipment(0, battery);
         } else if (equipment.getName().equals("Camera")) {
             camera = (Camera) equipment;
-            setEquipment(1, battery);
+            setEquipment(1, camera);
         } else {
             super.equip(equipment);
         }

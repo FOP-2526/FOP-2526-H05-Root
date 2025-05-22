@@ -33,8 +33,6 @@ import java.util.TimerTask;
 
 public class GameLoop {
 
-    private static final int TICK_RATE = 1000;
-
     private final Map<Robot, Integer> robotTicks = new HashMap<>();
 
     private final Timer loop = new Timer();
@@ -78,6 +76,10 @@ public class GameLoop {
         this.tickRate = tickRate;
     }
 
+    public GameLoop() {
+        this(GameConstants.TICK_DELAY);
+    }
+
     protected int getDrawingPriority(FieldEntity entity) {
         return switch (entity) {
             case Wall w -> 0;
@@ -90,8 +92,8 @@ public class GameLoop {
     }
 
     protected void setUpWorld() {
-        int width = 10;
-        int height = 10;
+        int width = GameConstants.WORLD_WIDTH;
+        int height = GameConstants.WORLD_HEIGHT;
         World.setSize(width, height);
         World.getGlobalWorld().setDrawingRegistry(
             DrawingRegistry.builder(DrawingRegistry.DEFAULT)

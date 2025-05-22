@@ -1,10 +1,9 @@
 package h05.gear;
 
+import h05.game.GameConstants;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 @DoNotTouch
 public class Battery extends AbstractUpgradeableEquipment {
@@ -44,8 +43,7 @@ public class Battery extends AbstractUpgradeableEquipment {
                 if (powerbank.getCondition() == Condition.BROKEN) {
                     continue;
                 }
-                // TODO: Global random constant for testing
-                int reduce = ThreadLocalRandom.current().nextBoolean() ? amount : 0;
+                int reduce = GameConstants.RANDOM_GENERATOR.nextBoolean() ? amount : 0;
                 if (powerbank.getDurability() <= reduce) {
                     reduceDurability(powerbank.getCapacity());
                 }

@@ -8,6 +8,7 @@ import h05.entity.Fog;
 import h05.entity.Gear;
 import h05.entity.Loot;
 import h05.entity.Miner;
+import h05.game.GameConstants;
 import h05.gear.Battery;
 import h05.gear.Tool;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +16,6 @@ import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.util.List;
-import java.util.Random;
 
 public final class WorldUtilities {
 
@@ -77,9 +77,7 @@ public final class WorldUtilities {
     public static void placeNewBattery() {
         List<Field> fields = World.getGlobalWorld().getFields();
         List<Field> emptyFields = fields.stream().filter(field -> field.getEntities().isEmpty()).toList();
-        // TODO: Global random constant for testing
-        Random random = new Random();
-        Field randomField = emptyFields.isEmpty() ? null : emptyFields.get(random.nextInt(emptyFields.size()));
+        Field randomField = emptyFields.isEmpty() ? null : emptyFields.get(GameConstants.RANDOM_GENERATOR.nextInt(emptyFields.size()));
         if (randomField == null) {
             return;
         }

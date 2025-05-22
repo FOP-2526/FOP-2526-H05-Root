@@ -119,7 +119,7 @@ public class MiningRobot extends AbstractMiningRobot implements Miner {
         Tool tool = getTool();
         Mineable mineable = objectToMine.getMineable();
         if (mineable.onMined(tool)) {
-            if (getInventory().add(mineable)) {
+            if (!getInventory().add(mineable)) {
                 System.err.println("Inventory is full");
                 crash();
             }

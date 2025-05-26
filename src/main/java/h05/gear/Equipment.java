@@ -11,16 +11,16 @@ public interface Equipment extends Durable {
     @NotNull String getName();
 
     @DoNotTouch
-    default @NotNull Condition getCondition() {
+    default @NotNull EquipmentCondition getCondition() {
         int durability = getDurability();
         if (durability > 80) {
-            return Condition.NEW;
+            return EquipmentCondition.NEW;
         } else if (durability > 40) {
-            return Condition.USED;
+            return EquipmentCondition.USED;
         } else if (durability > 0) {
-            return Condition.DAMAGED;
+            return EquipmentCondition.DAMAGED;
         }
-        return Condition.BROKEN;
+        return EquipmentCondition.BROKEN;
     }
 
     @DoNotTouch
@@ -31,12 +31,4 @@ public interface Equipment extends Durable {
 
     @DoNotTouch
     boolean isTool();
-
-    @DoNotTouch
-    enum Condition {
-        NEW,
-        USED,
-        DAMAGED,
-        BROKEN
-    }
 }

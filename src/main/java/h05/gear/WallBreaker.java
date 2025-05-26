@@ -18,7 +18,7 @@ public class WallBreaker extends AbstractEquipment implements UsableEquipment {
     @DoNotTouch
     @Override
     public void use(int x, int y, @NotNull Direction direction) {
-        if (getCondition() == Condition.BROKEN) {
+        if (getCondition() == EquipmentCondition.BROKEN) {
             return;
         }
         int removeX = x;

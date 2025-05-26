@@ -4,7 +4,7 @@ import fopbot.Direction;
 import h05.game.TickBased;
 import h05.gear.Battery;
 import h05.gear.Camera;
-import h05.gear.Equipment;
+import h05.gear.EquipmentCondition;
 import h05.gear.Tool;
 import h05.loot.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -28,12 +28,12 @@ public interface Miner extends Equipable, TickBased {
 
     @DoNotTouch
     default boolean isCameraBroken() {
-        return getCamera().getCondition() == Equipment.Condition.BROKEN;
+        return getCamera().getCondition() == EquipmentCondition.BROKEN;
     }
 
     @DoNotTouch
     default boolean isBatteryBroken() {
-        return getBattery().getCondition() == Equipment.Condition.BROKEN;
+        return getBattery().getCondition() == EquipmentCondition.BROKEN;
     }
 
     @DoNotTouch

@@ -40,7 +40,7 @@ public class Battery extends AbstractUpgradeableEquipment {
         for (AttachableEquipment upgrade : getUpgrades()) {
             if (upgrade.getName().equals("Powerbank")) {
                 Powerbank powerbank = EquipmentUtilities.getAsPowerbank(upgrade);
-                if (powerbank.getCondition() == Condition.BROKEN) {
+                if (powerbank.getCondition() == EquipmentCondition.BROKEN) {
                     continue;
                 }
                 int reduce = GameConstants.RANDOM_GENERATOR.nextBoolean() ? amount : 0;

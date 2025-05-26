@@ -12,7 +12,7 @@ public interface Inventory {
     int numberOfItems();
 
     default boolean add(Loot loot) {
-        if (loot.getMineable().getState() != Mineable.State.FULLY_MINED) {
+        if (loot.getMineable().getState() != MiningState.FULLY_MINED) {
             return false;
         }
         if (add(loot.getMineable())) {

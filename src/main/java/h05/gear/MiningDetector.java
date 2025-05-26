@@ -31,7 +31,7 @@ public class MiningDetector extends AbstractEquipment implements UsableEquipment
     @DoNotTouch
     @Override
     public void use(int x, int y, @NotNull Direction direction) {
-        if (getCondition() == Condition.BROKEN) {
+        if (getCondition() == EquipmentCondition.BROKEN) {
             return;
         }
         for (int dx = -radius; dx <= radius; dx++) {

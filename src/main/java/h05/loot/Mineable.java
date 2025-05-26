@@ -13,19 +13,11 @@ public interface Mineable extends Durable {
     @NotNull String getName();
 
     @DoNotTouch
-    @NotNull State getState();
+    @NotNull MiningState getState();
 
     @DoNotTouch
-    void setState(@NotNull State state);
+    void setState(@NotNull MiningState state);
 
     @DoNotTouch
     boolean onMined(@Nullable Tool tool);
-
-    @DoNotTouch
-    enum State {
-
-        NOT_MINED,
-        HALF_MINED,
-        FULLY_MINED
-    }
 }

@@ -7,12 +7,13 @@ import h05.WorldUtilities;
 import h05.gear.Battery;
 import h05.gear.Camera;
 import h05.gear.Equipment;
+import h05.gear.EquipmentCondition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-import java.awt.Point;
+import java.awt.*;
 
 @DoNotTouch
 public class RepairBot extends Robot implements Repairer {
@@ -72,7 +73,7 @@ public class RepairBot extends Robot implements Repairer {
         Equipment[] storage = miner.getEquipments();
         for (int i = 0; i < miner.getNumberOfEquipments(); i++) {
             Equipment equipment = storage[i];
-            if (equipment.getCondition() == Equipment.Condition.BROKEN) {
+            if (equipment.getCondition() == EquipmentCondition.BROKEN) {
                 miner.unequip(i);
             }
         }

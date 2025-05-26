@@ -1,34 +1,15 @@
 package h05.game;
 
-import fopbot.DrawingRegistry;
-import fopbot.FieldEntity;
 import fopbot.Robot;
-import fopbot.Wall;
-import fopbot.World;
+import fopbot.*;
 import h05.WorldUtilities;
-import h05.entity.Fog;
-import h05.entity.Gear;
-import h05.entity.Loot;
-import h05.entity.Miner;
-import h05.entity.MiningRobot;
-import h05.entity.RepairBot;
-import h05.entity.Repairer;
+import h05.entity.*;
 import h05.gear.*;
 import h05.loot.Tree;
-import h05.ui.FogDrawing;
-import h05.ui.GearDrawing;
-import h05.ui.LootDrawing;
-import h05.ui.MineBotDrawing;
-import h05.ui.WallFogDrawing;
+import h05.ui.*;
 
-import java.awt.Point;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.*;
+import java.util.*;
 
 public class GameLoop {
 
@@ -95,15 +76,15 @@ public class GameLoop {
         int height = GameConstants.WORLD_HEIGHT;
         World.setSize(width, height);
         World.getGlobalWorld().setDrawingRegistry(
-            DrawingRegistry.builder(DrawingRegistry.DEFAULT)
-                .addAll(Map.ofEntries(
-                    Map.entry(Wall.class, new WallFogDrawing()),
-                    Map.entry(Gear.class, new GearDrawing()),
-                    Map.entry(Loot.class, new LootDrawing()),
-                    Map.entry(MiningRobot.class, new MineBotDrawing()),
-                    Map.entry(Fog.class, new FogDrawing())
-                ))
-                .build(Comparator.comparingInt(this::getDrawingPriority))
+                DrawingRegistry.builder(DrawingRegistry.DEFAULT)
+                        .addAll(Map.ofEntries(
+                                Map.entry(Wall.class, new WallFogDrawing()),
+                                Map.entry(Gear.class, new GearDrawing()),
+                                Map.entry(Loot.class, new LootDrawing()),
+                                Map.entry(MiningRobot.class, new MineBotDrawing()),
+                                Map.entry(Fog.class, new FogDrawing())
+                        ))
+                        .build(Comparator.comparingInt(this::getDrawingPriority))
         );
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -111,38 +92,34 @@ public class GameLoop {
             }
         }
         World.getGlobalWorld().placeEntity(new Gear(4, 4, new Battery()));
-//          World.getGlobalWorld().placeEntity(new Gear(4, 3, new Camera()));
-          World.getGlobalWorld().placeEntity(new Gear(1, 0, new Pickaxe()));
-           World.getGlobalWorld().placeEntity(new Gear(0, 1, new Axe()));
-          World.getGlobalWorld().placeEntity(new Loot(3, 4, new Tree()));
+        World.getGlobalWorld().placeEntity(new Gear(1, 0, new Pickaxe()));
+        World.getGlobalWorld().placeEntity(new Gear(0, 1, new Axe()));
+        World.getGlobalWorld().placeEntity(new Loot(3, 4, new Tree()));
         WorldUtilities.placeNewBattery();
-//        generateMaze(width, height);
     }
 
-    protected void generateMaze(int width, int height) {
-        for (int x = 0; x < width; x++) {
-            World.placeHorizontalWall(x, 0);
-            World.placeHorizontalWall(x, height - 1);
+    protected void generateMaze() {
+        for (int x = 0; x < 10; x++) {
+            World.placeHorizontalWall(x, 9); // Top
         }
-        for (int y = 0; y < height; y++) {
-            World.placeVerticalWall(0, y);
-            World.placeVerticalWall(width - 1, y);
+        for (int y = 0; y < 10; y++) {
+            if (y != 0) World.placeVerticalWall(0, y);
+            World.placeVerticalWall(9, y);
         }
-        for (int x = 2; x < width; x += 4) {
-            for (int y = 1; y < height; y++) {
-                if (y % 2 == 1) {
-                    World.placeVerticalWall(x, y);
-                }
+
+        for (int y = 1; y < 9; y += 2) {
+            for (int x = 1; x < 9; x++) {
+                World.placeHorizontalWall(x, y);
             }
         }
-        for (int y = 2; y < height; y += 4) {
-            for (int x = 1; x < width; x++) {
-                if (x % 2 == 1) {
-                    World.placeHorizontalWall(x, y);
-                }
+
+        for (int x = 2; x < 9; x += 2) {
+            for (int y = 1; y < 9; y++) {
+                World.placeVerticalWall(x, y);
             }
         }
     }
+
 
     protected void setupRobots() {
         MiningRobot miner = new MiningRobot(0, 0);

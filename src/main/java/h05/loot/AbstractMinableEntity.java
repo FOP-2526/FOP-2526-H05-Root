@@ -11,12 +11,12 @@ public abstract class AbstractMinableEntity extends AbstractDurableObject implem
     private final String name;
 
     @SolutionOnly
-    private State state;
+    private MiningState state;
 
     @SolutionOnly
     public AbstractMinableEntity(String name) {
         this.name = name;
-        this.state = State.NOT_MINED;
+        this.state = MiningState.NOT_MINED;
     }
 
     @SolutionOnly
@@ -26,12 +26,12 @@ public abstract class AbstractMinableEntity extends AbstractDurableObject implem
     }
 
     @SolutionOnly
-    public @NotNull State getState() {
+    public @NotNull MiningState getState() {
         return state;
     }
 
     @SolutionOnly
-    public void setState(@NotNull State state) {
+    public void setState(@NotNull MiningState state) {
         this.state = state;
     }
 }

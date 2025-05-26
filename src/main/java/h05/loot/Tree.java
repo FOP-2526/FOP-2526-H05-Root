@@ -28,9 +28,9 @@ public class Tree extends AbstractMinableEntity {
     private void updateState() {
         int durability = getDurability();
         if (durability < 100 && durability > 50) {
-            this.setState(Mineable.State.HALF_MINED);
+            this.setState(MiningState.HALF_MINED);
         } else if (durability <= 50 && durability > 0) {
-            this.setState(Mineable.State.FULLY_MINED);
+            this.setState(MiningState.FULLY_MINED);
         }
         World.getGlobalWorld().getGuiPanel().repaint();
     }

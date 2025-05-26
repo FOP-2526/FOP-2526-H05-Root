@@ -25,7 +25,7 @@ public class Camera extends AbstractUpgradeableEquipment {
 
     @DoNotTouch
     public int getVisibilityRange() {
-        if (getCondition() == Condition.DAMAGED) {
+        if (getCondition() == EquipmentCondition.DAMAGED) {
             return 0;
         }
         return visibilityRange;
@@ -61,7 +61,7 @@ public class Camera extends AbstractUpgradeableEquipment {
         for (AttachableEquipment upgrade : getUpgrades()) {
             if (upgrade.getName().equals("TelephotoLens")) {
                 TelephotoLens lens = EquipmentUtilities.getAsTelephotoLens(upgrade);
-                if (lens.getCondition() == Condition.BROKEN) {
+                if (lens.getCondition() == EquipmentCondition.BROKEN) {
                     continue;
                 }
                 int range = lens.getRangeEnhancement();

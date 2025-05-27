@@ -5,8 +5,10 @@ import fopbot.PaintUtils;
 import fopbot.SvgBasedDrawing;
 import fopbot.World;
 import h05.entity.Fog;
+import h05.game.GameConstants;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
+import java.awt.Graphics;
 import java.awt.Image;
 
 @DoNotTouch
@@ -41,6 +43,14 @@ public class FogDrawing extends SvgBasedDrawing<Fog> {
             );
             setImage(i, image);
         }
+    }
+
+    @Override
+    public void draw(Graphics g, DrawingContext<? extends Fog> context) {
+        if(!GameConstants.FOG_VISIBILITY){
+            return;
+        }
+        super.draw(g, context);
     }
 }
 

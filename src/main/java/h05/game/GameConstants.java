@@ -16,6 +16,8 @@ public final class GameConstants {
     public static final int TICK_DELAY = PropertyUtils.getIntProperty(PROPERTIES_FILE, "TICK_DELAY");
     public static final Random RANDOM_GENERATOR = new Random(RANDOM_SEED);
 
+    public static final boolean FOG_VISIBILITY = PropertyUtils.getBooleanProperty(PROPERTIES_FILE, "FOG_VISIBILITY");
+
     private GameConstants() {
     }
 

@@ -6,6 +6,7 @@ import fopbot.DrawingContext;
 import fopbot.KarelWorld;
 import fopbot.Wall;
 import h05.entity.Fog;
+import h05.game.GameConstants;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.awt.Color;
@@ -32,10 +33,10 @@ public class WallFogDrawing implements Drawable<Wall> {
         final boolean isHorizontal = entity.isHorizontal();
         final boolean isFogHere = context.field().contains(Fog.class);
         final boolean isFogInNextField = isHorizontal
-                ? (y + 1 < world.getHeight() && world.getField(x, y + 1).contains(Fog.class))
-                : (x + 1 < world.getWidth() && world.getField(x + 1, y).contains(Fog.class));
+            ? (y + 1 < world.getHeight() && world.getField(x, y + 1).contains(Fog.class))
+            : (x + 1 < world.getWidth() && world.getField(x + 1, y).contains(Fog.class));
 
-        if (isFogHere && isFogInNextField) {
+        if (GameConstants.FOG_VISIBILITY && isFogHere && isFogInNextField) {
             return;
         }
 
@@ -61,10 +62,10 @@ public class WallFogDrawing implements Drawable<Wall> {
             height = innerSize + offset * 2;
         }
         g.fillRect(
-                scale(drawX, context),
-                scale(drawY, context),
-                scale(width, context),
-                scale(height, context)
+            scale(drawX, context),
+            scale(drawY, context),
+            scale(width, context),
+            scale(height, context)
         );
 
         g.setColor(oldColor);

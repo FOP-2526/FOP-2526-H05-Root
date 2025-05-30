@@ -14,7 +14,7 @@ public final class GameConstants {
     public static final int WORLD_WIDTH = PropertyUtils.getIntProperty(PROPERTIES_FILE, "WORLD_WIDTH");
     public static final int WORLD_HEIGHT = PropertyUtils.getIntProperty(PROPERTIES_FILE, "WORLD_HEIGHT");
     public static final int TICK_DELAY = PropertyUtils.getIntProperty(PROPERTIES_FILE, "TICK_DELAY");
-    public static final Random RANDOM_GENERATOR = new Random(RANDOM_SEED);
+    public static Random RANDOM_GENERATOR = new Random(RANDOM_SEED);
 
     public static final boolean FOG_VISIBILITY = PropertyUtils.getBooleanProperty(PROPERTIES_FILE, "FOG_VISIBILITY");
 

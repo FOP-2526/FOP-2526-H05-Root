@@ -120,7 +120,6 @@ public class MiningRobot extends AbstractMiningRobot implements Miner {
         Mineable mineable = objectToMine.getMineable();
         if (mineable.onMined(tool)) {
             if (!getInventory().add(mineable)) {
-                System.err.println("Inventory is full");
                 crash();
             }
             World.getGlobalWorld().removeEntity(objectToMine);
@@ -148,9 +147,6 @@ public class MiningRobot extends AbstractMiningRobot implements Miner {
             pickGear();
         }
         if (isInfo) {
-            getInventory().add(new Rock());
-            getInventory().add(new Rock());
-            getInventory().add(new Tree());
             InfoPopup.showInfo(getInventory());
         }
     }

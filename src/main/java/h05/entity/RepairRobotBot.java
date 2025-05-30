@@ -16,13 +16,13 @@ import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 import java.awt.*;
 
 @DoNotTouch
-public class RepairBot extends Robot implements Repairer {
+public class RepairRobotBot extends Robot implements Repairer {
 
     @DoNotTouch
     private final int radius;
 
     @DoNotTouch
-    public RepairBot(int x, int y, int radius) {
+    public RepairRobotBot(int x, int y, int radius) {
         super(x, y);
         this.setRobotFamily(RobotFamily.SQUARE_RED);
         this.radius = radius;

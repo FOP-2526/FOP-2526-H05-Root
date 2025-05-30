@@ -5,7 +5,7 @@ import fopbot.World;
 import h05.entity.Gear;
 import h05.entity.Loot;
 import h05.entity.MiningRobot;
-import h05.entity.RepairBot;
+import h05.entity.RepairRobotBot;
 import h05.game.GameLoopBase;
 import h05.gear.Axe;
 import h05.gear.Battery;
@@ -94,7 +94,7 @@ public class GameLoop extends GameLoopBase {
     @Override
     protected void initRobots() {
         MiningRobot miner = new MiningRobot(1, 0);
-        RepairBot repairer1 = new RepairBot(3, 2, 2);
-        RepairBot repairer2 = new RepairBot(4, 3, 2);
+        RepairRobotBot repairer1 = new RepairRobotBot(3, 2, 2);
+        RepairRobotBot repairer2 = new RepairRobotBot(4, 3, 2);
     }
 }

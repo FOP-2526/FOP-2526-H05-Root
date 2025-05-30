@@ -36,7 +36,7 @@ public abstract class AbstractUpgradeableEquipment extends AbstractEquipment imp
         return Arrays.copyOf(upgrades, numberOfUpgrades);
     }
 
-    @DoNotTouch
+    @SolutionOnly
     @Override
     public int getNumberOfUpgrades() {
         return numberOfUpgrades;

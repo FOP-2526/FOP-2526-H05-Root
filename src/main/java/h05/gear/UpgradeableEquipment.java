@@ -2,6 +2,7 @@ package h05.gear;
 
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
+import org.tudalgo.algoutils.student.annotation.SolutionOnly;
 
 @DoNotTouch
 public interface UpgradeableEquipment extends Equipment {
@@ -9,7 +10,7 @@ public interface UpgradeableEquipment extends Equipment {
     @DoNotTouch
    AttachableEquipment[] getUpgrades();
 
-    @DoNotTouch
+    @SolutionOnly
     int getNumberOfUpgrades();
 
     @DoNotTouch

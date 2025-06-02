@@ -9,7 +9,7 @@ import h05.ui.InfoPopup;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-import java.awt.*;
+import java.awt.Point;
 
 public class MiningRobot extends AbstractMiningRobot implements Miner {
 

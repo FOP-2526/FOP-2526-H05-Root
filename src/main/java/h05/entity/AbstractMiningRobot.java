@@ -5,10 +5,12 @@ import fopbot.KarelWorld;
 import fopbot.Wall;
 import fopbot.World;
 import h05.WorldUtilities;
+import h05.gear.AttachableEquipment;
 import h05.gear.Battery;
 import h05.gear.Camera;
 import h05.gear.Equipment;
 import h05.gear.Tool;
+import h05.gear.UpgradeableEquipment;
 import h05.loot.BasicInventory;
 import h05.loot.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -67,6 +69,15 @@ public abstract class AbstractMiningRobot extends EquippedRobot implements Miner
             camera = (Camera) equipment;
             setEquipment(1, camera);
         } else {
+            if (equipment.isUpgrade()) {
+                AttachableEquipment attachableEquipment = (AttachableEquipment) equipment;
+                String parent = attachableEquipment.getParent();
+                for (Equipment e : getEquipments()) {
+                    if (e.getName().equals(parent)) {
+                        ((UpgradeableEquipment) e).attach(attachableEquipment);
+                    }
+                }
+            }
             super.equip(equipment);
         }
     }

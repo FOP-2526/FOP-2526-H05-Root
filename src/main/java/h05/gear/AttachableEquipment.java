@@ -5,6 +5,8 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 @DoNotTouch
 public interface AttachableEquipment extends Equipment {
 
+    String getParent();
+
     @Override
     default boolean isUpgrade() {
         return true;

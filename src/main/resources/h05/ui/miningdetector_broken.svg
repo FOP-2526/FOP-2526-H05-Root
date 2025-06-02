@@ -1,14 +1,14 @@
 <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
-  <rect x="30" y="12" width="4" height="28" fill="#222"/>
-  <rect x="22" y="2" width="20" height="10" fill="#082840"/>
-  <rect x="26" y="5" width="6" height="3" fill="#5a6a70"/>
-  <rect x="34" y="5" width="3" height="3" fill="#335533"/>
-  <rect x="30" y="40" width="4" height="6" fill="#111"/>
-  <!-- Broken coil -->
-  <rect x="22" y="46" width="16" height="6" fill="#0a0a0a"/>
-  <rect x="24" y="48" width="10" height="2" fill="#1a1a1a"/>
-  <!-- Missing chunk -->
-  <rect x="38" y="46" width="4" height="2" fill="#000"/>
-  <!-- Debris -->
-  <rect x="40" y="50" width="2" height="2" fill="#111"/>
+    <rect x="30" y="12" width="4" height="28" fill="#222"/>
+    <rect x="22" y="2" width="20" height="10" fill="#082840"/>
+    <rect x="26" y="5" width="6" height="3" fill="#5a6a70"/>
+    <rect x="34" y="5" width="3" height="3" fill="#335533"/>
+    <rect x="30" y="40" width="4" height="6" fill="#111"/>
+    <!-- Broken coil -->
+    <rect x="22" y="46" width="16" height="6" fill="#0a0a0a"/>
+    <rect x="24" y="48" width="10" height="2" fill="#1a1a1a"/>
+    <!-- Missing chunk -->
+    <rect x="38" y="46" width="4" height="2" fill="#000"/>
+    <!-- Debris -->
+    <rect x="40" y="50" width="2" height="2" fill="#111"/>
 </svg>

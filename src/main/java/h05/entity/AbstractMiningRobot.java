@@ -2,6 +2,7 @@ package h05.entity;
 
 import fopbot.FieldEntity;
 import fopbot.KarelWorld;
+import fopbot.Wall;
 import fopbot.World;
 import h05.WorldUtilities;
 import h05.gear.Battery;
@@ -12,6 +13,8 @@ import h05.loot.BasicInventory;
 import h05.loot.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public abstract class AbstractMiningRobot extends EquippedRobot implements Miner {
 
@@ -78,5 +81,18 @@ public abstract class AbstractMiningRobot extends EquippedRobot implements Miner
                 return;
             }
         }
+    }
+
+    public boolean isWallInFront() {
+        int x = getX();
+        int y = getY();
+        KarelWorld world = World.getGlobalWorld();
+        List<FieldEntity> entities = world.getField(x, y).getEntities();
+        for (FieldEntity entity : entities) {
+            if (entity instanceof Wall e && e.isHorizontal() == getDirection().isHorizontal()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

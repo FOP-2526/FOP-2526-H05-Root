@@ -5,13 +5,11 @@ import fopbot.World;
 import h05.WorldUtilities;
 import h05.gear.Tool;
 import h05.loot.Mineable;
-import h05.loot.Rock;
-import h05.loot.Tree;
 import h05.ui.InfoPopup;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-import java.awt.Point;
+import java.awt.*;
 
 public class MiningRobot extends AbstractMiningRobot implements Miner {
 
@@ -113,7 +111,7 @@ public class MiningRobot extends AbstractMiningRobot implements Miner {
         }
 
         Loot objectToMine = WorldUtilities.getLootAt(x, y);
-        if (objectToMine == null) {
+        if (objectToMine == null || isWallInFront()) {
             return;
         }
         Tool tool = getTool();

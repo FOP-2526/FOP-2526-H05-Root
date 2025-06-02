@@ -11,6 +11,7 @@ public interface Equipable {
     @DoNotTouch
     Equipment[] getEquipments();
 
+    @DoNotTouch
     int getNumberOfEquipments();
 
     @DoNotTouch

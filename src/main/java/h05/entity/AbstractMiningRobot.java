@@ -15,17 +15,26 @@ import h05.loot.BasicInventory;
 import h05.loot.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.util.List;
 
+@DoNotTouch
 public abstract class AbstractMiningRobot extends EquippedRobot implements Miner {
 
+    @DoNotTouch
     private Battery battery;
+
+    @DoNotTouch
     private Camera camera;
+
+    @DoNotTouch
     private @Nullable Tool tool;
 
+    @DoNotTouch
     private final Inventory inventory;
 
+    @DoNotTouch
     public AbstractMiningRobot(int x, int y, int equipmentCapacity, int inventoryCapacity) {
         super(x, y, equipmentCapacity);
         equip(new Battery());
@@ -34,26 +43,31 @@ public abstract class AbstractMiningRobot extends EquippedRobot implements Miner
         this.inventory = new BasicInventory(inventoryCapacity, BasicInventory.DEFAULT_SIZE);
     }
 
+    @DoNotTouch
     @Override
     public @NotNull Camera getCamera() {
         return camera;
     }
 
+    @DoNotTouch
     @Override
     public @NotNull Battery getBattery() {
         return battery;
     }
 
+    @DoNotTouch
     @Override
     public @Nullable Tool getTool() {
         return tool;
     }
 
+    @DoNotTouch
     @Override
     public @NotNull Inventory getInventory() {
         return inventory;
     }
 
+    @DoNotTouch
     @Override
     public void equip(@NotNull Equipment equipment) {
         if (equipment.isTool()) {
@@ -82,6 +96,7 @@ public abstract class AbstractMiningRobot extends EquippedRobot implements Miner
         }
     }
 
+    @DoNotTouch
     @Override
     public void pickGear() {
         KarelWorld world = World.getGlobalWorld();
@@ -94,6 +109,7 @@ public abstract class AbstractMiningRobot extends EquippedRobot implements Miner
         }
     }
 
+    @DoNotTouch
     public boolean isWallInFront() {
         int x = getX();
         int y = getY();

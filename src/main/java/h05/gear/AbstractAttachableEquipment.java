@@ -4,20 +4,20 @@ import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 @DoNotTouch
-public class AbstractAttachableEquipment extends AbstractEquipment implements AttachableEquipment {
+public abstract class AbstractAttachableEquipment extends AbstractEquipment implements AttachableEquipment {
 
     @DoNotTouch
-    private final String parent;
+    private final @NotNull String parent;
 
     @DoNotTouch
-    public AbstractAttachableEquipment(@NotNull String name, String parent) {
+    public AbstractAttachableEquipment(@NotNull String name, @NotNull String parent) {
         super(name);
         this.parent = parent;
     }
 
     @DoNotTouch
     @Override
-    public String getParent() {
+    public @NotNull String getParent() {
         return parent;
     }
 }

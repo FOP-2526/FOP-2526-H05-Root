@@ -1,11 +1,12 @@
 package h05.gear;
 
+import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 @DoNotTouch
 public interface AttachableEquipment extends Equipment {
 
-    String getParent();
+    @NotNull String getParent();
 
     @Override
     default boolean isUpgrade() {

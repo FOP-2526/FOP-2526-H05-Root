@@ -47,6 +47,9 @@ public class EquippedRobot extends Robot implements Equipable {
 
     @Override
     public void useEquipment(int index) {
+        if (usableEquipmentCount == 0) {
+            return;
+        }
         usableEquipments[index].use(getX(), getY(), getDirection());
     }
 

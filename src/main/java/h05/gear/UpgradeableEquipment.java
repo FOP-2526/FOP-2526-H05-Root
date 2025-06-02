@@ -8,7 +8,7 @@ import org.tudalgo.algoutils.student.annotation.SolutionOnly;
 public interface UpgradeableEquipment extends Equipment {
 
     @DoNotTouch
-   AttachableEquipment[] getUpgrades();
+    AttachableEquipment[] getUpgrades();
 
     @SolutionOnly
     int getNumberOfUpgrades();

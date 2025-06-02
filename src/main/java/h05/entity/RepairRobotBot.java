@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-import java.awt.*;
+import java.awt.Point;
 
 @DoNotTouch
 public class RepairRobotBot extends Robot implements Repairer {

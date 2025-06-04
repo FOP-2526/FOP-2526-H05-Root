@@ -1,26 +1,32 @@
 package h05.entity;
 
-import fopbot.FieldEntity;
-import fopbot.KarelWorld;
-import fopbot.World;
+import fopbot.*;
 import h05.WorldUtilities;
-import h05.gear.Battery;
-import h05.gear.Camera;
-import h05.gear.Equipment;
-import h05.gear.Tool;
+import h05.gear.*;
 import h05.loot.BasicInventory;
 import h05.loot.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
+import java.util.List;
+
+@DoNotTouch
 public abstract class AbstractMiningRobot extends EquippedRobot implements Miner {
 
+    @DoNotTouch
     private Battery battery;
+
+    @DoNotTouch
     private Camera camera;
+
+    @DoNotTouch
     private @Nullable Tool tool;
 
+    @DoNotTouch
     private final Inventory inventory;
 
+    @DoNotTouch
     public AbstractMiningRobot(int x, int y, int equipmentCapacity, int inventoryCapacity) {
         super(x, y, equipmentCapacity);
         equip(new Battery());
@@ -29,26 +35,31 @@ public abstract class AbstractMiningRobot extends EquippedRobot implements Miner
         this.inventory = new BasicInventory(inventoryCapacity, BasicInventory.DEFAULT_SIZE);
     }
 
+    @DoNotTouch
     @Override
     public @NotNull Camera getCamera() {
         return camera;
     }
 
+    @DoNotTouch
     @Override
     public @NotNull Battery getBattery() {
         return battery;
     }
 
+    @DoNotTouch
     @Override
     public @Nullable Tool getTool() {
         return tool;
     }
 
+    @DoNotTouch
     @Override
     public @NotNull Inventory getInventory() {
         return inventory;
     }
 
+    @DoNotTouch
     @Override
     public void equip(@NotNull Equipment equipment) {
         if (equipment.isTool()) {
@@ -64,10 +75,20 @@ public abstract class AbstractMiningRobot extends EquippedRobot implements Miner
             camera = (Camera) equipment;
             setEquipment(1, camera);
         } else {
+            if (equipment.isUpgrade()) {
+                AttachableEquipment attachableEquipment = (AttachableEquipment) equipment;
+                String parent = attachableEquipment.getParent();
+                for (Equipment e : getEquipments()) {
+                    if (e.getName().equals(parent)) {
+                        ((UpgradeableEquipment) e).attach(attachableEquipment);
+                    }
+                }
+            }
             super.equip(equipment);
         }
     }
 
+    @DoNotTouch
     @Override
     public void pickGear() {
         KarelWorld world = World.getGlobalWorld();
@@ -78,5 +99,26 @@ public abstract class AbstractMiningRobot extends EquippedRobot implements Miner
                 return;
             }
         }
+    }
+
+    public boolean isWallInFront() {
+        int x = getX();
+        int y = getY();
+        KarelWorld world = World.getGlobalWorld();
+        Direction direction = getDirection();
+        switch (direction) {
+            case LEFT:
+                x = x - 1;
+                break;
+            case DOWN:
+                y = y - 1;
+        }
+        List<FieldEntity> entities = world.getField(x, y).getEntities();
+        for (FieldEntity entity : entities) {
+            if (entity instanceof Wall e && e.isHorizontal() == direction.isHorizontal()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

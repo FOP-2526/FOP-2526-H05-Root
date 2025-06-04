@@ -139,8 +139,8 @@ public abstract class GameLoopBase {
     public void setup() {
         initWorld();
         setupWorld();
-        setupRobots();
         initRobots();
+        setupRobots();
         World.setVisible(true);
         inputHandler.install();
     }

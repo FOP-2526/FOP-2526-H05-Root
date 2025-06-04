@@ -37,7 +37,7 @@ public class FogDrawing extends SvgBasedDrawing<Fog> {
             String type = TYPES[i];
             String path = suffix + "_" + type + EXTENSION;
             Image image = PaintUtils.loadFieldImage(
-                Thread.currentThread().getContextClassLoader().getResourceAsStream(path),
+                getClass().getResourceAsStream(path),
                 0,
                 targetSize
             );
@@ -47,7 +47,7 @@ public class FogDrawing extends SvgBasedDrawing<Fog> {
 
     @Override
     public void draw(Graphics g, DrawingContext<? extends Fog> context) {
-        if(!GameConstants.FOG_VISIBILITY){
+        if (!GameConstants.FOG_VISIBILITY) {
             return;
         }
         super.draw(g, context);

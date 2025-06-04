@@ -86,8 +86,8 @@ public class GameLoop extends GameLoopBase {
         world.placeEntity(new Gear(3, 6, new MiningDetector()));
         world.placeEntity(new Gear(6, 6, new WallBreaker()));
         world.placeEntity(new Gear(5, 0, new WallBreaker()));
-        world.placeEntity(new Gear(2, 2, new TelephotoLens(2)));
-        world.placeEntity(new Gear(5, 3, new TelephotoLens(3)));
+        world.placeEntity(new Gear(2, 2, new TelephotoLens(1)));
+        world.placeEntity(new Gear(5, 3, new TelephotoLens(1)));
         world.placeEntity(new Gear(6, 4, new Powerbank(50)));
     }
 

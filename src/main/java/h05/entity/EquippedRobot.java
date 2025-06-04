@@ -4,17 +4,29 @@ import fopbot.Robot;
 import h05.gear.Equipment;
 import h05.gear.UsableEquipment;
 import org.jetbrains.annotations.NotNull;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.util.Arrays;
 
+@DoNotTouch
 public class EquippedRobot extends Robot implements Equipable {
 
+    @DoNotTouch
     private final Equipment[] equipments;
+
+    @DoNotTouch
     private final UsableEquipment[] usableEquipments;
+
+    @DoNotTouch
     protected int equipmentCount;
+
+    @DoNotTouch
     protected int usableEquipmentCount;
+
+    @DoNotTouch
     private final int capacity;
 
+    @DoNotTouch
     public EquippedRobot(int x, int y, int capacity) {
         super(x, y);
         this.equipments = new Equipment[capacity];
@@ -22,6 +34,7 @@ public class EquippedRobot extends Robot implements Equipable {
         this.capacity = capacity;
     }
 
+    @DoNotTouch
     @Override
     public Equipment[] getEquipments() {
         int length = equipmentCount + usableEquipmentCount;
@@ -31,25 +44,33 @@ public class EquippedRobot extends Robot implements Equipable {
         return equipments;
     }
 
+    @DoNotTouch
     public void setEquipment(int index, Equipment equipment) {
         equipments[index] = equipment;
     }
 
+    @DoNotTouch
     @Override
     public int getNumberOfEquipments() {
         return equipmentCount + usableEquipmentCount;
     }
 
+    @DoNotTouch
     @Override
     public UsableEquipment[] getUsableEquipments() {
         return Arrays.copyOf(usableEquipments, usableEquipmentCount);
     }
 
+    @DoNotTouch
     @Override
     public void useEquipment(int index) {
+        if (usableEquipmentCount == 0) {
+            return;
+        }
         usableEquipments[index].use(getX(), getY(), getDirection());
     }
 
+    @DoNotTouch
     @Override
     public void equip(@NotNull Equipment equipment) {
         if (equipmentCount + usableEquipmentCount == capacity) {
@@ -62,6 +83,7 @@ public class EquippedRobot extends Robot implements Equipable {
         }
     }
 
+    @DoNotTouch
     @Override
     public void unequip(int index) {
         int totalEquipments = equipmentCount + usableEquipmentCount;

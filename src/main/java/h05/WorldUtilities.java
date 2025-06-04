@@ -29,6 +29,9 @@ public final class WorldUtilities {
 
     @DoNotTouch
     public static void placeFog(int x, int y) {
+        if (getEntityAt(x, y, Fog.class) != null) {
+            return;
+        }
         World.getGlobalWorld().placeEntity(new Fog(x, y));
     }
 

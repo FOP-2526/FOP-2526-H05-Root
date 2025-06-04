@@ -10,7 +10,7 @@ import h05.loot.Rock;
 import h05.loot.Tree;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
-import java.awt.*;
+import java.awt.Image;
 import java.util.List;
 
 @DoNotTouch
@@ -18,7 +18,7 @@ public class LootDrawing extends SvgBasedDrawing<Loot> {
 
     @DoNotTouch
     public static final List<Class<? extends Mineable>> AVAILABLE_MINEABLES = List.of(
-            Tree.class, Rock.class
+        Tree.class, Rock.class
     );
 
     @DoNotTouch
@@ -32,9 +32,9 @@ public class LootDrawing extends SvgBasedDrawing<Loot> {
         Mineable mineable = entity.getMineable();
         Class<? extends Mineable> clazz = mineable.getClass();
         return getImage(
-                AVAILABLE_MINEABLES.indexOf(clazz)
-                        * MiningState.values().length
-                        + mineable.getState().ordinal()
+            AVAILABLE_MINEABLES.indexOf(clazz)
+                * MiningState.values().length
+                + mineable.getState().ordinal()
         );
     }
 
@@ -46,9 +46,9 @@ public class LootDrawing extends SvgBasedDrawing<Loot> {
             for (MiningState state : states) {
                 String path = clazz.getSimpleName() + "_" + state.name().toLowerCase() + EXTENSION;
                 Image image = PaintUtils.loadFieldImage(
-                        Thread.currentThread().getContextClassLoader().getResourceAsStream(path),
-                        0,
-                        targetSize
+                    getClass().getResourceAsStream(path),
+                    0,
+                    targetSize
                 );
                 setImage(AVAILABLE_MINEABLES.indexOf(clazz) * states.length + state.ordinal(), image);
             }

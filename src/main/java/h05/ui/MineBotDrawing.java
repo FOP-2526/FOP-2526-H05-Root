@@ -4,8 +4,8 @@ import fopbot.ColorProfile;
 import fopbot.Drawable;
 import fopbot.DrawingContext;
 import fopbot.PaintUtils;
-import h05.gear.Equipment;
 import h05.entity.MiningRobot;
+import h05.gear.Equipment;
 import h05.gear.Tool;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
@@ -88,6 +88,6 @@ public class MineBotDrawing implements Drawable<MiningRobot> {
     @DoNotTouch
     private Image loadEquipmentImage(Equipment equipment, DrawingContext<? extends MiningRobot> context, int rotationDegrees) {
         String path = equipment.getName() + (equipment instanceof Tool ? "" : "_" + equipment.getCondition().name().toLowerCase()) + ".svg";
-        return PaintUtils.loadFieldImage(Thread.currentThread().getContextClassLoader().getResourceAsStream(path), rotationDegrees, (int) scale(EQUIPMENT_SIZE_SCALE, context));
+        return PaintUtils.loadFieldImage(getClass().getResourceAsStream(path), rotationDegrees, (int) scale(EQUIPMENT_SIZE_SCALE, context));
     }
 }

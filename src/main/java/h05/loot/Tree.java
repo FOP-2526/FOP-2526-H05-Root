@@ -5,33 +5,29 @@ import fopbot.World;
 import h05.gear.Tool;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
+import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-@DoNotTouch
-public class Tree extends AbstractMinableEntity {
+public class Tree extends AbstractMinableEntity implements Mineable {
 
-    @DoNotTouch
+   // TODO Annotation fix @StudentImplementationRequired("H05.3")
     public Tree() {
         super("Tree");
     }
 
+    @StudentImplementationRequired("H05.3")
     @Override
     public boolean onMined(@Nullable Tool tool) {
         int reduce;
-        if (tool == null || !tool.getName().equals("Axe")) {
-            reduce = 5;
-        } else reduce = 10;
-        reduceDurability(reduce);
-        updateState();
-        return getDurability() <= 0;
-    }
-
-    private void updateState() {
-        int durability = getDurability();
-        if (durability < 100 && durability > 50) {
-            this.setState(MiningState.HALF_MINED);
-        } else if (durability <= 50 && durability > 0) {
-            this.setState(MiningState.FULLY_MINED);
+        if (tool == null) {
+            reduce = 3;
+        } else if (tool.getName().equals("Pickaxe")) {
+            reduce = 6;
+        } else {
+            // Axe
+            reduce = 12;
         }
-        World.getGlobalWorld().getGuiPanel().repaint();
+        reduceDurability(reduce);
+        World.getGlobalWorld().getGuiPanel().updateGui();
+        return getDurability() <= 0;
     }
 }

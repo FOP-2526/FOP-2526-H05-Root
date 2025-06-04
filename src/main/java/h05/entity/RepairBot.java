@@ -16,13 +16,13 @@ import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 import java.awt.Point;
 
 @DoNotTouch
-public class RepairRobotBot extends Robot implements Repairer {
+public class RepairBot extends Robot implements Repairer {
 
     @DoNotTouch
     private final int radius;
 
     @DoNotTouch
-    public RepairRobotBot(int x, int y, int radius) {
+    public RepairBot(int x, int y, int radius) {
         super(x, y);
         this.setRobotFamily(RobotFamily.SQUARE_RED);
         this.radius = radius;
@@ -34,8 +34,7 @@ public class RepairRobotBot extends Robot implements Repairer {
         return radius;
     }
 
-
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.5")
     @Override
     public @Nullable Point scan() {
         int x = getX();
@@ -59,7 +58,7 @@ public class RepairRobotBot extends Robot implements Repairer {
         return null;
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.5")
     @Override
     public void repair(@NotNull Point point) {
         setField(point.x, point.y);

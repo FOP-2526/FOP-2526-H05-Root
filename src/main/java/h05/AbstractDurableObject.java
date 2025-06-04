@@ -10,21 +10,22 @@ public abstract class AbstractDurableObject implements Durable {
     @SolutionOnly
     private int durability = 100;
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.1")
     @Override
     public int getDurability() {
         return durability;
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.1")
     @Override
     public void setDurability(int durability) {
-        this.durability = durability > 100 ? 0 : Math.max(0, durability);
+        this.durability = durability > 100 ? 100 : durability < 0 ? 0 : durability;
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.1")
     @Override
     public void reduceDurability(int amount) {
-        durability = Math.max(durability - amount, 0);
+        int newDurability = durability - amount;
+        durability = newDurability < 0 ? 0 : newDurability;
     }
 }

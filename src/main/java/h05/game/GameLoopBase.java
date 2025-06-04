@@ -9,7 +9,7 @@ import h05.entity.Fog;
 import h05.entity.Gear;
 import h05.entity.Loot;
 import h05.entity.Miner;
-import h05.entity.MiningRobot;
+import h05.entity.MineBot;
 import h05.entity.Repairer;
 import h05.ui.FogDrawing;
 import h05.ui.GearDrawing;
@@ -108,7 +108,7 @@ public abstract class GameLoopBase {
                     Map.entry(Wall.class, new WallFogDrawing()),
                     Map.entry(Gear.class, new GearDrawing()),
                     Map.entry(Loot.class, new LootDrawing()),
-                    Map.entry(MiningRobot.class, new MineBotDrawing()),
+                    Map.entry(MineBot.class, new MineBotDrawing()),
                     Map.entry(Fog.class, new FogDrawing())
                 ))
                 .build(Comparator.comparingInt(this::getDrawingPriority))

@@ -13,7 +13,7 @@ public class Battery extends AbstractUpgradeableEquipment {
         super("Battery");
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.2.2")
     @Override
     public void attach(@NotNull AttachableEquipment upgrade) {
         super.attach(upgrade);
@@ -23,7 +23,7 @@ public class Battery extends AbstractUpgradeableEquipment {
         }
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.2.2")
     @Override
     public void detach(@NotNull AttachableEquipment upgrade) {
         super.detach(upgrade);
@@ -33,7 +33,7 @@ public class Battery extends AbstractUpgradeableEquipment {
         }
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.2.2")
     @Override
     public void reduceDurability(int amount) {
         super.reduceDurability(amount);

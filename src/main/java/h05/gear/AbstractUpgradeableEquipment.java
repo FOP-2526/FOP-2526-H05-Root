@@ -30,19 +30,19 @@ public abstract class AbstractUpgradeableEquipment extends AbstractEquipment imp
         this(name, DEFAULT_CAPACITY);
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.2.1")
     @Override
     public AttachableEquipment[] getUpgrades() {
         return Arrays.copyOf(upgrades, numberOfUpgrades);
     }
 
-    @SolutionOnly
+    @StudentImplementationRequired("H05.2.1")
     @Override
     public int getNumberOfUpgrades() {
         return numberOfUpgrades;
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.2.1")
     @Override
     public void attach(@NotNull AttachableEquipment upgrade) {
         if (numberOfUpgrades == upgrades.length) {
@@ -51,7 +51,7 @@ public abstract class AbstractUpgradeableEquipment extends AbstractEquipment imp
         upgrades[numberOfUpgrades++] = upgrade;
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.2.1")
     @Override
     public void detach(@NotNull AttachableEquipment upgrade) {
         int i = 0;

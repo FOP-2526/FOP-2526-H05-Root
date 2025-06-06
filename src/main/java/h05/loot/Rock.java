@@ -4,34 +4,29 @@ package h05.loot;
 import fopbot.World;
 import h05.gear.Tool;
 import org.jetbrains.annotations.Nullable;
-import org.tudalgo.algoutils.student.annotation.DoNotTouch;
+import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-@DoNotTouch
-public class Rock extends AbstractMinableEntity {
+public class Rock extends AbstractMinableEntity implements Mineable {
 
-    @DoNotTouch
+    // TODO Annotation fix @StudentImplementationRequired("H05.3")
     public Rock() {
         super("Rock");
     }
 
+    @StudentImplementationRequired("H05.3")
     @Override
     public boolean onMined(@Nullable Tool tool) {
         int reduce;
-        if (tool == null || !tool.getName().equals("Pickaxe")) {
-            reduce = 5;
-        } else reduce = 10;
-        reduceDurability(reduce);
-        updateState();
-        return getDurability() <= 0;
-    }
-
-    private void updateState() {
-        int durability = getDurability();
-        if (durability < 100 && durability > 50) {
-            this.setState(MiningState.HALF_MINED);
-        } else if (durability <= 50 && durability > 0) {
-            this.setState(MiningState.FULLY_MINED);
+        if (tool == null) {
+            reduce = 2;
+        } else if (tool.getName().equals("Pickaxe")) {
+            reduce = 12;
+        } else {
+            // Pickaxe
+            reduce = 4;
         }
-        World.getGlobalWorld().getGuiPanel().repaint();
+        reduceDurability(reduce);
+        World.getGlobalWorld().getGuiPanel().updateGui();
+        return getDurability() <= 0;
     }
 }

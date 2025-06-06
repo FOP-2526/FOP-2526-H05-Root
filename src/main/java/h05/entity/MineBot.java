@@ -7,28 +7,34 @@ import h05.gear.Tool;
 import h05.loot.Mineable;
 import h05.ui.InfoPopup;
 import org.jetbrains.annotations.Nullable;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-import java.awt.*;
+import java.awt.Point;
 
-public class MiningRobot extends AbstractMiningRobot implements Miner {
+@DoNotTouch
+public class MineBot extends AbstractMiningRobot implements Miner {
 
+    @DoNotTouch
     public static final int EQUIPMENT_DEFAULT_CAPACITY = 5;
 
+    @DoNotTouch
     public static final int INVENTORY_DEFAULT_CAPACITY = 5;
 
-    public MiningRobot(int x, int y, int equipmentCapacity, int inventoryCapacity) {
+    @DoNotTouch
+    public MineBot(int x, int y, int equipmentCapacity, int inventoryCapacity) {
         super(x, y, equipmentCapacity, inventoryCapacity);
         for (Point point : getVision(getCamera().getVisibilityRange(), x, y)) {
             WorldUtilities.removeFog(point.x, point.y);
         }
     }
 
-    public MiningRobot(int x, int y) {
+    @DoNotTouch
+    public MineBot(int x, int y) {
         this(x, y, EQUIPMENT_DEFAULT_CAPACITY, INVENTORY_DEFAULT_CAPACITY);
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.4.1")
     private Point[] getVision(int visibilityRange, int x, int y) {
         int fieldCount = 0;
         for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
@@ -63,7 +69,7 @@ public class MiningRobot extends AbstractMiningRobot implements Miner {
         return points;
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.4.1")
     void updateVision(int visibilityRange, int oldX, int oldY, int newX, int newY) {
         Point[] oldPoints = getVision(visibilityRange, oldX, oldY);
         Point[] newPoints = getVision(visibilityRange, newX, newY);
@@ -80,11 +86,10 @@ public class MiningRobot extends AbstractMiningRobot implements Miner {
         }
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.4.2")
     @Override
     public void move() {
         if (isBatteryBroken()) {
-            System.out.println("Battery is broken");
             return;
         }
         int oldX = getX();
@@ -97,10 +102,10 @@ public class MiningRobot extends AbstractMiningRobot implements Miner {
         super.move();
 
         updateVision(visibilityRange, oldX, oldY, newX, newY);
-        getBattery().reduceDurability(getNumberOfEquipments() + 2);
+        getBattery().reduceDurability(getNumberOfEquipments());
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.4.3")
     @Override
     public void mine() {
         Direction direction = getDirection();
@@ -124,7 +129,7 @@ public class MiningRobot extends AbstractMiningRobot implements Miner {
         }
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H05.4.4")
     @Override
     public void handleKeyInput(@Nullable Direction direction, int selection, boolean isPickingGear, boolean isMining, boolean isInfo) {
         if (isMining) {

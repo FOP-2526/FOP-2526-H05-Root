@@ -4,7 +4,7 @@ import fopbot.ColorProfile;
 import fopbot.Drawable;
 import fopbot.DrawingContext;
 import fopbot.PaintUtils;
-import h05.entity.MiningRobot;
+import h05.entity.MineBot;
 import h05.gear.Equipment;
 import h05.gear.Tool;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
@@ -15,15 +15,15 @@ import java.awt.Image;
 import java.awt.Point;
 
 @DoNotTouch
-public class MineBotDrawing implements Drawable<MiningRobot> {
+public class MineBotDrawing implements Drawable<MineBot> {
 
     @DoNotTouch
     private static final double EQUIPMENT_SIZE_SCALE = 15d;
 
     @DoNotTouch
     @Override
-    public void draw(Graphics g, DrawingContext<? extends MiningRobot> context) {
-        final MiningRobot robot = context.entity();
+    public void draw(Graphics g, DrawingContext<? extends MineBot> context) {
+        final MineBot robot = context.entity();
 
         if (robot.isTurnedOff() && !context.world().isDrawTurnedOffRobots()) {
             return;
@@ -86,7 +86,7 @@ public class MineBotDrawing implements Drawable<MiningRobot> {
     }
 
     @DoNotTouch
-    private Image loadEquipmentImage(Equipment equipment, DrawingContext<? extends MiningRobot> context, int rotationDegrees) {
+    private Image loadEquipmentImage(Equipment equipment, DrawingContext<? extends MineBot> context, int rotationDegrees) {
         String path = equipment.getName() + (equipment instanceof Tool ? "" : "_" + equipment.getCondition().name().toLowerCase()) + ".svg";
         return PaintUtils.loadFieldImage(getClass().getResourceAsStream(path), rotationDegrees, (int) scale(EQUIPMENT_SIZE_SCALE, context));
     }

@@ -13,10 +13,15 @@ public interface Mineable extends Durable {
     @NotNull String getName();
 
     @DoNotTouch
-    @NotNull MiningState getState();
-
-    @DoNotTouch
-    void setState(@NotNull MiningState state);
+    default @NotNull MiningState getState() {
+        int durability = getDurability();
+        if (durability < 100 && durability > 50) {
+            return MiningState.HALF_MINED;
+        } else if (durability <= 50 && durability > 0) {
+            return MiningState.FULLY_MINED;
+        }
+        return MiningState.NOT_MINED;
+    }
 
     @DoNotTouch
     boolean onMined(@Nullable Tool tool);

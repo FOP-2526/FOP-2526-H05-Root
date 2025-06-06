@@ -13,15 +13,30 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * A popup dialog that displays information about the mining inventory.
+ */
 @DoNotTouch
 public class InfoPopup extends JDialog {
 
+    /**
+     * The names of the columns in the info table.
+     */
     @DoNotTouch
     private final String[] columnNames = {"Name", "Amount"};
 
+    /**
+     * The data to be displayed in the info table.
+     */
     @DoNotTouch
     private final Object[][] data;
 
+    /**
+     * Constructs a new InfoPopup dialog with the specified parent frame and data.
+     *
+     * @param parent the parent frame for this dialog
+     * @param data   the data to be displayed in the info table
+     */
     @DoNotTouch
     public InfoPopup(JFrame parent, Object[][] data) {
         super(parent, "Mining info", true);
@@ -37,6 +52,11 @@ public class InfoPopup extends JDialog {
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
+    /**
+     * Displays the inventory information in a popup dialog.
+     *
+     * @param inventory the inventory to display
+     */
     @DoNotTouch
     public static void showInfo(Inventory inventory) {
         Object[][] data = new Object[inventory.size()][2];
@@ -53,11 +73,21 @@ public class InfoPopup extends JDialog {
         infoPopup.setVisible(true);
     }
 
+    /**
+     * Returns the names of the columns in the info table.
+     *
+     * @return an array of column names
+     */
     @DoNotTouch
     public String[] getColumnNames() {
         return columnNames;
     }
 
+    /**
+     * Returns the data to be displayed in the info table.
+     *
+     * @return a 2D array of data where each row contains the name and amount of an item
+     */
     @DoNotTouch
     public Object[][] getData() {
         return data;

@@ -5,9 +5,17 @@ import h05.loot.Mineable;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
+/**
+ * Represents a loot block in the game world that can be mined by a miner.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public class Loot extends Block {
 
+    /**
+     * The mineable resource contained in this loot block.
+     */
     @DoNotTouch
     private final @NotNull Mineable mineable;
 
@@ -24,6 +32,11 @@ public class Loot extends Block {
         this.mineable = mineable;
     }
 
+    /**
+     * Returns the mineable resource contained in this loot block.
+     *
+     * @return the mineable resource
+     */
     @DoNotTouch
     public @NotNull Mineable getMineable() {
         return mineable;

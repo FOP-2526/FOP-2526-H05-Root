@@ -4,6 +4,11 @@ import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.SolutionOnly;
 
+/**
+ * Upgradeable equipment is a type of equipment that can have multiple upgrades attached to it.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public interface UpgradeableEquipment extends Equipment {
 

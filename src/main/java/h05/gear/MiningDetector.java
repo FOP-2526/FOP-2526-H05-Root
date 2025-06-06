@@ -8,21 +8,38 @@ import h05.entity.Loot;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
+/**
+ * Usable equipment that detects mining resources in the world in a specified radius.
+ */
 @DoNotTouch
 public class MiningDetector extends AbstractEquipment implements UsableEquipment {
 
+    /**
+     * The default visibility range for the mining detector.
+     */
     @DoNotTouch
     public static final int DEFAULT_VISIBILITY_RANGE = 3;
 
+    /**
+     * The radius within which the mining detector can detect resources.
+     */
     @DoNotTouch
     private final int radius;
 
+    /**
+     * Constructs a mining detector with the specified radius.
+     *
+     * @param radius the radius within which the mining detector can detect resources
+     */
     @DoNotTouch
     public MiningDetector(int radius) {
         super("MiningDetector");
         this.radius = radius;
     }
 
+    /**
+     * Constructs a mining detector with the default visibility range.
+     */
     @DoNotTouch
     public MiningDetector() {
         this(DEFAULT_VISIBILITY_RANGE);

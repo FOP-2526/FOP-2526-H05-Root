@@ -3,6 +3,7 @@ package h05.ui;
 import fopbot.DrawingContext;
 import fopbot.PaintUtils;
 import fopbot.SvgBasedDrawing;
+import h05.entity.Fog;
 import h05.entity.Gear;
 import h05.gear.Axe;
 import h05.gear.Battery;
@@ -20,9 +21,17 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import java.awt.Image;
 import java.util.List;
 
+/**
+ * Specifies the drawing of the {@link Gear} entity.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public class GearDrawing extends SvgBasedDrawing<Gear> {
 
+    /**
+     * The available equipment types that can be used by the {@link Gear} entity.
+     */
     @DoNotTouch
     public static final List<Class<? extends Equipment>> AVAILABLE_EQUIPMENTS = List.of(
         Battery.class,
@@ -33,12 +42,18 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
         WallBreaker.class
     );
 
+    /**
+     * The available tool types that can be used by the {@link Gear} entity.
+     */
     @DoNotTouch
     public static final List<Class<? extends Tool>> AVAILABLE_TOOLS = List.of(
         Axe.class,
         Pickaxe.class
     );
 
+    /**
+     * Constructs a new {@link GearDrawing} instance.
+     */
     @DoNotTouch
     public GearDrawing() {
         super(AVAILABLE_EQUIPMENTS.size() * EquipmentCondition.values().length + AVAILABLE_TOOLS.size());

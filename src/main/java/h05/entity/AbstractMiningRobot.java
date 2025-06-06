@@ -1,31 +1,64 @@
 package h05.entity;
 
-import fopbot.*;
+import fopbot.Direction;
+import fopbot.FieldEntity;
+import fopbot.KarelWorld;
+import fopbot.World;
 import h05.WorldUtilities;
-import h05.gear.*;
+import h05.gear.AttachableEquipment;
+import h05.gear.Battery;
+import h05.gear.Camera;
+import h05.gear.Equipment;
+import h05.gear.Tool;
+import h05.gear.UpgradeableEquipment;
 import h05.loot.BasicInventory;
 import h05.loot.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
-import java.util.List;
-
+/**
+ * An abstract implementation of a mining robot that can mine resources in the game world.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public abstract class AbstractMiningRobot extends EquippedRobot implements Miner {
 
+    /**
+     * The battery of the mining robot, which provides power for its operations.
+     */
     @DoNotTouch
     private Battery battery;
 
+    /**
+     * The camera of the mining robot, which allows it to see the world around it.
+     */
     @DoNotTouch
     private Camera camera;
 
+    /**
+     * The tool of the mining robot, which is used for mining resources.
+     * It can be {@code null} if the robot does not have a tool equipped.
+     */
     @DoNotTouch
     private @Nullable Tool tool;
 
+    /**
+     * The inventory of the mining robot, which is used to store mineable items.
+     */
     @DoNotTouch
     private final Inventory inventory;
 
+    /**
+     * Constructs a new {@link AbstractMiningRobot} instance with the specified position, equipment capacity, and
+     * inventory capacity.
+     *
+     * @param x                 the x-coordinate of the mining robot
+     * @param y                 the y-coordinate of the mining robot
+     * @param equipmentCapacity the capacity for the equipment of the mining robot
+     * @param inventoryCapacity the capacity for the inventory of the mining robot
+     */
     @DoNotTouch
     public AbstractMiningRobot(int x, int y, int equipmentCapacity, int inventoryCapacity) {
         super(x, y, equipmentCapacity);
@@ -101,6 +134,11 @@ public abstract class AbstractMiningRobot extends EquippedRobot implements Miner
         }
     }
 
+    /**
+     * Returns {@code true} if there is a wall in front of the robot, {@code false} otherwise.
+     *
+     * @return {@code true} if there is a wall in front of the robot, {@code false} otherwise
+     */
     public boolean isWallInFront() {
         int x = getX();
         int y = getY();
@@ -113,12 +151,6 @@ public abstract class AbstractMiningRobot extends EquippedRobot implements Miner
             case DOWN:
                 y = y - 1;
         }
-        List<FieldEntity> entities = world.getField(x, y).getEntities();
-        for (FieldEntity entity : entities) {
-            if (entity instanceof Wall e && e.isHorizontal() == direction.isHorizontal()) {
-                return true;
-            }
-        }
-        return false;
+        return WorldUtilities.getWallsAtPoint(x, y).length != 0;
     }
 }

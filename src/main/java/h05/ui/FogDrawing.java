@@ -11,12 +11,23 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import java.awt.Graphics;
 import java.awt.Image;
 
+/**
+ * Specifies the drawing of the {@link Fog} entity.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public class FogDrawing extends SvgBasedDrawing<Fog> {
 
+    /**
+     * The dark mode and light mode types for the fog drawing.
+     */
     @DoNotTouch
     private static final String[] TYPES = {"ln", "dm"};
 
+    /**
+     * Constructs a new {@link FogDrawing} instance.
+     */
     @DoNotTouch
     public FogDrawing() {
         super(TYPES.length);
@@ -45,6 +56,7 @@ public class FogDrawing extends SvgBasedDrawing<Fog> {
         }
     }
 
+    @DoNotTouch
     @Override
     public void draw(Graphics g, DrawingContext<? extends Fog> context) {
         if (!GameConstants.FOG_VISIBILITY) {

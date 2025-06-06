@@ -7,24 +7,51 @@ import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
 import java.util.Arrays;
 
+/**
+ * A base skeleton implementation of upgradeable equipment.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public abstract class AbstractUpgradeableEquipment extends AbstractEquipment implements UpgradeableEquipment {
 
+    /**
+     * The default capacity of the upgradeable equipment.
+     */
     @DoNotTouch
     private static final int DEFAULT_CAPACITY = 5;
 
+    /**
+     * The array of upgrades that can be attached to this equipment.
+     * The size of the array is defined by the capacity of the equipment.
+     */
     @DoNotTouch
     private final AttachableEquipment[] upgrades;
 
+    /**
+     * The number of upgrades that have been attached to this equipment.
+     * This is used to keep track of how many upgrades are currently attached.
+     */
     @SolutionOnly
     private int numberOfUpgrades;
 
+    /**
+     * Constructs an upgradeable equipment with the specified name and capacity.
+     *
+     * @param name     the name of the equipment
+     * @param capacity the maximum number of upgrades that can be attached to this equipment
+     */
     @DoNotTouch
     public AbstractUpgradeableEquipment(@NotNull String name, int capacity) {
         super(name);
         this.upgrades = new AttachableEquipment[capacity];
     }
 
+    /**
+     * Constructs an upgradeable equipment with the specified name and a default capacity.
+     *
+     * @param name the name of the equipment
+     */
     @DoNotTouch
     public AbstractUpgradeableEquipment(@NotNull String name) {
         this(name, DEFAULT_CAPACITY);

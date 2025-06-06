@@ -7,9 +7,17 @@ import h05.WorldUtilities;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
+/**
+ * Usable equipment that allows the miner to break walls in the game world.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public class WallBreaker extends AbstractEquipment implements UsableEquipment {
 
+    /**
+     * Constructs a new {@link WallBreaker} instance.
+     */
     @DoNotTouch
     public WallBreaker() {
         super("WallBreaker");

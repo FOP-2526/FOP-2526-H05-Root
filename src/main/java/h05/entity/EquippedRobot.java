@@ -8,24 +8,50 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.util.Arrays;
 
+/**
+ * Represents a robot that can be equipped with various types of equipment.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public class EquippedRobot extends Robot implements Equipable {
 
+    /**
+     * The equipment slots available for this robot.
+     */
     @DoNotTouch
     private final Equipment[] equipments;
 
+    /**
+     * The usable equipment slots available for this robot.
+     */
     @DoNotTouch
     private final UsableEquipment[] usableEquipments;
 
+    /**
+     * The number of non-usable equipments currently equipped.
+     */
     @DoNotTouch
     protected int equipmentCount;
 
+    /**
+     * The number of usable equipments currently equipped.
+     */
     @DoNotTouch
     protected int usableEquipmentCount;
 
+    /**
+     * The maximum capacity of the robot for equipment.
+     */
     @DoNotTouch
     private final int capacity;
 
+    /**
+     * Constructs a new {@link EquippedRobot} instance with the specified position and capacity.
+     * @param x the x-coordinate of the robot
+     * @param y the y-coordinate of the robot
+     * @param capacity the maximum number of equipment slots available for this robot
+     */
     @DoNotTouch
     public EquippedRobot(int x, int y, int capacity) {
         super(x, y);
@@ -44,6 +70,11 @@ public class EquippedRobot extends Robot implements Equipable {
         return equipments;
     }
 
+    /**
+     * Sets the equipment at the specified index.
+     * @param index the index of the equipment to set
+     * @param equipment the equipment to set at the specified index
+     */
     @DoNotTouch
     public void setEquipment(int index, Equipment equipment) {
         equipments[index] = equipment;

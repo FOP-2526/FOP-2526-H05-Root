@@ -12,15 +12,34 @@ import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
 import java.awt.Point;
 
+/**
+ * A basic implementation of a mining robot that can mine resources in the game world.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public class MineBot extends AbstractMiningRobot implements Miner {
 
+    /**
+     * The default capacity for the equipment of the mining bot.
+     */
     @DoNotTouch
     public static final int EQUIPMENT_DEFAULT_CAPACITY = 5;
 
+    /**
+     * The default capacity for the inventory of the mining bot.
+     */
     @DoNotTouch
     public static final int INVENTORY_DEFAULT_CAPACITY = 5;
 
+    /**
+     * Constructs a new {@link MineBot} instance with the specified position, equipment capacity, and inventory capacity.
+     *
+     * @param x                 the x-coordinate of the mining bot
+     * @param y                 the y-coordinate of the mining bot
+     * @param equipmentCapacity the capacity for the equipment of the mining bot
+     * @param inventoryCapacity the capacity for the inventory of the mining bot
+     */
     @DoNotTouch
     public MineBot(int x, int y, int equipmentCapacity, int inventoryCapacity) {
         super(x, y, equipmentCapacity, inventoryCapacity);
@@ -29,11 +48,27 @@ public class MineBot extends AbstractMiningRobot implements Miner {
         }
     }
 
+    /**
+     * Constructs a new {@link MineBot} instance with the specified position and default capacities for equipment and
+     * inventory.
+     *
+     * @param x the x-coordinate of the mining bot
+     * @param y the y-coordinate of the mining bot
+     */
     @DoNotTouch
     public MineBot(int x, int y) {
         this(x, y, EQUIPMENT_DEFAULT_CAPACITY, INVENTORY_DEFAULT_CAPACITY);
     }
 
+    /**
+     * Returns the vision of the mining bot based on its visibility range and position.
+     *
+     * @param visibilityRange the visibility range of the mining bot
+     * @param x               the x-coordinate of the mining bot
+     * @param y               the y-coordinate of the mining bot
+     *
+     * @return an array of points representing the vision of the mining bot
+     */
     @StudentImplementationRequired("H05.4.1")
     private Point[] getVision(int visibilityRange, int x, int y) {
         int fieldCount = 0;
@@ -69,6 +104,15 @@ public class MineBot extends AbstractMiningRobot implements Miner {
         return points;
     }
 
+    /**
+     * Updates the vision of the mining bot by removing fog from the old position and adding fog to the new position.
+     *
+     * @param visibilityRange the visibility range of the mining bot
+     * @param oldX            the old x-coordinate of the mining bot
+     * @param oldY            the old y-coordinate of the mining bot
+     * @param newX            the new x-coordinate of the mining bot
+     * @param newY            the new y-coordinate of the mining bot
+     */
     @StudentImplementationRequired("H05.4.1")
     void updateVision(int visibilityRange, int oldX, int oldY, int newX, int newY) {
         Point[] oldPoints = getVision(visibilityRange, oldX, oldY);

@@ -4,12 +4,27 @@ import h05.Durable;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
+/**
+ * An equipment which can enhance the entity status and capabilities whose it is attached to.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public interface Equipment extends Durable {
 
+    /**
+     * Returns the name of the equipment.
+     *
+     * @return
+     */
     @DoNotTouch
     @NotNull String getName();
 
+    /**
+     * Returns the condition of the equipment.
+     *
+     * @return the condition of the equipment
+     */
     @DoNotTouch
     default @NotNull EquipmentCondition getCondition() {
         int durability = getDurability();
@@ -23,12 +38,27 @@ public interface Equipment extends Durable {
         return EquipmentCondition.BROKEN;
     }
 
+    /**
+     * Returns {@code true} if the equipment is an upgrade, {@code false} otherwise.
+     *
+     * @return {@code true} if the equipment is an upgrade, {@code false} otherwise
+     */
     @DoNotTouch
     boolean isUpgrade();
 
+    /**
+     * Returns {@code true} if the equipment is usable, {@code false} otherwise.
+     *
+     * @return {@code true} if the equipment is usable, {@code false} otherwise
+     */
     @DoNotTouch
     boolean isUsable();
 
+    /**
+     * Returns {@code true} if the equipment is a tool, {@code false} otherwise.
+     *
+     * @return {@code true} if the equipment is a tool, {@code false} otherwise
+     */
     @DoNotTouch
     boolean isTool();
 }

@@ -14,9 +14,17 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 
+/**
+ * Specifies the drawing of the {@link MineBot} entity.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public class MineBotDrawing implements Drawable<MineBot> {
 
+    /**
+     * The equipment size scale factor.
+     */
     @DoNotTouch
     private static final double EQUIPMENT_SIZE_SCALE = 15d;
 
@@ -87,7 +95,12 @@ public class MineBotDrawing implements Drawable<MineBot> {
 
     @DoNotTouch
     private Image loadEquipmentImage(Equipment equipment, DrawingContext<? extends MineBot> context, int rotationDegrees) {
-        String path = equipment.getName() + (equipment instanceof Tool ? "" : "_" + equipment.getCondition().name().toLowerCase()) + ".svg";
-        return PaintUtils.loadFieldImage(getClass().getResourceAsStream(path), rotationDegrees, (int) scale(EQUIPMENT_SIZE_SCALE, context));
+        String path = equipment.getName()
+            + (equipment instanceof Tool ? "" : "_" + equipment.getCondition().name().toLowerCase()) + ".svg";
+        return PaintUtils.loadFieldImage(
+            getClass().getResourceAsStream(path),
+            rotationDegrees,
+            (int) scale(EQUIPMENT_SIZE_SCALE, context)
+        );
     }
 }

@@ -15,12 +15,27 @@ import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
 import java.awt.Point;
 
+/**
+ * A basic implementation of a  repair bot that can repair miners in the game world.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public class RepairBot extends Robot implements Repairer {
 
+    /**
+     * The radius of the repair bot, defining how far it can reach to repair entities.
+     */
     @DoNotTouch
     private final int radius;
 
+    /**
+     * Constructs a new {@link RepairBot} instance with the specified position and radius.
+     *
+     * @param x      the x-coordinate of the repair bot
+     * @param y      the y-coordinate of the repair bot
+     * @param radius the radius of the repair bot
+     */
     @DoNotTouch
     public RepairBot(int x, int y, int radius) {
         super(x, y);

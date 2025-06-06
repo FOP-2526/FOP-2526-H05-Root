@@ -6,9 +6,18 @@ import h05.gear.Tool;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
+/**
+ * Represents a rock which can be mined by a tool.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 public class Rock extends AbstractMinableEntity implements Mineable {
 
     // TODO Annotation fix @StudentImplementationRequired("H05.3")
+
+    /**
+     * Constructs a new {@link Rock} instance.
+     */
     public Rock() {
         super("Rock");
     }

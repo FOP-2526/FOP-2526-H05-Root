@@ -4,9 +4,18 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.SolutionOnly;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
+/**
+ * A skeleton implementation of the {@link Durable} interface used to simplify the implementation of
+ * durable objects in the game.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public abstract class AbstractDurableObject implements Durable {
 
+    /**
+     * The current durability of the object in percent.
+     */
     @SolutionOnly
     private int durability = 100;
 

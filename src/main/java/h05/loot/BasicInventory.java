@@ -1,5 +1,8 @@
 package h05.loot;
 
+import fopbot.FieldEntity;
+import fopbot.World;
+
 /**
  * A basic implementation of an inventory that can hold mineable items.
  *
@@ -111,6 +114,11 @@ public class BasicInventory implements Inventory {
         numberOfItems++;
         nextIndex++;
         size++;
+        for(FieldEntity entity: World.getGlobalWorld().getAllFieldEntities()){
+            if(entity instanceof Mineable mineable && mineable.getName().equals(itemName)) {
+                World.getGlobalWorld().removeEntity(entity);
+            }
+        }
         return true;
     }
 

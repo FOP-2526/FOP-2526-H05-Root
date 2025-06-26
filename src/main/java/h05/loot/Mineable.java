@@ -7,9 +7,10 @@ import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 /**
- * A mineable entity that can be mined with a tool.
+ * Represents an entity in the game world that can be mined using a {@link Tool}.
+ *
+ * @author Nhan Huynh, Nico Schnieders
  */
-@DoNotTouch
 public interface Mineable extends Durable {
 
     /**
@@ -18,12 +19,13 @@ public interface Mineable extends Durable {
      * @return the name of the mineable entity
      */
     @DoNotTouch
-    @NotNull String getName();
+    @NotNull
+    String getName();
 
     /**
-     * Returns the current mining state of the entity.
+     * Returns the current {@link MiningState} of this entity, based on its durability.
      *
-     * @return the current mining state
+     * @return the current mining state based on durability
      */
     @DoNotTouch
     default @NotNull MiningState getState() {
@@ -37,12 +39,16 @@ public interface Mineable extends Durable {
     }
 
     /**
-     * Performs the mining action on the entity and returns whether the entity is fully mined.
+     * Performs the mining action on this entity using the given {@link Tool}, if any.
      *
-     * @param tool the tool used for mining, can be {@code null} if no tool is used
+     * <p>This method applies the mining logic (e.g., reducing durability),
+     * and returns whether the entity is now fully mined.
      *
-     * @return {@code true} if the entity is fully mined, {@code false} otherwise
+     * @param tool the tool used for mining, or {@code null} if no tool is used
+     *
+     * @return {@code true} if the entity is fully mined after the action, {@code false} otherwise
      */
     @DoNotTouch
     boolean onMined(@Nullable Tool tool);
 }
+

@@ -22,8 +22,8 @@ public class Gear extends FieldEntity {
     /**
      * Constructs and initializes a gear entity at the specified {@code (x,y)} location in the
      *
-     * @param x         the X coordinate of the newly constructed gear entity
-     * @param y         the Y coordinate of the newly constructed gear entity
+     * @param x         the x-coordinate of the newly constructed gear entity
+     * @param y         the y-coordinate of the newly constructed gear entity
      * @param equipment the equipment contained in this gear entity
      */
     @DoNotTouch

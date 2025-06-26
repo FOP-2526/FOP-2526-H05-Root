@@ -1,6 +1,5 @@
 package h05.gear;
 
-import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 /**
@@ -8,8 +7,7 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
  *
  * @author Nhan Huynh, Nico Schnieders
  */
-@DoNotTouch
-public class Camera extends AbstractUpgradeableEquipment {
+public class Camera extends AbstractEquipment {
 
     /**
      * The default visibility range of the camera.
@@ -66,42 +64,5 @@ public class Camera extends AbstractUpgradeableEquipment {
     @DoNotTouch
     public void setVisibilityRange(int visibilityRange) {
         this.visibilityRange = visibilityRange;
-    }
-
-    @DoNotTouch
-    @Override
-    public void attach(@NotNull AttachableEquipment upgrade) {
-        super.attach(upgrade);
-        if (upgrade.getName().equals("TelephotoLens")) {
-            TelephotoLens lens = EquipmentUtilities.getAsTelephotoLens(upgrade);
-            setVisibilityRange(getVisibilityRange() + lens.getRangeEnhancement());
-        }
-    }
-
-    @Override
-    public void detach(@NotNull AttachableEquipment upgrade) {
-        super.detach(upgrade);
-        if (upgrade.getName().equals("TelephotoLens")) {
-            TelephotoLens lens = EquipmentUtilities.getAsTelephotoLens(upgrade);
-            setVisibilityRange(getVisibilityRange() - lens.getRangeEnhancement());
-        }
-    }
-
-    @Override
-    public void reduceDurability(int amount) {
-        super.reduceDurability(amount);
-        for (AttachableEquipment upgrade : getUpgrades()) {
-            if (upgrade.getName().equals("TelephotoLens")) {
-                TelephotoLens lens = EquipmentUtilities.getAsTelephotoLens(upgrade);
-                if (lens.getCondition() == EquipmentCondition.BROKEN) {
-                    continue;
-                }
-                int range = lens.getRangeEnhancement();
-                if (lens.getDurability() <= range) {
-                    visibilityRange -= range;
-                }
-                lens.reduceDurability(range);
-            }
-        }
     }
 }

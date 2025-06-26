@@ -1,37 +1,34 @@
 package h05;
 
-import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.SolutionOnly;
-import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
 /**
- * A skeleton implementation of the {@link Durable} interface used to simplify the implementation of
- * durable objects in the game.
+ * A skeletal implementation of the {@link Durable} interface, intended to simplify
+ * the creation of durable objects within the game.
+ *
+ * <p>Subclasses can focus on game-specific behavior without needing to reimplement
+ * durability management.
  *
  * @author Nhan Huynh, Nico Schnieders
  */
-@DoNotTouch
-public abstract class AbstractDurableObject implements Durable {
+@SolutionOnly
+public class AbstractDurableObject implements Durable {
 
     /**
-     * The current durability of the object in percent.
+     * The current durability of the object in percent. Guaranteed to be in the range [0, 100].
      */
-    @SolutionOnly
     private int durability = 100;
 
-    @StudentImplementationRequired("H05.1")
     @Override
     public int getDurability() {
         return durability;
     }
 
-    @StudentImplementationRequired("H05.1")
     @Override
     public void setDurability(int durability) {
         this.durability = durability > 100 ? 100 : durability < 0 ? 0 : durability;
     }
 
-    @StudentImplementationRequired("H05.1")
     @Override
     public void reduceDurability(int amount) {
         int newDurability = durability - amount;

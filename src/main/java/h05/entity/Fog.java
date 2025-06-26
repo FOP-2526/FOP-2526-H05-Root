@@ -15,8 +15,8 @@ public class Fog extends FieldEntity {
      * Constructs and initializes a fog entity at the specified {@code (x,y)} location in the
      * coordinate space.
      *
-     * @param x the X coordinate of the newly constructed fog entity
-     * @param y the Y coordinate of the newly constructed fog entity
+     * @param x the x-coordinate of the newly constructed fog entity
+     * @param y the y-coordinate of the newly constructed fog entity
      */
     @DoNotTouch
     public Fog(int x, int y) {

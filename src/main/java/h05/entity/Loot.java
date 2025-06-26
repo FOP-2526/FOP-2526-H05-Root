@@ -23,8 +23,8 @@ public class Loot extends Block {
      * Constructs and initializes a field entity at the specified {@code (x,y)} location in the
      * coordinate space.
      *
-     * @param x the X coordinate of the newly constructed field entity
-     * @param y the Y coordinate of the newly constructed field entity
+     * @param x the x-coordinate of the newly constructed field entity
+     * @param y the y-coordinate of the newly constructed field entity
      */
     @DoNotTouch
     public Loot(int x, int y, @NotNull Mineable mineable) {

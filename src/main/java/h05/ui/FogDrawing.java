@@ -48,9 +48,9 @@ public class FogDrawing extends SvgBasedDrawing<Fog> {
             String type = TYPES[i];
             String path = suffix + "_" + type + EXTENSION;
             Image image = PaintUtils.loadFieldImage(
-                getClass().getResourceAsStream(path),
-                0,
-                targetSize
+                    getClass().getResourceAsStream(path),
+                    0,
+                    targetSize
             );
             setImage(i, image);
         }

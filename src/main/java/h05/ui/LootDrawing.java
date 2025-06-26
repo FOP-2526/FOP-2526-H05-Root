@@ -3,12 +3,9 @@ package h05.ui;
 import fopbot.DrawingContext;
 import fopbot.PaintUtils;
 import fopbot.SvgBasedDrawing;
-import h05.entity.Fog;
 import h05.entity.Loot;
 import h05.loot.Mineable;
 import h05.loot.MiningState;
-import h05.loot.Rock;
-import h05.loot.Tree;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.awt.Image;
@@ -27,7 +24,7 @@ public class LootDrawing extends SvgBasedDrawing<Loot> {
      */
     @DoNotTouch
     public static final List<Class<? extends Mineable>> AVAILABLE_MINEABLES = List.of(
-        Tree.class, Rock.class
+
     );
 
     /**

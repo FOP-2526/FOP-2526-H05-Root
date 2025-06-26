@@ -1,8 +1,5 @@
 package h05.loot;
 
-import fopbot.World;
-import h05.entity.Loot;
-
 /**
  * An inventory for storing mineable items with a defined capacity.
  *
@@ -30,26 +27,6 @@ public interface Inventory {
      * @return the number of items in the inventory
      */
     int numberOfItems();
-
-    /**
-     * Adds a mineable item to the inventory if there is enough space.
-     *
-     * @param item the mineable item to add
-     * @param loot the loot to be added
-     *
-     * @return {@code true} if the item was added, {@code false} otherwise
-     */
-    default boolean add(Loot loot) {
-        if (loot.getMineable().getState() != MiningState.FULLY_MINED) {
-            return false;
-        }
-        if (add(loot.getMineable())) {
-            World.getGlobalWorld().removeEntity(loot);
-            return true;
-        }
-        return false;
-
-    }
 
     /**
      * Adds a mineable item to the inventory if there is enough space.

@@ -1,59 +1,92 @@
 package h05.entity;
 
 import fopbot.Direction;
-import h05.game.TickBased;
+import h05.game.GameSettings;
 import h05.gear.Battery;
 import h05.gear.Camera;
 import h05.gear.EquipmentCondition;
 import h05.gear.Tool;
-import h05.loot.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 /**
- * A miner is an extension of the FOPBot robot which can equip itself to improve its status and capabilities.
- * Also, it can mine resources.
+ * A miner is an extension of the FOPBot robot that can equip various tools and devices
+ * to enhance its capabilities and status.
+ *
+ * <p>In addition to movement and interaction, a miner can:
+ * <ul>
+ *     <li>Equip itself with tools and equipments to enhance its capabilites and status</li>
+ *     <li>Actively use tools to perform actions</li>
+ *     <li>Mine resources in the game world</li>
+ * </ul>
+ *
+ * <p>This interface builds on the standard FOPBot functionality by adding modular equipment support
+ * and mining-specific behavior.
  *
  * @author Nhan Huynh, Nico Schnieders
  */
-@DoNotTouch
-public interface Miner extends Equipable, TickBased {
+
+public interface Miner {
 
     /**
-     * Returns the battery of the miner.
+     * Provides access to the game settings associated with this miner.
      *
-     * @return the battery of the miner
+     * @return the current game settings
+     */
+    @NotNull GameSettings getGameSettings();
+
+    /**
+     * Returns the battery attached to this miner.
+     *
+     * @return the non-null battery of this miner
      */
     @DoNotTouch
-    @NotNull Battery getBattery();
+    @NotNull
+    Battery getBattery();
 
     /**
-     * Returns the camera of the miner.
+     * Returns the camera attached to this miner.
      *
-     * @return the camera of the miner
+     * @return the non-null camera of this miner
      */
     @DoNotTouch
-    @NotNull Camera getCamera();
+    @NotNull
+    Camera getCamera();
 
     /**
-     * Returns the tool of the miner if it has one, or {@code null} if it does not.
+     * Returns the currently attached tool, or {@code null} if no tool is equipped.
      *
-     * @return the tool of the miner, or {@code null} if it does not have one
+     * @return the currently equipped {@link Tool}, or {@code null} if none
      */
     @DoNotTouch
-    @Nullable Tool getTool();
+    @Nullable
+    Tool getTool();
 
     /**
-     * Returns the inventory of the miner, which is used to store mineable items.
+     * Returns the current x-coordinate of the miner's position.
      *
-     * @return the inventory of the miner
+     * @return the x-coordinate
      */
-    @DoNotTouch
-    @NotNull Inventory getInventory();
+    int getX();
 
     /**
-     * Returns {@code true} if the camera is broken, {@code false} otherwise.
+     * Returns the current y-coordinate of the miner's position.
+     *
+     * @return the y-coordinate
+     */
+    int getY();
+
+    /**
+     * Returns the direction the miner is currently facing.
+     *
+     * @return the non-null facing {@link Direction} of the miner
+     */
+    @NotNull
+    Direction getDirection();
+
+    /**
+     * Checks whether the camera is broken (i.e., condition is {@link EquipmentCondition#BROKEN}).
      *
      * @return {@code true} if the camera is broken, {@code false} otherwise
      */
@@ -63,7 +96,7 @@ public interface Miner extends Equipable, TickBased {
     }
 
     /**
-     * Returns {@code true} if the battery is broken, {@code false} otherwise.
+     * Checks whether the battery is broken (i.e., condition is {@link EquipmentCondition#BROKEN}).
      *
      * @return {@code true} if the battery is broken, {@code false} otherwise
      */
@@ -73,13 +106,13 @@ public interface Miner extends Equipable, TickBased {
     }
 
     /**
-     * Mines the resources at the current direction in front of the miner if its possible.
+     * Mines the resources at the current direction in front of the miner if it is possible.
      */
     @DoNotTouch
     void mine();
 
     /**
-     * Picks up the gear at the current direction in front of the miner if its possible.
+     * Picks up the gear at the current direction in front of the miner if it is possible.
      */
     @DoNotTouch
     void pickGear();

@@ -1,5 +1,6 @@
 package h05.entity;
 
+import h05.game.GameSettings;
 import h05.game.TickBased;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,6 +17,13 @@ import java.awt.Point;
 public interface Repairer extends TickBased {
 
     /**
+     * Provides access to the game settings associated with this repairer.
+     *
+     * @return the current game settings
+     */
+    @NotNull GameSettings getGameSettings();
+
+    /**
      * Returns the radius of the repairer, which defines how far it can reach to repair entities.
      *
      * @return the radius of the repairer
@@ -29,7 +37,8 @@ public interface Repairer extends TickBased {
      * @return the position of the entity that needs repair, or {@code null} if no such entity is found
      */
     @DoNotTouch
-    @Nullable Point scan();
+    @Nullable
+    Point scan();
 
     /**
      * Repairs the entity at the specified point.

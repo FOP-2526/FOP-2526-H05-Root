@@ -9,13 +9,12 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
  *
  * @author Nhan Huynh, Nico Schnieders
  */
-@DoNotTouch
 public interface Equipment extends Durable {
 
     /**
      * Returns the name of the equipment.
      *
-     * @return
+     * @return the name of the equipment
      */
     @DoNotTouch
     @NotNull String getName();
@@ -37,28 +36,4 @@ public interface Equipment extends Durable {
         }
         return EquipmentCondition.BROKEN;
     }
-
-    /**
-     * Returns {@code true} if the equipment is an upgrade, {@code false} otherwise.
-     *
-     * @return {@code true} if the equipment is an upgrade, {@code false} otherwise
-     */
-    @DoNotTouch
-    boolean isUpgrade();
-
-    /**
-     * Returns {@code true} if the equipment is usable, {@code false} otherwise.
-     *
-     * @return {@code true} if the equipment is usable, {@code false} otherwise
-     */
-    @DoNotTouch
-    boolean isUsable();
-
-    /**
-     * Returns {@code true} if the equipment is a tool, {@code false} otherwise.
-     *
-     * @return {@code true} if the equipment is a tool, {@code false} otherwise
-     */
-    @DoNotTouch
-    boolean isTool();
 }

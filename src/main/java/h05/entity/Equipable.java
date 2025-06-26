@@ -6,37 +6,49 @@ import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 /**
- * An entity that can be equipped with various types of equipment.
+ * Represents an entity that can be equipped with various types of {@link Equipment}.
+ *
+ * <p>Typical examples include characters, units, or machines that can carry
+ * and use tools, weapons, or other gear. This interface provides methods to manage
+ * the equipment slots of such an entity, including equipping, unequipping, and using
+ * equipment.
+ *
+ * <p>Some equipment may be {@link UsableEquipment}, allowing the entity to actively use them.
  */
 @DoNotTouch
 public interface Equipable {
 
     /**
-     * Returns the number of equipments that this entity currently has.
+     * Returns the maximum number of equipment slots available for this entity.
+     * @return the maximum number of equipment slots
+     */
+    int capacity();
+    /**
+     * Returns an array containing all equipment currently equipped by this entity.
      *
-     * @return the number of equipments that this entity currently has.
+     * @return a non-null array of currently equipped {@link Equipment} objects
      */
     @DoNotTouch
     Equipment[] getEquipments();
 
     /**
-     * Returns the number of equipments that this entity currently has.
+     * Returns the total number of equipment items currently equipped by this entity.
      *
-     * @return the number of equipments that this entity currently has
+     * @return the number of equipped items
      */
     @DoNotTouch
-    int getNumberOfEquipments();
+    int numberOfEquipments();
 
     /**
-     * Returns the number of usable equipments that this entity currently has.
+     * Returns an array containing all {@link UsableEquipment} currently equipped by this entity.
      *
-     * @return the number of usable equipments that this entity currently has
+     * @return a non-null array of {@link UsableEquipment} currently equipped
      */
     @DoNotTouch
     UsableEquipment[] getUsableEquipments();
 
     /**
-     * Uses the equipment at the specified index.
+     * Uses the usable equipment at the given index.
      *
      * @param index the index of the equipment to use
      */
@@ -44,19 +56,22 @@ public interface Equipable {
     void useEquipment(int index);
 
     /**
-     * Equips the specified equipment to this entity. If the entity already has the maximum amount of equipment,
-     * no action is taken.
+     * Equips the specified {@link Equipment} to this entity.
      *
-     * @param equipment the equipment to equip
+     * <p>If the entity already has the maximum allowed number of equipment items,
+     * the method does nothing.
+     *
+     * @param equipment the equipment to equip; must not be {@code null}
      */
     @DoNotTouch
     void equip(@NotNull Equipment equipment);
 
     /**
-     * Unequips the equipment at the specified index.
+     * Unequips the equipment located at the specified index.
      *
-     * @param index the index of the equipment to unequip
+     * @param index the index of the equipment to remove
      */
     @DoNotTouch
     void unequip(int index);
 }
+

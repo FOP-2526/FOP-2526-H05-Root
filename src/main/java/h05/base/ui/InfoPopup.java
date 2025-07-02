@@ -1,7 +1,7 @@
 package h05.base.ui;
 
 import fopbot.World;
-import h05.mineable.Inventory;
+import h05.base.mineable.Inventory;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.awt.BorderLayout;

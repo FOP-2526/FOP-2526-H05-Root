@@ -1,5 +1,6 @@
-package h05.mineable;
+package h05.base.mineable;
 
+import h05.mineable.Mineable;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 

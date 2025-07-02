@@ -1,8 +1,9 @@
-package h05.mineable;
+package h05.base.mineable;
 
 import fopbot.FieldEntity;
 import fopbot.World;
 import h05.base.entity.Loot;
+import h05.mineable.Mineable;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 

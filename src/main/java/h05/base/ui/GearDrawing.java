@@ -3,7 +3,7 @@ package h05.base.ui;
 import fopbot.DrawingContext;
 import fopbot.PaintUtils;
 import fopbot.SvgBasedDrawing;
-import h05.Tool;
+import h05.equipment.Tool;
 import h05.base.entity.Gear;
 import h05.equipment.Axe;
 import h05.equipment.Battery;

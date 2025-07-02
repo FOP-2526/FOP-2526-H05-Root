@@ -1,7 +1,7 @@
 package h05.entity;
 
 import fopbot.Direction;
-import h05.Tool;
+import h05.equipment.Tool;
 import h05.base.game.GameSettings;
 import h05.base.game.TickBased;
 import h05.equipment.Battery;

@@ -1,6 +1,6 @@
 package h05.mineable;
 
-import h05.Tool;
+import h05.equipment.Tool;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;

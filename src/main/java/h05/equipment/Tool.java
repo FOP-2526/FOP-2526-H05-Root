@@ -1,6 +1,4 @@
-package h05;
-
-import h05.equipment.Equipment;
+package h05.equipment;
 
 public interface Tool extends Equipment {
 

@@ -1,6 +1,8 @@
 package h05.entity;
 
+import fopbot.Direction;
 import fopbot.Robot;
+import fopbot.RobotFamily;
 import fopbot.World;
 import h05.base.game.BasicGameSettings;
 import h05.base.game.GameSettings;
@@ -23,7 +25,7 @@ public abstract class AbstractRepairBot extends Robot implements Repairer {
     private final int radius;
 
     public AbstractRepairBot(int x, int y, int radius) {
-        super(x, y);
+        super(x, y, Direction.UP, 0, RobotFamily.SQUARE_RED);
         this.radius = radius;
     }
 

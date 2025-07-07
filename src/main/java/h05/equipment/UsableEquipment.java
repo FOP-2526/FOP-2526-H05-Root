@@ -6,4 +6,14 @@ import org.jetbrains.annotations.NotNull;
 public interface UsableEquipment extends Equipment {
 
     void use(@NotNull Miner miner);
+
+    @Override
+    default boolean isUsable() {
+        return true;
+    }
+
+    @Override
+    default boolean isTool() {
+        return false;
+    }
 }

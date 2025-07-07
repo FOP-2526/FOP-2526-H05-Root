@@ -37,4 +37,14 @@ public class Camera extends AbstractEquipment {
     public void setVisibilityRange(int visibilityRange) {
         this.visibilityRange = visibilityRange < 1 ? 1 : visibilityRange;
     }
+
+    @Override
+    public boolean isUsable() {
+        return false;
+    }
+
+    @Override
+    public boolean isTool() {
+        return false;
+    }
 }

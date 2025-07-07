@@ -3,6 +3,10 @@ package h05.base.game;
 import fopbot.FieldEntity;
 import fopbot.Wall;
 import h05.entity.Miner;
+import h05.equipment.Battery;
+import h05.equipment.Camera;
+import h05.equipment.Equipment;
+import h05.equipment.Tool;
 import h05.equipment.UsableEquipment;
 import h05.mineable.Mineable;
 import org.jetbrains.annotations.NotNull;
@@ -18,9 +22,21 @@ public interface GameSettings {
     @DoNotTouch
     void removeFog(int x, int y);
 
+    @Nullable Battery toBattery(Equipment equipment);
+
+    @Nullable Camera toCamery(Equipment equipment);
+
+    @Nullable Tool toTool(Equipment equipment);
+
+    @Nullable UsableEquipment toUsableEquipment(Equipment equipment);
+
     @Nullable Mineable getMineableAt(int x, int y);
 
     @Nullable UsableEquipment getUsableEquipmentAt(int x, int y);
+
+    @Nullable Equipment getAndRemoveGearAt(int x, int y);
+
+    @Nullable Mineable getLootAt(int x, int y);
 
     @Nullable Miner getMinerAt(int x, int y);
 
@@ -37,4 +53,6 @@ public interface GameSettings {
     @NotNull Wall[] getWallsAt(int x, int y);
 
     void removeEntity(@NotNull FieldEntity entity);
+
+    void update();
 }

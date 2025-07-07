@@ -15,6 +15,7 @@ import h05.base.ui.LootDrawing;
 import h05.base.ui.WallFogDrawing;
 import h05.entity.Miner;
 import h05.entity.Repairer;
+import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.awt.Point;
@@ -43,6 +44,9 @@ public abstract class GameLoopBase {
 
     @DoNotTouch
     private final Timer loop = new Timer();
+
+    @DoNotTouch
+    private final @NotNull GameSettings settings = new BasicGameSettings();
 
     private final TimerTask loopTask = new TimerTask() {
         @Override
@@ -165,5 +169,9 @@ public abstract class GameLoopBase {
     @DoNotTouch
     public int getTickRate() {
         return tickRate;
+    }
+
+    public @NotNull GameSettings getGameSettings() {
+        return settings;
     }
 }

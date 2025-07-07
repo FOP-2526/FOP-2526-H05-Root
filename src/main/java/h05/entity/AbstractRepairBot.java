@@ -20,12 +20,13 @@ import java.awt.Point;
 @SolutionOnly
 public abstract class AbstractRepairBot extends Robot implements Repairer {
 
-    private final @NotNull GameSettings settings = new BasicGameSettings();
+    private final @NotNull GameSettings settings;
 
     private final int radius;
 
-    public AbstractRepairBot(int x, int y, int radius) {
+    public AbstractRepairBot(int x, int y, @NotNull GameSettings settings, int radius) {
         super(x, y, Direction.UP, 0, RobotFamily.SQUARE_RED);
+        this.settings = settings;
         this.radius = radius;
     }
 

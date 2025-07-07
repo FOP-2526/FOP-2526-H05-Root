@@ -1,6 +1,5 @@
 package h05.base.game;
 
-import fopbot.Direction;
 import fopbot.FieldEntity;
 import fopbot.Wall;
 import fopbot.World;
@@ -8,6 +7,10 @@ import h05.base.entity.Fog;
 import h05.base.entity.Gear;
 import h05.base.entity.Loot;
 import h05.entity.Miner;
+import h05.equipment.Battery;
+import h05.equipment.Camera;
+import h05.equipment.Equipment;
+import h05.equipment.Tool;
 import h05.equipment.UsableEquipment;
 import h05.mineable.Mineable;
 import org.jetbrains.annotations.NotNull;
@@ -63,6 +66,26 @@ public final class BasicGameSettings implements GameSettings {
         World.getGlobalWorld().removeEntity(x, y, Fog.class);
     }
 
+    @Override
+    public @Nullable Battery toBattery(Equipment equipment) {
+        return equipment instanceof Battery battery ? battery : null;
+    }
+
+    @Override
+    public @Nullable Camera toCamery(Equipment equipment) {
+        return equipment instanceof Camera camera ? camera : null;
+    }
+
+    @Override
+    public @Nullable Tool toTool(Equipment equipment) {
+        return equipment instanceof Tool tool ? tool : null;
+    }
+
+    @Override
+    public @Nullable UsableEquipment toUsableEquipment(Equipment equipment) {
+        return equipment instanceof UsableEquipment usableEquipment ? usableEquipment : null;
+    }
+
     @DoNotTouch
     @Override
     public @Nullable Mineable getMineableAt(int x, int y) {
@@ -77,6 +100,22 @@ public final class BasicGameSettings implements GameSettings {
         return gear == null ?
             null : gear.getEquipment() instanceof UsableEquipment usableEquipment ?
             usableEquipment : null;
+    }
+
+    @Override
+    public @Nullable Equipment getAndRemoveGearAt(int x, int y) {
+        Gear gear = getEntityAt(x, y, Gear.class);
+        if (gear != null) {
+            removeEntity(gear);
+            return gear.getEquipment();
+        }
+        return null;
+    }
+
+    @Override
+    public @Nullable Mineable getLootAt(int x, int y) {
+        Loot loot = getEntityAt(x, y, Loot.class);
+        return loot != null ? loot.getMineable() : null;
     }
 
     @DoNotTouch
@@ -94,5 +133,10 @@ public final class BasicGameSettings implements GameSettings {
     @Override
     public void removeEntity(@NotNull FieldEntity entity) {
         World.getGlobalWorld().removeEntity(entity);
+    }
+
+    @Override
+    public void update() {
+        World.getGlobalWorld().getGuiPanel().updateGui();
     }
 }

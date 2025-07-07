@@ -1,5 +1,6 @@
 package h05.entity;
 
+import h05.base.game.GameSettings;
 import h05.equipment.Equipment;
 import h05.equipment.UsableEquipment;
 import org.jetbrains.annotations.NotNull;
@@ -13,17 +14,14 @@ public interface Equipable {
     @DoNotTouch
     UsableEquipment[] getUsableEquipments();
 
+    int getNumberOfEquipments();
+
     @DoNotTouch
-    void useEquipment(int index);
+    void use(int index);
 
     @DoNotTouch
     void equip(@NotNull Equipment equipment);
 
-    /**
-     * Unequips the equipment at the specified index.
-     *
-     * @param index the index of the equipment to unequip
-     */
     @DoNotTouch
     void unequip(int index);
 }

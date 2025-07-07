@@ -5,6 +5,8 @@ import fopbot.World;
 import h05.base.entity.Gear;
 import h05.base.entity.Loot;
 import h05.base.game.GameLoopBase;
+import h05.base.game.GameSettings;
+import h05.entity.MineBot;
 import h05.entity.Miner;
 import h05.entity.Repairer;
 import h05.entity.TeleportRepairBot;
@@ -96,8 +98,9 @@ public class GameLoop extends GameLoopBase {
     @StudentImplementationRequired
     @Override
     protected void initRobots() {
-        // Miner miner = new MineBot(1, 0);
-        Repairer repairer1 = new TeleportRepairBot(3, 2, 2);
-        Repairer repairer2 = new WallBreakerRepairBot(4, 3, 2);
+        GameSettings settings = getGameSettings();
+        Miner miner = new MineBot(2, 2, settings);
+        Repairer repairer1 = new TeleportRepairBot(3, 2, settings, 2);
+        Repairer repairer2 = new WallBreakerRepairBot(4, 3, settings, 2);
     }
 }

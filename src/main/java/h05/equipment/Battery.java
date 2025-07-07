@@ -17,4 +17,14 @@ public class Battery extends AbstractEquipment {
         }
         setDurability(getDurability() + value);
     }
+
+    @Override
+    public boolean isUsable() {
+        return false;
+    }
+
+    @Override
+    public boolean isTool() {
+        return false;
+    }
 }

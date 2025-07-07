@@ -1,6 +1,7 @@
 package h05.entity;
 
 import fopbot.Direction;
+import h05.base.mineable.Inventory;
 import h05.equipment.Tool;
 import h05.base.game.GameSettings;
 import h05.base.game.TickBased;
@@ -11,11 +12,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
+import java.awt.Point;
+
 @DoNotTouch
 public interface Miner extends TickBased, Equipable {
 
     @DoNotTouch
     @NotNull GameSettings getGameSettings();
+
+    @DoNotTouch
+    @NotNull
+    Point[] getVision(int x, int y);
+
+    @DoNotTouch
+    void updateVision(int oldX, int oldY, int newX, int newY);
 
     @DoNotTouch
     @NotNull
@@ -28,6 +38,8 @@ public interface Miner extends TickBased, Equipable {
     @DoNotTouch
     @Nullable
     Tool getTool();
+
+    Inventory getInventory();
 
     @DoNotTouch
     int getX();

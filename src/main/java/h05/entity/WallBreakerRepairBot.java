@@ -10,8 +10,8 @@ import java.awt.Point;
 
 public class WallBreakerRepairBot extends AbstractRepairBot {
 
-    public WallBreakerRepairBot(int x, int y, int radius) {
-        super(x, y, radius);
+    public WallBreakerRepairBot(int x, int y, GameSettings settings, int radius) {
+        super(x, y, settings, radius);
     }
 
     @SolutionOnly

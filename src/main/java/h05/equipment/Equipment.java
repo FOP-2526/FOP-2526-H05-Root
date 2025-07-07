@@ -22,4 +22,8 @@ public interface Equipment extends Durable {
         }
         return EquipmentCondition.BROKEN;
     }
+
+    boolean isUsable();
+
+    boolean isTool();
 }

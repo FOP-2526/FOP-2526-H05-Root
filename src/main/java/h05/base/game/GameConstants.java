@@ -29,6 +29,9 @@ public final class GameConstants {
     public static final int TICK_DELAY = PropertyUtils.getIntProperty(PROPERTIES_FILE, "TICK_DELAY");
 
     @DoNotTouch
+    public static final int UPDATE_DELAY = PropertyUtils.getIntProperty(PROPERTIES_FILE, "UPDATE_DELAY");
+
+    @DoNotTouch
     public static @NotNull Random RANDOM_GENERATOR = new Random(RANDOM_SEED);
 
     @DoNotTouch

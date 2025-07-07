@@ -99,7 +99,7 @@ public class GameLoop extends GameLoopBase {
     @Override
     protected void initRobots() {
         GameSettings settings = getGameSettings();
-        Miner miner = new MineBot(2, 2, settings);
+        Miner miner = new MineBot(0, 0, settings);
         Repairer repairer1 = new TeleportRepairBot(3, 2, settings, 2);
         Repairer repairer2 = new WallBreakerRepairBot(4, 3, settings, 2);
     }

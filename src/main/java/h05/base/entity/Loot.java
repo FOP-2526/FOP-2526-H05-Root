@@ -2,8 +2,8 @@ package h05.base.entity;
 
 import fopbot.Block;
 import fopbot.World;
-import h05.mineable.Mineable;
 import h05.equipment.Tool;
+import h05.mineable.Mineable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
@@ -13,6 +13,7 @@ public class Loot extends Block {
 
     @DoNotTouch
     private final @NotNull Mineable mineable;
+    @DoNotTouch
     private final @NotNull Mineable decorator;
 
     @DoNotTouch
@@ -37,31 +38,37 @@ public class Loot extends Block {
             }
 
             @Override
+            @DoNotTouch
             public double getDurability() {
                 return mineable.getDurability();
             }
 
             @Override
+            @DoNotTouch
             public void setDurability(double durability) {
                 mineable.setDurability(durability);
             }
 
             @Override
+            @DoNotTouch
             public void reduceDurability(double amount) {
                 mineable.reduceDurability(amount);
             }
 
             @Override
+            @DoNotTouch
             public int hashCode() {
                 return mineable.hashCode();
             }
 
             @Override
+            @DoNotTouch
             public boolean equals(Object other) {
                 return this == other || (other instanceof Mineable && mineable.equals(other));
             }
 
             @Override
+            @DoNotTouch
             public String toString() {
                 return mineable.toString();
             }
@@ -73,6 +80,7 @@ public class Loot extends Block {
         return mineable;
     }
 
+    @DoNotTouch
     public @NotNull Mineable getDecorator() {
         return decorator;
     }

@@ -1,11 +1,7 @@
 package h05.base.game;
 
-import fopbot.DrawingRegistry;
-import fopbot.FieldEntity;
-import fopbot.KarelWorld;
+import fopbot.*;
 import fopbot.Robot;
-import fopbot.Wall;
-import fopbot.World;
 import h05.base.entity.Fog;
 import h05.base.entity.Gear;
 import h05.base.entity.Loot;
@@ -18,14 +14,8 @@ import h05.entity.Repairer;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
-import java.awt.Point;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.*;
+import java.util.*;
 
 @DoNotTouch
 public abstract class GameLoopBase {
@@ -48,6 +38,7 @@ public abstract class GameLoopBase {
     @DoNotTouch
     private final @NotNull GameSettings settings = new BasicGameSettings();
 
+    @DoNotTouch
     private final TimerTask loopTask = new TimerTask() {
         @Override
         public void run() {
@@ -66,11 +57,11 @@ public abstract class GameLoopBase {
 
                 if (robot instanceof Miner miner) {
                     miner.handleKeyInput(
-                        inputHandler.getDirection(),
-                        inputHandler.getSelection(),
-                        inputHandler.isPickingGear(),
-                        inputHandler.isMining(),
-                        inputHandler.isInfo()
+                            inputHandler.getDirection(),
+                            inputHandler.getSelection(),
+                            inputHandler.isPickingGear(),
+                            inputHandler.isMining(),
+                            inputHandler.isInfo()
                     );
                 }
                 if (robot instanceof Repairer repairer) {
@@ -112,16 +103,16 @@ public abstract class GameLoopBase {
         World.setSize(width, height);
         final KarelWorld world = World.getGlobalWorld();
         world.setDrawingRegistry(
-            DrawingRegistry.builder(DrawingRegistry.DEFAULT)
-                .addAll(
-                    Map.ofEntries(
-                        Map.entry(Wall.class, new WallFogDrawing()),
-                        Map.entry(Gear.class, new GearDrawing()),
-                        Map.entry(Loot.class, new LootDrawing()),
-                        // Map.entry(MineBot.class, new MineBotDrawing()),
-                        Map.entry(Fog.class, new FogDrawing())
-                    )
-                ).build(Comparator.comparingInt(this::getDrawingPriority))
+                DrawingRegistry.builder(DrawingRegistry.DEFAULT)
+                        .addAll(
+                                Map.ofEntries(
+                                        Map.entry(Wall.class, new WallFogDrawing()),
+                                        Map.entry(Gear.class, new GearDrawing()),
+                                        Map.entry(Loot.class, new LootDrawing()),
+                                        // Map.entry(MineBot.class, new MineBotDrawing()),
+                                        Map.entry(Fog.class, new FogDrawing())
+                                )
+                        ).build(Comparator.comparingInt(this::getDrawingPriority))
         );
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -130,6 +121,7 @@ public abstract class GameLoopBase {
         }
     }
 
+    @DoNotTouch
     protected abstract void setupWorld();
 
     @DoNotTouch
@@ -171,6 +163,7 @@ public abstract class GameLoopBase {
         return tickRate;
     }
 
+    @DoNotTouch
     public @NotNull GameSettings getGameSettings() {
         return settings;
     }

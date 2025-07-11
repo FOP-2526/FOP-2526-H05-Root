@@ -17,6 +17,7 @@ public class Gear extends FieldEntity {
         this.equipment = equipment;
     }
 
+    @DoNotTouch
     public @NotNull Equipment getEquipment() {
         return equipment;
     }

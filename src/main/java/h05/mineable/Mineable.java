@@ -13,6 +13,7 @@ public interface Mineable extends Durable {
     String getName();
 
     @NotNull
+    @DoNotTouch
     default MiningProgress getProgress() {
         final double durability = getDurability();
         if (durability < 100 && durability > 50) {

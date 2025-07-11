@@ -1,9 +1,6 @@
 package h05.equipment;
 
 import h05.AbstractDurableObject;
-import h05.base.game.BasicGameSettings;
-import h05.base.game.GameConstants;
-import h05.base.game.GameSettings;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.SolutionOnly;
 

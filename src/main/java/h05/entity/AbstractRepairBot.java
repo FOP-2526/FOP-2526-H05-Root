@@ -4,7 +4,6 @@ import fopbot.Direction;
 import fopbot.Robot;
 import fopbot.RobotFamily;
 import fopbot.World;
-import h05.base.game.BasicGameSettings;
 import h05.base.game.GameSettings;
 import h05.equipment.Battery;
 import h05.equipment.Camera;
@@ -15,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.SolutionOnly;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-import java.awt.Point;
+import java.awt.*;
 
 @SolutionOnly
 public abstract class AbstractRepairBot extends Robot implements Repairer {

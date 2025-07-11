@@ -17,9 +17,6 @@ public class Camera extends AbstractEquipment {
         this.visibilityRange = visibilityRange;
     }
 
-    /**
-     * Constructs a camera with the default visibility range.
-     */
     @DoNotTouch
     public Camera() {
         this(DEFAULT_VISIBILITY_RANGE);
@@ -27,8 +24,11 @@ public class Camera extends AbstractEquipment {
 
     @StudentImplementationRequired
     public int getVisibilityRange() {
-        if (getCondition() == EquipmentCondition.DAMAGED) {
+        if (getCondition() == EquipmentCondition.BROKEN) {
             return 0;
+        }
+        if (getCondition() == EquipmentCondition.DAMAGED) {
+            return visibilityRange / 2;
         }
         return visibilityRange;
     }
@@ -39,11 +39,13 @@ public class Camera extends AbstractEquipment {
     }
 
     @Override
+    @DoNotTouch
     public boolean isUsable() {
         return false;
     }
 
     @Override
+    @DoNotTouch
     public boolean isTool() {
         return false;
     }

@@ -1,20 +1,21 @@
 package h05.entity;
 
 import fopbot.Direction;
-import fopbot.Wall;
 import h05.base.game.GameSettings;
 import org.jetbrains.annotations.NotNull;
-import org.tudalgo.algoutils.student.annotation.SolutionOnly;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.awt.Point;
 
+@DoNotTouch
 public class WallBreakerRepairBot extends AbstractRepairBot {
 
+    @DoNotTouch
     public WallBreakerRepairBot(int x, int y, GameSettings settings, int radius) {
         super(x, y, settings, radius);
     }
 
-    @SolutionOnly
+    @DoNotTouch
     @Override
     protected void move(@NotNull Point point) {
         final int x = point.x;
@@ -23,7 +24,7 @@ public class WallBreakerRepairBot extends AbstractRepairBot {
 
         // Move to x coordinate
         Direction direction = x < getX() ? Direction.LEFT : Direction.RIGHT;
-        while (getDirection() != Direction.LEFT) {
+        while (getDirection() != direction) {
             turnLeft();
         }
         while (x != getX()) {

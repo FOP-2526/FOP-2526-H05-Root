@@ -11,7 +11,6 @@ import h05.equipment.Battery;
 import h05.equipment.Camera;
 import h05.equipment.Equipment;
 import h05.equipment.Tool;
-import h05.equipment.UsableEquipment;
 import h05.mineable.Mineable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,25 +26,20 @@ public class MineBot extends Robot implements Miner {
     public static final int DEFAULT_CAPACITY = 4;
 
     @DoNotTouch
-    private final GameSettings settings;
+    private final @NotNull GameSettings settings;
 
     @DoNotTouch
-    private final Equipment[] equipments;
-
-    @DoNotTouch
-    private int nextIndex;
-
-    @DoNotTouch
-    private @NotNull Battery battery;
-
-    @DoNotTouch
-    private @NotNull Camera camera;
-
-    @DoNotTouch
-    private @Nullable Tool tool;
-
+    private final @NotNull Equipment[] equipments;
     @DoNotTouch
     private final @NotNull Inventory inventory;
+    @DoNotTouch
+    private int nextIndex;
+    @DoNotTouch
+    private @NotNull Battery battery;
+    @DoNotTouch
+    private @NotNull Camera camera;
+    @DoNotTouch
+    private @Nullable Tool tool;
 
     @DoNotTouch
     public MineBot(int x, int y, @NotNull GameSettings settings, int capacity) {
@@ -68,6 +62,7 @@ public class MineBot extends Robot implements Miner {
         this(x, y, settings, DEFAULT_CAPACITY);
     }
 
+    @StudentImplementationRequired("H5.4.2")
     @Override
     public @NotNull Point[] getVision(int x, int y) {
         int visibilityRange = camera.getVisibilityRange();
@@ -105,7 +100,7 @@ public class MineBot extends Robot implements Miner {
     }
 
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H5.4.2")
     public void updateVision(int oldX, int oldY, int newX, int newY) {
         Point[] oldPoints = getVision(oldX, oldY);
         Point[] newPoints = getVision(newX, newY);
@@ -122,7 +117,7 @@ public class MineBot extends Robot implements Miner {
         }
     }
 
-    @StudentImplementationRequired("H05.4.2")
+    @StudentImplementationRequired("H05.4.3")
     @Override
     public void move() {
         if (isBatteryBroken()) {
@@ -145,7 +140,7 @@ public class MineBot extends Robot implements Miner {
         return settings;
     }
 
-    @StudentImplementationRequired
+    @DoNotTouch
     @Override
     public Equipment[] getEquipments() {
         Equipment[] equipments = new Equipment[nextIndex];
@@ -153,34 +148,13 @@ public class MineBot extends Robot implements Miner {
         return equipments;
     }
 
-    @StudentImplementationRequired
-    @Override
-    public UsableEquipment[] getUsableEquipments() {
-        int size = 0;
-        for (int i = 0; i < nextIndex; i++) {
-            if (equipments[i].isUsable()) {
-                size++;
-            }
-        }
-        UsableEquipment[] usableEquipments = new UsableEquipment[size];
-        int index = 0;
-        for (int i = 0; i < nextIndex; i++) {
-            Equipment equipment = equipments[i];
-            if (equipment.isUsable()) {
-                usableEquipments[index] = settings.toUsableEquipment(equipment);
-                index++;
-            }
-        }
-        return usableEquipments;
-    }
-
-    @StudentImplementationRequired
+    @DoNotTouch
     @Override
     public int getNumberOfEquipments() {
         return nextIndex + 2 + (tool == null ? 0 : 1);
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H5.4.4")
     @Override
     public void use(int index) {
         int currentIndex = 0;
@@ -200,7 +174,7 @@ public class MineBot extends Robot implements Miner {
         }
     }
 
-    @StudentImplementationRequired
+    @DoNotTouch
     @Override
     public void equip(@NotNull Equipment equipment) {
         if (equipment.getName().equals("Battery")) {
@@ -233,7 +207,7 @@ public class MineBot extends Robot implements Miner {
         }
     }
 
-    @StudentImplementationRequired
+    @DoNotTouch
     @Override
     public void unequip(int index) {
         if (index + 2 < nextIndex) {
@@ -266,7 +240,7 @@ public class MineBot extends Robot implements Miner {
         return inventory;
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H5.4.1")
     @Override
     public void mine() {
         Direction direction = getDirection();
@@ -287,7 +261,7 @@ public class MineBot extends Robot implements Miner {
         }
     }
 
-    @StudentImplementationRequired
+    @DoNotTouch
     @Override
     public void pickGear() {
         Equipment equipment = settings.getAndRemoveGearAt(getX(), getY());
@@ -296,7 +270,7 @@ public class MineBot extends Robot implements Miner {
         }
     }
 
-    @StudentImplementationRequired
+    @DoNotTouch
     @Override
     public void handleKeyInput(@Nullable Direction direction, int selection, boolean isPickingGear, boolean isMining, boolean isInfo) {
         if (direction != null) {

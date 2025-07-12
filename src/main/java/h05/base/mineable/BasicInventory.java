@@ -15,16 +15,12 @@ public final class BasicInventory implements Inventory {
 
     @DoNotTouch
     public static final int DEFAULT_SIZE = 5;
-
-    @DoNotTouch
-    private String[] names;
-
-    @DoNotTouch
-    private int[] amounts;
-
     @DoNotTouch
     private final int capacity;
-
+    @DoNotTouch
+    private String[] names;
+    @DoNotTouch
+    private int[] amounts;
     @DoNotTouch
     private int size;
 

@@ -4,7 +4,6 @@ import fopbot.World;
 import h05.base.mineable.Inventory;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
-import java.awt.BorderLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import java.awt.BorderLayout;
 
 @DoNotTouch
 public class InfoPopup extends JDialog {

@@ -12,30 +12,22 @@ public final class GameConstants {
 
     @DoNotTouch
     private static final @NotNull String PROPERTIES_FILE = "h05.properties";
-
-    @DoNotTouch
-    private static final long _RANDOM_SEED = PropertyUtils.getLongProperty(PROPERTIES_FILE, "RANDOM_SEED");
-
-    @DoNotTouch
-    private static final long RANDOM_SEED = _RANDOM_SEED == 0 ? ThreadLocalRandom.current().nextLong() : _RANDOM_SEED;
-
     @DoNotTouch
     public static final int WORLD_WIDTH = PropertyUtils.getIntProperty(PROPERTIES_FILE, "WORLD_WIDTH");
-
     @DoNotTouch
     public static final int WORLD_HEIGHT = PropertyUtils.getIntProperty(PROPERTIES_FILE, "WORLD_HEIGHT");
-
     @DoNotTouch
     public static final int TICK_DELAY = PropertyUtils.getIntProperty(PROPERTIES_FILE, "TICK_DELAY");
-
     @DoNotTouch
     public static final int UPDATE_DELAY = PropertyUtils.getIntProperty(PROPERTIES_FILE, "UPDATE_DELAY");
-
-    @DoNotTouch
-    public static @NotNull Random RANDOM_GENERATOR = new Random(RANDOM_SEED);
-
     @DoNotTouch
     public static final boolean FOG_VISIBILITY = PropertyUtils.getBooleanProperty(PROPERTIES_FILE, "FOG_VISIBILITY");
+    @DoNotTouch
+    private static final long _RANDOM_SEED = PropertyUtils.getLongProperty(PROPERTIES_FILE, "RANDOM_SEED");
+    @DoNotTouch
+    private static final long RANDOM_SEED = _RANDOM_SEED == 0 ? ThreadLocalRandom.current().nextLong() : _RANDOM_SEED;
+    @DoNotTouch
+    public static @NotNull Random RANDOM_GENERATOR = new Random(RANDOM_SEED);
 
     @DoNotTouch
     private GameConstants() {

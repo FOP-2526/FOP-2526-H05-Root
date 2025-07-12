@@ -3,7 +3,6 @@ package h05.base.ui;
 import fopbot.DrawingContext;
 import fopbot.PaintUtils;
 import fopbot.SvgBasedDrawing;
-import h05.equipment.Tool;
 import h05.base.entity.Gear;
 import h05.equipment.Axe;
 import h05.equipment.Battery;
@@ -13,6 +12,7 @@ import h05.equipment.EquipmentCondition;
 import h05.equipment.Pickaxe;
 import h05.equipment.Powerbank;
 import h05.equipment.TelephotoLens;
+import h05.equipment.Tool;
 import h05.equipment.WallBreaker;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 

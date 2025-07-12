@@ -39,6 +39,7 @@ public abstract class AbstractRepairBot extends Robot implements Repairer {
         return radius;
     }
 
+    @StudentImplementationRequired("H5.5")
     @Override
     public @Nullable Point scan() {
         int x = getX();
@@ -62,7 +63,7 @@ public abstract class AbstractRepairBot extends Robot implements Repairer {
         return null;
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H5.5")
     @Override
     public void repair(@NotNull Point point) {
         move(point);
@@ -82,6 +83,5 @@ public abstract class AbstractRepairBot extends Robot implements Repairer {
         }
     }
 
-    @SolutionOnly
     protected abstract void move(@NotNull Point point);
 }

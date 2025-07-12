@@ -12,12 +12,12 @@ public class Rock extends AbstractMinableEntity implements Mineable {
         super("Rock");
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H5.3")
     @Override
     public boolean onMined(@Nullable Tool tool) {
         final double factor;
         if (tool == null) {
-            factor = 0.75; // 0.75
+            factor = 5; // 0.75
         } else if (tool.getName().equals("Pickaxe")) {
             factor = 2; // 2 * 30 = 60
         } else {

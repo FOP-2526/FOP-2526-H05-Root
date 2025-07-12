@@ -22,7 +22,7 @@ public class Camera extends AbstractEquipment {
         this(DEFAULT_VISIBILITY_RANGE);
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H5.2.2")
     public int getVisibilityRange() {
         if (getCondition() == EquipmentCondition.BROKEN) {
             return 0;
@@ -33,7 +33,7 @@ public class Camera extends AbstractEquipment {
         return visibilityRange;
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H5.2.2")
     public void setVisibilityRange(int visibilityRange) {
         this.visibilityRange = visibilityRange < 1 ? 1 : visibilityRange;
     }

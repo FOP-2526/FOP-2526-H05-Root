@@ -10,7 +10,7 @@ public class Battery extends AbstractEquipment {
         super("Battery");
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H5.2.2")
     public void increaseDurability(double value) {
         if (getCondition() == EquipmentCondition.BROKEN) {
             return;

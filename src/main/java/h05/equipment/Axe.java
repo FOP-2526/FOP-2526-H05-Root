@@ -4,7 +4,7 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentCreationRequired;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-@StudentCreationRequired
+@StudentCreationRequired("H5.2.4")
 public class Axe extends AbstractEquipment implements Tool {
 
     @DoNotTouch

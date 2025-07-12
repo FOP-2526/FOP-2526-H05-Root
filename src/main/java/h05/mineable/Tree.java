@@ -12,12 +12,12 @@ public class Tree extends AbstractMinableEntity implements Mineable {
         super("Tree");
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H5.3")
     @Override
     public boolean onMined(@Nullable Tool tool) {
         final double factor;
         if (tool == null) {
-            factor = 1; //1
+            factor = 10; //1
         } else if (tool.getName().equals("Axe")) {
             factor = 4; // 4 * 15 = 60
         } else {

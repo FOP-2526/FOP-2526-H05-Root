@@ -2,7 +2,7 @@ package h05;
 
 import org.tudalgo.algoutils.student.annotation.SolutionOnly;
 
-@SolutionOnly
+@SolutionOnly("H5.1")
 public class AbstractDurableObject implements Durable {
 
     private double durability = 100;

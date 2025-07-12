@@ -4,7 +4,7 @@ import h05.entity.Miner;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.StudentCreationRequired;
 
-@StudentCreationRequired
+@StudentCreationRequired("H5.2.3")
 public class TelephotoLens extends AbstractEquipment implements UsableEquipment {
 
     private final int rangeEnhancement;

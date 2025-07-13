@@ -3,7 +3,11 @@ package h05.base.game;
 import fopbot.FieldEntity;
 import fopbot.Wall;
 import h05.entity.Miner;
-import h05.equipment.*;
+import h05.equipment.Battery;
+import h05.equipment.Camera;
+import h05.equipment.Equipment;
+import h05.equipment.Tool;
+import h05.equipment.UsableEquipment;
 import h05.mineable.Mineable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,6 +42,9 @@ public interface GameSettings {
 
     @DoNotTouch
     @Nullable Equipment getAndRemoveGearAt(int x, int y);
+
+    @DoNotTouch
+    void placeGearAt(int x, int y, Equipment equipment);
 
     @DoNotTouch
     @Nullable Mineable getLootAt(int x, int y);

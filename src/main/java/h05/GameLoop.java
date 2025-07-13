@@ -12,7 +12,6 @@ import h05.entity.Repairer;
 import h05.entity.TeleportRepairBot;
 import h05.entity.WallBreakerRepairBot;
 import h05.equipment.Axe;
-import h05.equipment.Battery;
 import h05.equipment.Pickaxe;
 import h05.equipment.Powerbank;
 import h05.equipment.TelephotoLens;
@@ -23,7 +22,7 @@ import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
 public class GameLoop extends GameLoopBase {
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H5.6")
     @Override
     protected void setupWorld() {
         World.placeHorizontalWall(0, 0);
@@ -78,8 +77,7 @@ public class GameLoop extends GameLoopBase {
         World.placeVerticalWall(6, 6);
 
         KarelWorld world = World.getGlobalWorld();
-        world.placeEntity(new Gear(3, 3, new Battery()));
-        world.placeEntity(new Gear(0, 6, new Battery()));
+        world.placeEntity(new Gear(0, 6, new Powerbank(25)));
         world.placeEntity(new Gear(2, 0, new Pickaxe()));
         world.placeEntity(new Gear(6, 3, new Axe()));
         world.placeEntity(new Loot(0, 3, new Tree()));
@@ -95,11 +93,11 @@ public class GameLoop extends GameLoopBase {
         world.placeEntity(new Gear(6, 4, new Powerbank(50)));
     }
 
-    @StudentImplementationRequired
+    @StudentImplementationRequired("H5.6")
     @Override
     protected void initRobots() {
         GameSettings settings = getGameSettings();
-        Miner miner = new MineBot(0, 0, settings);
+        Miner miner = new MineBot(1, 0, settings);
         Repairer repairer1 = new TeleportRepairBot(3, 2, settings, 2);
         Repairer repairer2 = new WallBreakerRepairBot(4, 3, settings, 2);
     }

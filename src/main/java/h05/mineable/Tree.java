@@ -17,11 +17,11 @@ public class Tree extends AbstractMinableEntity implements Mineable {
     public boolean onMined(@Nullable Tool tool) {
         final double factor;
         if (tool == null) {
-            factor = 10; //1
+            factor = 7.5; // 3 * 1 = 7.5
         } else if (tool.getName().equals("Axe")) {
-            factor = 4; // 4 * 15 = 60
+            factor = 4; // 4 * 5 = 20
         } else {
-            factor = 1.5; // 1.5 * 30 = 45
+            factor = 3; // 3 * 5 = 15
         }
         reduceDurability(tool == null ? 1 * factor : tool.getMiningPower() * factor);
         return getDurability() <= 0;

@@ -7,6 +7,6 @@ public interface TickBased {
 
     @DoNotTouch
     default int getUpdateDelay() {
-        return GameConstants.UPDATE_DELAY;
+        return 0;
     }
 }

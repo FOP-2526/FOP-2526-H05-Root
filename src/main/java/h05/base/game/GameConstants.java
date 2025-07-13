@@ -19,8 +19,6 @@ public final class GameConstants {
     @DoNotTouch
     public static final int TICK_DELAY = PropertyUtils.getIntProperty(PROPERTIES_FILE, "TICK_DELAY");
     @DoNotTouch
-    public static final int UPDATE_DELAY = PropertyUtils.getIntProperty(PROPERTIES_FILE, "UPDATE_DELAY");
-    @DoNotTouch
     public static final boolean FOG_VISIBILITY = PropertyUtils.getBooleanProperty(PROPERTIES_FILE, "FOG_VISIBILITY");
     @DoNotTouch
     private static final long _RANDOM_SEED = PropertyUtils.getLongProperty(PROPERTIES_FILE, "RANDOM_SEED");

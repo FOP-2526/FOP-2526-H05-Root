@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.SolutionOnly;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-import java.awt.*;
+import java.awt.Point;
 
 @SolutionOnly
 public abstract class AbstractRepairBot extends Robot implements Repairer {

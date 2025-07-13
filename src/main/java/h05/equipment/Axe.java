@@ -15,6 +15,6 @@ public class Axe extends AbstractEquipment implements Tool {
     @StudentImplementationRequired
     @Override
     public double getMiningPower() {
-        return 15;
+        return 5;
     }
 }

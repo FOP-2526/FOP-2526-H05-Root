@@ -15,6 +15,6 @@ public class Pickaxe extends AbstractEquipment implements Tool {
     @StudentImplementationRequired
     @Override
     public double getMiningPower() {
-        return 30;
+        return 15;
     }
 }

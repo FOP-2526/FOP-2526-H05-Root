@@ -196,11 +196,12 @@ public class MineBot extends Robot implements Miner {
                     return;
                 }
             }
-            if (nextIndex + (tool == null ? 0 : 1) == equipments.length) {
-                return;
-            }
             if (equipment.isTool()) {
                 tool = settings.toTool(equipment);
+                return;
+            }
+            if (nextIndex + (tool == null ? -1 : 0) == equipments.length) {
+                return;
             }
             equipments[nextIndex] = equipment;
             nextIndex++;
@@ -251,9 +252,11 @@ public class MineBot extends Robot implements Miner {
             return;
         }
         Mineable mineable = settings.getLootAt(x, y);
+
         if (mineable == null) {
             return;
         }
+
         if (mineable.onMined(tool)) {
             if (!inventory.add(mineable)) {
                 crash();
@@ -264,9 +267,15 @@ public class MineBot extends Robot implements Miner {
     @DoNotTouch
     @Override
     public void pickGear() {
-        Equipment equipment = settings.getAndRemoveGearAt(getX(), getY());
+        int x = getX();
+        int y = getY();
+        Equipment equipment = settings.getAndRemoveGearAt(x, y);
         if (equipment != null) {
+            Tool oldTool = tool;
             equip(equipment);
+            if (oldTool != null) {
+                settings.placeGearAt(x, y, oldTool);
+            }
         }
     }
 

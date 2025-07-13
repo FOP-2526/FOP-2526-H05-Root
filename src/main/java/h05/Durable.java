@@ -2,7 +2,6 @@ package h05;
 
 import org.tudalgo.algoutils.student.annotation.StudentCreationRequired;
 
-
 @StudentCreationRequired("H5.1")
 public interface Durable {
 

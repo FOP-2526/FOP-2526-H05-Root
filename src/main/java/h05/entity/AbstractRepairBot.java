@@ -11,12 +11,12 @@ import h05.equipment.Equipment;
 import h05.equipment.EquipmentCondition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.tudalgo.algoutils.student.annotation.SolutionOnly;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-import java.awt.Point;
+import java.awt.*;
 
-@SolutionOnly
+@DoNotTouch
 public abstract class AbstractRepairBot extends Robot implements Repairer {
 
     private final @NotNull GameSettings settings;

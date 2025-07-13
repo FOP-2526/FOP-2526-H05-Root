@@ -13,15 +13,26 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import java.awt.Image;
 import java.util.List;
 
+/**
+ * Specifies the drawing of the {@link Loot} entity.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public class LootDrawing extends SvgBasedDrawing<Loot> {
 
+    /**
+     * The available mineable types that can be used by the {@link Loot} entity.
+     */
     @DoNotTouch
     public static final List<Class<? extends Mineable>> AVAILABLE_MINEABLES = List.of(
         Tree.class,
         Rock.class
     );
 
+    /**
+     * Constructs a new {@link LootDrawing} instance.
+     */
     @DoNotTouch
     public LootDrawing() {
         super(AVAILABLE_MINEABLES.size() * MiningProgress.values().length);

@@ -1,18 +1,22 @@
 package h05.equipment;
 
-import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentCreationRequired;
-import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
+/**
+ * Represents an axe that can be used for mining.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @StudentCreationRequired("H5.2.4")
 public class Axe extends AbstractEquipment implements Tool {
 
-    @DoNotTouch
+    /**
+     * Constructs a new {@link Axe} instance.
+     */
     public Axe() {
         super("Axe");
     }
 
-    @StudentImplementationRequired
     @Override
     public double getMiningPower() {
         return 5;

@@ -5,8 +5,16 @@ import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
+/**
+ * Represents a tree that can be mined using tools.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 public class Tree extends AbstractMinableEntity implements Mineable {
 
+    /**
+     * Constructs a new {@link Tree} instance.
+     */
     @DoNotTouch
     public Tree() {
         super("Tree");

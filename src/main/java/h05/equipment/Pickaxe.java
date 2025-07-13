@@ -1,18 +1,22 @@
 package h05.equipment;
 
-import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentCreationRequired;
-import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
+/**
+ * Represents a pickaxe that can be used for mining.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @StudentCreationRequired("H5.2.4")
 public class Pickaxe extends AbstractEquipment implements Tool {
 
-    @DoNotTouch
+    /**
+     * Constructs a new {@link Pickaxe} instance.
+     */
     public Pickaxe() {
         super("Pickaxe");
     }
 
-    @StudentImplementationRequired
     @Override
     public double getMiningPower() {
         return 15;

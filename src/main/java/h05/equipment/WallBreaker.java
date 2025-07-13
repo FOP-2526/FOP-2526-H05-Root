@@ -6,12 +6,18 @@ import fopbot.World;
 import h05.base.game.GameSettings;
 import h05.entity.Miner;
 import org.jetbrains.annotations.NotNull;
-import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
+/**
+ * Usable equipment that allows the miner entity to break walls in the world.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 public class WallBreaker extends AbstractEquipment implements UsableEquipment {
 
-    @DoNotTouch
+    /**
+     * Constructs a new {@link WallBreaker} instance.
+     */
     public WallBreaker() {
         super("WallBreaker");
     }

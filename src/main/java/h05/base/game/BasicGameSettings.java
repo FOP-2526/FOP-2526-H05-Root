@@ -20,15 +20,22 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A basic implementation of the GameSettings interface.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public final class BasicGameSettings implements GameSettings {
 
+    /**
+     * Constructs a new {@link BasicGameSettings} instance.
+     */
     @DoNotTouch
     public BasicGameSettings() {
     }
 
     @DoNotTouch
-    @SuppressWarnings("unchecked")
     private static <E> @NotNull List<@NotNull E> getEntitiesAt(int x, int y, @NotNull Class<E> clazz) {
         List<E> entities = new ArrayList<>();
         for (FieldEntity entity : World.getGlobalWorld().getField(x, y).getEntities()) {
@@ -68,7 +75,7 @@ public final class BasicGameSettings implements GameSettings {
 
     @Override
     @DoNotTouch
-    public @Nullable Camera toCamery(Equipment equipment) {
+    public @Nullable Camera toCamera(Equipment equipment) {
         return equipment instanceof Camera camera ? camera : null;
     }
 
@@ -95,9 +102,9 @@ public final class BasicGameSettings implements GameSettings {
     @Override
     public @Nullable UsableEquipment getUsableEquipmentAt(int x, int y) {
         Gear gear = getEntityAt(x, y, Gear.class);
-        return gear == null ?
-            null : gear.getEquipment() instanceof UsableEquipment usableEquipment ?
-            usableEquipment : null;
+        return gear == null
+            ? null : gear.getEquipment() instanceof UsableEquipment usableEquipment
+            ? usableEquipment : null;
     }
 
     @Override

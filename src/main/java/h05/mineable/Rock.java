@@ -5,8 +5,16 @@ import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
+/**
+ * Represents a rock that can be mined using tools.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 public class Rock extends AbstractMinableEntity implements Mineable {
 
+    /**
+     * Constructs a new {@link Rock} instance.
+     */
     @DoNotTouch
     public Rock() {
         super("Rock");

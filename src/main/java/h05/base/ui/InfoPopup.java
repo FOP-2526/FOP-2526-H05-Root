@@ -2,8 +2,10 @@ package h05.base.ui;
 
 import fopbot.World;
 import h05.base.mineable.Inventory;
+import h05.entity.Miner;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
+import java.awt.BorderLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -11,17 +13,35 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
 
+
+/**
+ * A popup dialog that displays information about the mining inventory.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ * @see Miner
+ */
 @DoNotTouch
 public class InfoPopup extends JDialog {
 
+    /**
+     * The names of the columns in the info table.
+     */
     @DoNotTouch
     private final String[] columnNames = {"Name", "Amount"};
 
+    /**
+     * The data to be displayed in the info table, where each row contains the name and amount of an item.
+     */
     @DoNotTouch
     private final Object[][] data;
 
+    /**
+     * Constructs a new {@link InfoPopup} instance with the specified parent frame and data.
+     *
+     * @param parent the parent frame for this dialog
+     * @param data   the data to be displayed in the info table, where each row contains the name and amount of an item
+     */
     @DoNotTouch
     public InfoPopup(JFrame parent, Object[][] data) {
         super(parent, "Mining info", true);

@@ -168,6 +168,8 @@ public class MineBot extends Robot implements Miner {
                         int y = getY();
                         updateVision(x, y, x, y);
                     }
+                    settings.update();
+                    return;
                 }
                 currentIndex++;
             }
@@ -273,7 +275,7 @@ public class MineBot extends Robot implements Miner {
         if (equipment != null) {
             Tool oldTool = tool;
             equip(equipment);
-            if (oldTool != null) {
+            if (equipment.isTool() && oldTool != null) {
                 settings.placeGearAt(x, y, oldTool);
             }
         }

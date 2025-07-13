@@ -4,12 +4,10 @@ import fopbot.DrawingContext;
 import fopbot.PaintUtils;
 import fopbot.SvgBasedDrawing;
 import h05.base.entity.Gear;
-import h05.equipment.Axe;
 import h05.equipment.Battery;
 import h05.equipment.Camera;
 import h05.equipment.Equipment;
 import h05.equipment.EquipmentCondition;
-import h05.equipment.Pickaxe;
 import h05.equipment.Powerbank;
 import h05.equipment.TelephotoLens;
 import h05.equipment.Tool;
@@ -38,9 +36,9 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
      * The available tool types that can be used by the {@link Gear} entity.
      */
     @DoNotTouch
-    public static final List<Class<? extends Tool>> AVAILABLE_TOOLS = List.of(
-        Axe.class,
-        Pickaxe.class
+    public static final List<String> AVAILABLE_TOOLS = List.of(
+        "Axe",
+        "Pickaxe"
     );
 
     /**
@@ -59,7 +57,7 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
         final Class<? extends Equipment> clazz = equipment.getClass();
         final int numberOfConditions = EquipmentCondition.values().length;
         if (equipment instanceof Tool) {
-            index = AVAILABLE_EQUIPMENTS.size() * numberOfConditions + AVAILABLE_TOOLS.indexOf(clazz);
+            index = AVAILABLE_EQUIPMENTS.size() * numberOfConditions + AVAILABLE_TOOLS.indexOf(clazz.getSimpleName());
         } else {
             index = AVAILABLE_EQUIPMENTS.indexOf(clazz) * numberOfConditions + equipment.getCondition().ordinal();
         }
@@ -82,14 +80,14 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
             }
         }
         final int offset = AVAILABLE_EQUIPMENTS.size() * conditions.length;
-        for (Class<? extends Tool> clazz : AVAILABLE_TOOLS) {
-            final String path = clazz.getSimpleName().toLowerCase() + EXTENSION;
+        for (String name : AVAILABLE_TOOLS) {
+            final String path = name.toLowerCase() + EXTENSION;
             final Image image = PaintUtils.loadFieldImage(
                 getClass().getResourceAsStream(path),
                 0,
                 targetSize
             );
-            setImage(offset + AVAILABLE_TOOLS.indexOf(clazz), image);
+            setImage(offset + AVAILABLE_TOOLS.indexOf(name), image);
         }
     }
 }

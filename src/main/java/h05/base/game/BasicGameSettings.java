@@ -138,6 +138,7 @@ public final class BasicGameSettings implements GameSettings {
         int i = 0;
         for (Wall wall : entities) {
             walls[i] = wall;
+            i++;
         }
         return walls;
     }

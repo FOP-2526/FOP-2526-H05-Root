@@ -1,29 +1,26 @@
 package h05.mineable;
 
 import h05.equipment.Tool;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-public class Tree extends AbstractMinableEntity implements Mineable {
+import static org.tudalgo.algoutils.student.Student.crash;
 
-    @DoNotTouch
+public class Tree implements Mineable {
+
     public Tree() {
-        super("Tree");
+    }
+
+    @Override
+    @StudentImplementationRequired
+    public @NotNull String getName() {
+        return crash();
     }
 
     @StudentImplementationRequired("H5.3")
     @Override
     public boolean onMined(@Nullable Tool tool) {
-        final double factor;
-        if (tool == null) {
-            factor = 7.5; // 3 * 1 = 7.5
-        } else if (tool.getName().equals("Axe")) {
-            factor = 4; // 4 * 5 = 20
-        } else {
-            factor = 3; // 3 * 5 = 15
-        }
-        reduceDurability(tool == null ? 1 * factor : tool.getMiningPower() * factor);
-        return getDurability() <= 0;
+        return crash();
     }
 }

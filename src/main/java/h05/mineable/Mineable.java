@@ -1,6 +1,5 @@
 package h05.mineable;
 
-import h05.Durable;
 import h05.equipment.Tool;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

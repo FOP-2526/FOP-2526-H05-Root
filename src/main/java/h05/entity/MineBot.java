@@ -2,7 +2,6 @@ package h05.entity;
 
 import fopbot.Direction;
 import fopbot.Robot;
-import fopbot.World;
 import h05.base.game.GameSettings;
 import h05.base.mineable.BasicInventory;
 import h05.base.mineable.Inventory;
@@ -11,13 +10,13 @@ import h05.equipment.Battery;
 import h05.equipment.Camera;
 import h05.equipment.Equipment;
 import h05.equipment.Tool;
-import h05.mineable.Mineable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.tudalgo.algoutils.student.Student;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-import java.awt.Point;
+import java.awt.*;
 
 @DoNotTouch
 public class MineBot extends Robot implements Miner {
@@ -65,74 +64,19 @@ public class MineBot extends Robot implements Miner {
     @StudentImplementationRequired("H5.4.2")
     @Override
     public @NotNull Point[] getVision(int x, int y) {
-        int visibilityRange = camera.getVisibilityRange();
-        int fieldCount = 0;
-        for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
-            int newX = x + dx;
-            if (newX < 0 || newX >= World.getWidth()) {
-                continue;
-            }
-            for (int dy = -visibilityRange; dy <= visibilityRange; dy++) {
-
-                int newY = y + dy;
-                if (newY < 0 || newY >= World.getHeight()) {
-                    continue;
-                }
-                fieldCount++;
-            }
-        }
-
-        Point[] points = new Point[fieldCount];
-        int index = 0;
-
-        for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
-            for (int dy = -visibilityRange; dy <= visibilityRange; dy++) {
-                int newX = x + dx;
-                int newY = y + dy;
-                if (newX < 0 || newX >= World.getWidth() || newY < 0 || newY >= World.getHeight()) {
-                    continue;
-                }
-                points[index] = new Point(newX, newY);
-                index++;
-            }
-        }
-        return points;
+        return Student.crash();
     }
 
 
     @StudentImplementationRequired("H5.4.2")
     public void updateVision(int oldX, int oldY, int newX, int newY) {
-        Point[] oldPoints = getVision(oldX, oldY);
-        Point[] newPoints = getVision(newX, newY);
-        for (Point point : oldPoints) {
-            int x = point.x;
-            int y = point.y;
-            if (x == newX && y == newY) {
-                continue;
-            }
-            settings.placeFog(x, y);
-        }
-        for (Point point : newPoints) {
-            settings.removeFog(point.x, point.y);
-        }
+        Student.crash();
     }
 
     @StudentImplementationRequired("H05.4.3")
     @Override
     public void move() {
-        if (isBatteryBroken()) {
-            return;
-        }
-        int oldX = getX();
-        int oldY = getY();
-        Direction direction = getDirection();
-        int newX = oldX + direction.getDx();
-        int newY = oldY + direction.getDy();
-
-        super.move();
-
-        updateVision(oldX, oldY, newX, newY);
-        getBattery().reduceDurability(getNumberOfEquipments());
+        Student.crash();
     }
 
     @Override
@@ -157,21 +101,7 @@ public class MineBot extends Robot implements Miner {
     @StudentImplementationRequired("H5.4.4")
     @Override
     public void use(int index) {
-        int currentIndex = 0;
-        for (int i = 0; i < nextIndex; i++) {
-            Equipment equipment = equipments[i];
-            if (equipment.isUsable()) {
-                if (currentIndex == index) {
-                    settings.toUsableEquipment(equipment).use(this);
-                    if (equipment.getName().equals("TelephotoLens")) {
-                        int x = getX();
-                        int y = getY();
-                        updateVision(x, y, x, y);
-                    }
-                }
-                currentIndex++;
-            }
-        }
+        Student.crash();
     }
 
     @DoNotTouch
@@ -244,24 +174,7 @@ public class MineBot extends Robot implements Miner {
     @StudentImplementationRequired("H5.4.1")
     @Override
     public void mine() {
-        Direction direction = getDirection();
-        int x = getX() + direction.getDx();
-        int y = getY() + direction.getDy();
-
-        if (x < 0 || x > World.getWidth() || y < 0 || y >= World.getWidth()) {
-            return;
-        }
-        Mineable mineable = settings.getLootAt(x, y);
-
-        if (mineable == null) {
-            return;
-        }
-
-        if (mineable.onMined(tool)) {
-            if (!inventory.add(mineable)) {
-                crash();
-            }
-        }
+        Student.crash();
     }
 
     @DoNotTouch

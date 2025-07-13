@@ -1,9 +1,12 @@
 package h05.equipment;
 
+import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-public class Camera extends AbstractEquipment {
+import static org.tudalgo.algoutils.student.Student.crash;
+
+public class Camera implements Equipment {
 
     @DoNotTouch
     public static final int DEFAULT_VISIBILITY_RANGE = 1;
@@ -11,10 +14,8 @@ public class Camera extends AbstractEquipment {
     @DoNotTouch
     private int visibilityRange;
 
-    @DoNotTouch
     public Camera(int visibilityRange) {
-        super("Camera");
-        this.visibilityRange = visibilityRange;
+
     }
 
     @DoNotTouch
@@ -24,18 +25,18 @@ public class Camera extends AbstractEquipment {
 
     @StudentImplementationRequired("H5.2.2")
     public int getVisibilityRange() {
-        if (getCondition() == EquipmentCondition.BROKEN) {
-            return 0;
-        }
-        if (getCondition() == EquipmentCondition.DAMAGED) {
-            return visibilityRange / 2;
-        }
-        return visibilityRange;
+        return crash();
     }
 
     @StudentImplementationRequired("H5.2.2")
     public void setVisibilityRange(int visibilityRange) {
-        this.visibilityRange = visibilityRange < 1 ? 1 : visibilityRange;
+        crash();
+    }
+
+    @Override
+    @StudentImplementationRequired
+    public @NotNull String getName() {
+        return crash();
     }
 
     @Override

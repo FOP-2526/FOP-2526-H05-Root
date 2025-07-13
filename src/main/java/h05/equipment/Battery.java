@@ -1,21 +1,24 @@
 package h05.equipment;
 
-import org.tudalgo.algoutils.student.annotation.DoNotTouch;
+import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
-public class Battery extends AbstractEquipment {
+import static org.tudalgo.algoutils.student.Student.crash;
 
-    @DoNotTouch
+public class Battery implements Equipment {
+
     public Battery() {
-        super("Battery");
     }
 
     @StudentImplementationRequired("H5.2.2")
     public void increaseDurability(double value) {
-        if (getCondition() == EquipmentCondition.BROKEN) {
-            return;
-        }
-        setDurability(getDurability() + value);
+        crash();
+    }
+
+    @Override
+    @StudentImplementationRequired
+    public @NotNull String getName() {
+        return crash();
     }
 
     @Override

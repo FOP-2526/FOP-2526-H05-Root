@@ -4,19 +4,10 @@ import fopbot.DrawingContext;
 import fopbot.PaintUtils;
 import fopbot.SvgBasedDrawing;
 import h05.base.entity.Gear;
-import h05.equipment.Axe;
-import h05.equipment.Battery;
-import h05.equipment.Camera;
-import h05.equipment.Equipment;
-import h05.equipment.EquipmentCondition;
-import h05.equipment.Pickaxe;
-import h05.equipment.Powerbank;
-import h05.equipment.TelephotoLens;
-import h05.equipment.Tool;
-import h05.equipment.WallBreaker;
+import h05.equipment.*;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
-import java.awt.Image;
+import java.awt.*;
 import java.util.List;
 
 @DoNotTouch
@@ -27,11 +18,11 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
      */
     @DoNotTouch
     public static final List<Class<? extends Equipment>> AVAILABLE_EQUIPMENTS = List.of(
-        Battery.class,
-        Camera.class,
-        Powerbank.class,
-        TelephotoLens.class,
-        WallBreaker.class
+            Battery.class,
+            Camera.class,
+            Powerbank.class,
+            TelephotoLens.class,
+            WallBreaker.class
     );
 
     /**
@@ -39,8 +30,8 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
      */
     @DoNotTouch
     public static final List<Class<? extends Tool>> AVAILABLE_TOOLS = List.of(
-        Axe.class,
-        Pickaxe.class
+            Axe.class,
+            Pickaxe.class
     );
 
     /**
@@ -74,9 +65,9 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
             for (EquipmentCondition condition : conditions) {
                 final String path = clazz.getSimpleName().toLowerCase() + "_" + condition.name().toLowerCase() + EXTENSION;
                 final Image image = PaintUtils.loadFieldImage(
-                    getClass().getResourceAsStream(path),
-                    0,
-                    targetSize
+                        getClass().getResourceAsStream(path),
+                        0,
+                        targetSize
                 );
                 setImage(AVAILABLE_EQUIPMENTS.indexOf(clazz) * conditions.length + condition.ordinal(), image);
             }
@@ -85,9 +76,9 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
         for (Class<? extends Tool> clazz : AVAILABLE_TOOLS) {
             final String path = clazz.getSimpleName().toLowerCase() + EXTENSION;
             final Image image = PaintUtils.loadFieldImage(
-                getClass().getResourceAsStream(path),
-                0,
-                targetSize
+                    getClass().getResourceAsStream(path),
+                    0,
+                    targetSize
             );
             setImage(offset + AVAILABLE_TOOLS.indexOf(clazz), image);
         }

@@ -7,29 +7,66 @@ import h05.mineable.Mineable;
 import org.jetbrains.annotations.NotNull;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
+/**
+ * A basic implementation of an inventory that can hold mineable items.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public final class BasicInventory implements Inventory {
 
+    /**
+     * The default capacity of the inventory.
+     */
     @DoNotTouch
     public static final int DEFAULT_CAPACITY = 5;
 
+    /**
+     * The default size of the inventory.
+     */
     @DoNotTouch
     public static final int DEFAULT_SIZE = 5;
+
+    /**
+     * The maximum number of items the inventory can hold.
+     */
     @DoNotTouch
     private final int capacity;
-    @DoNotTouch
+
+    /**
+     * The names of the items in the inventory.
+     */
     private String[] names;
-    @DoNotTouch
+
+    /**
+     * The amounts of each item in the inventory.
+     */
     private int[] amounts;
+
+    /**
+     * The current size of the inventory, i.e., the number of different items it can hold.
+     */
     @DoNotTouch
     private int size;
 
+    /**
+     * The number of items currently in the inventory.
+     */
     @DoNotTouch
     private int numberOfItems;
 
+    /**
+     * The index for the next item to be added to the inventory.
+     */
     @DoNotTouch
     private int nextIndex;
 
+    /**
+     * Constructs a new {@link BasicInventory} instance with the specified capacity and size.
+     *
+     * @param capacity the maximum number of items the inventory can hold
+     * @param size     the initial size of the inventory, i.e., the number of different items it can hold
+     */
     @DoNotTouch
     public BasicInventory(int capacity, int size) {
         this.capacity = capacity;
@@ -37,6 +74,10 @@ public final class BasicInventory implements Inventory {
         this.amounts = new int[size];
     }
 
+    /**
+     * Constructs a new {@link BasicInventory} instance with the default capacity of {@value DEFAULT_CAPACITY} and size
+     * of {@value DEFAULT_SIZE}.
+     */
     @DoNotTouch
     public BasicInventory() {
         this(DEFAULT_CAPACITY, DEFAULT_SIZE);

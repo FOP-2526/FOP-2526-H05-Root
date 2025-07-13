@@ -10,9 +10,22 @@ import h05.entity.*;
 import h05.equipment.WallBreaker;
 import h05.mineable.Rock;
 import h05.mineable.Tree;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
+/**
+ * The game loop for simulating the MineBot world.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 public class GameLoop extends GameLoopBase {
+
+    /**
+     * Constructs a new {@link GameLoop} instance for simulating the MineBot world.
+     */
+    @DoNotTouch
+    public GameLoop() {
+    }
 
     @StudentImplementationRequired("H5.6")
     @Override

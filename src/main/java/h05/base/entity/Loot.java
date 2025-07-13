@@ -8,14 +8,33 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
+/**
+ * Represents a loot block in the game world that can be mined by a miner.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public class Loot extends Block {
 
+    /**
+     * THe underlying mineable object that represents the loot block.
+     */
     @DoNotTouch
     private final @NotNull Mineable mineable;
+
+    /**
+     * A decorator for the mineable object that allows us do UI related operations in the background.
+     */
     @DoNotTouch
     private final @NotNull Mineable decorator;
 
+    /**
+     * Constructs a new {@link Loot} instance at the specified coordinates with the given mineable object.
+     *
+     * @param x        the x-coordinate of the loot block
+     * @param y        the y-coordinate of the loot block
+     * @param mineable the mineable object that represents the loot block
+     */
     @DoNotTouch
     public Loot(int x, int y, @NotNull Mineable mineable) {
         super(x, y);
@@ -75,11 +94,21 @@ public class Loot extends Block {
         };
     }
 
+    /**
+     * Returns the mineable object that represents the loot block.
+     *
+     * @return the mineable object of this loot block
+     */
     @DoNotTouch
     public @NotNull Mineable getMineable() {
         return mineable;
     }
 
+    /**
+     * Returns the decorator for the mineable object that allows UI related operations.
+     *
+     * @return the decorator for the mineable object
+     */
     @DoNotTouch
     public @NotNull Mineable getDecorator() {
         return decorator;

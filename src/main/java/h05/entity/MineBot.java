@@ -19,28 +19,71 @@ import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
 import java.awt.Point;
 
+/**
+ * A basic implementation of a mining robot that can mine resources in the world.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public class MineBot extends Robot implements Miner {
 
+    /**
+     * The default capacity of the mine bot, which determines how much equipment it can hold.
+     */
     @DoNotTouch
     public static final int DEFAULT_CAPACITY = 4;
 
+    /**
+     * The game settings of this mine bot, which provides access to the world and other entities.
+     */
     @DoNotTouch
     private final @NotNull GameSettings settings;
 
+    /**
+     * The array of equipments that this mine bot can hold, which can include empty slots if it has not been fully
+     * equipped.
+     */
     @DoNotTouch
     private final @NotNull Equipment[] equipments;
+
+    /**
+     * The inventory of this mine bot, which holds the resources it has mined.
+     */
     @DoNotTouch
     private final @NotNull Inventory inventory;
+
+    /**
+     * The index of the next available slot in the equipments array, which is used to add new equipment.
+     */
     @DoNotTouch
     private int nextIndex;
+
+    /**
+     * The battery of this mine bot, which determines the lifetime and energy of the bot.
+     */
     @DoNotTouch
     private @NotNull Battery battery;
+
+    /**
+     * The camera of this mine bot, which determines the visibility range of the bot.
+     */
     @DoNotTouch
     private @NotNull Camera camera;
+
+    /**
+     * The tool of this mine bot, which can be used to mine resources.
+     */
     @DoNotTouch
     private @Nullable Tool tool;
 
+    /**
+     * Constructs a new {@link MineBot} instance with the specified position, game settings, and capacity.
+     *
+     * @param x        the x-coordinate of the mine bot
+     * @param y        the y-coordinate of the mine bot
+     * @param settings the game settings of this mine bot, which provides access to the world and other entities
+     * @param capacity the capacity of this mine bot, which determines how much equipment it can hold
+     */
     @DoNotTouch
     public MineBot(int x, int y, @NotNull GameSettings settings, int capacity) {
         super(x, y);
@@ -57,6 +100,14 @@ public class MineBot extends Robot implements Miner {
         }
     }
 
+    /**
+     * Constructs a new {@link MineBot} instance with the specified position and game settings, using the default
+     * capacity of {@value  DEFAULT_CAPACITY}.
+     *
+     * @param x        the x-coordinate of the mine bot
+     * @param y        the y-coordinate of the mine bot
+     * @param settings the game settings of this mine bot, which provides access to the world and other entities
+     */
     @DoNotTouch
     public MineBot(int x, int y, @NotNull GameSettings settings) {
         this(x, y, settings, DEFAULT_CAPACITY);
@@ -99,8 +150,8 @@ public class MineBot extends Robot implements Miner {
         return points;
     }
 
-
     @StudentImplementationRequired("H5.4.2")
+    @Override
     public void updateVision(int oldX, int oldY, int newX, int newY) {
         Point[] oldPoints = getVision(oldX, oldY);
         Point[] newPoints = getVision(newX, newY);
@@ -135,6 +186,7 @@ public class MineBot extends Robot implements Miner {
         getBattery().reduceDurability(getNumberOfEquipments());
     }
 
+    @DoNotTouch
     @Override
     public @NotNull GameSettings getGameSettings() {
         return settings;
@@ -186,7 +238,7 @@ public class MineBot extends Robot implements Miner {
                 equipments[0] = newBattery;
             }
         } else if (equipment.getName().equals("Camera")) {
-            Camera newCamera = settings.toCamery(equipment);
+            Camera newCamera = settings.toCamera(equipment);
             if (newCamera != null) {
                 camera = newCamera;
                 equipments[1] = newCamera;
@@ -223,21 +275,25 @@ public class MineBot extends Robot implements Miner {
         nextIndex--;
     }
 
+    @DoNotTouch
     @Override
     public @NotNull Battery getBattery() {
         return battery;
     }
 
+    @DoNotTouch
     @Override
     public @NotNull Camera getCamera() {
         return camera;
     }
 
+    @DoNotTouch
     @Override
     public @Nullable Tool getTool() {
         return tool;
     }
 
+    @DoNotTouch
     @Override
     public @NotNull Inventory getInventory() {
         return inventory;
@@ -283,7 +339,13 @@ public class MineBot extends Robot implements Miner {
 
     @DoNotTouch
     @Override
-    public void handleKeyInput(@Nullable Direction direction, int selection, boolean isPickingGear, boolean isMining, boolean isInfo) {
+    public void handleKeyInput(
+        @Nullable Direction direction,
+        int selection,
+        boolean isPickingGear,
+        boolean isMining,
+        boolean isInfo
+    ) {
         if (direction != null) {
             while (getDirection() != direction) {
                 turnLeft();

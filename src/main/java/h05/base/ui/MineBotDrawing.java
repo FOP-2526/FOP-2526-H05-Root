@@ -14,9 +14,17 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 
+/**
+ * Specifies the drawing of the {@link MineBot} entity.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public class MineBotDrawing implements Drawable<MineBot> {
 
+    /**
+     * The equipment size scale factor.
+     */
     @DoNotTouch
     private static final double EQUIPMENT_SIZE_SCALE = 15d;
 
@@ -85,6 +93,14 @@ public class MineBotDrawing implements Drawable<MineBot> {
         }
     }
 
+    /**
+     * Loads the image for the given equipment, applying the specified rotation and scaling it to the target size.
+     *
+     * @param equipment       the equipment to load the image for
+     * @param context         the drawing context containing the scale and other properties
+     * @param rotationDegrees the rotation in degrees to apply to the image
+     * @return the loaded and scaled image of the equipment
+     */
     @DoNotTouch
     private Image loadEquipmentImage(Equipment equipment, DrawingContext<? extends MineBot> context, int rotationDegrees) {
         final String path = equipment.getName().toLowerCase()

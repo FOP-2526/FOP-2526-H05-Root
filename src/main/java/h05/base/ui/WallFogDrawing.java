@@ -13,9 +13,17 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
+/**
+ * Specifies the drawing of the {@link Fog} entity.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 @DoNotTouch
 public class WallFogDrawing implements Drawable<Wall> {
 
+    /**
+     * Constructs a new {@link WallFogDrawing} instance.
+     */
     @DoNotTouch
     public WallFogDrawing() {
     }

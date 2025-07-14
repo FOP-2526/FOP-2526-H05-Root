@@ -1,66 +1,116 @@
 package h05.entity;
 
 import fopbot.Direction;
-import h05.game.TickBased;
-import h05.gear.Battery;
-import h05.gear.Camera;
-import h05.gear.EquipmentCondition;
-import h05.gear.Tool;
-import h05.loot.Inventory;
+import h05.base.game.GameSettings;
+import h05.base.game.TickBased;
+import h05.base.mineable.Inventory;
+import h05.equipment.Battery;
+import h05.equipment.Camera;
+import h05.equipment.EquipmentCondition;
+import h05.equipment.Tool;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
+import java.awt.Point;
+
 /**
- * A miner is an extension of the FOPBot robot which can equip itself to improve its status and capabilities.
+ * A miner is an extension of the FOPBot robot which can equip itself to improve its status and abilities.
  * Also, it can mine resources.
  *
  * @author Nhan Huynh, Nico Schnieders
  */
 @DoNotTouch
-public interface Miner extends Equipable, TickBased {
+public interface Miner extends TickBased, Equipable {
 
     /**
-     * Returns the battery of the miner.
+     * Returns the game settings of this miner.
      *
-     * @return the battery of the miner
+     * @return the game settings of this miner
      */
     @DoNotTouch
-    @NotNull Battery getBattery();
+    @NotNull GameSettings getGameSettings();
 
     /**
-     * Returns the camera of the miner.
+     * Returns all possible coordinates that this miner can see.
      *
-     * @return the camera of the miner
+     * @param x the x-coordinate of the miner to get the vision for
+     * @param y the y-coordinate of the miner to get the vision for
+     * @return an array of points representing the vision of the miner
      */
     @DoNotTouch
-    @NotNull Camera getCamera();
+    @NotNull
+    Point[] getVision(int x, int y);
 
     /**
-     * Returns the tool of the miner if it has one, or {@code null} if it does not.
+     * Updates the vision of the miner based on its new position.
      *
-     * @return the tool of the miner, or {@code null} if it does not have one
+     * @param oldX the old x-coordinate of the miner
+     * @param oldY the old y-coordinate of the miner
+     * @param newX the new x-coordinate of the miner
+     * @param newY the new y-coordinate of the miner
      */
     @DoNotTouch
-    @Nullable Tool getTool();
+    void updateVision(int oldX, int oldY, int newX, int newY);
 
     /**
-     * Returns the inventory of the miner, which is used to store mineable items.
+     * Returns the battery of this miner.
      *
-     * @return the inventory of the miner
+     * @return the battery of this miner
      */
     @DoNotTouch
-    @NotNull Inventory getInventory();
+    @NotNull
+    Battery getBattery();
 
     /**
-     * Returns {@code true} if the camera is broken, {@code false} otherwise.
+     * Returns the camera of this miner.
      *
-     * @return {@code true} if the camera is broken, {@code false} otherwise
+     * @return the camera of this miner
      */
     @DoNotTouch
-    default boolean isCameraBroken() {
-        return getCamera().getCondition() == EquipmentCondition.BROKEN;
-    }
+    @NotNull
+    Camera getCamera();
+
+    /**
+     * Returns the tool of this miner.
+     *
+     * @return the tool of this miner, or {@code null} if no tool is equipped
+     */
+    @DoNotTouch
+    @Nullable
+    Tool getTool();
+
+    /**
+     * Returns the inventory of this miner.
+     *
+     * @return the inventory of this miner
+     */
+    Inventory getInventory();
+
+    /**
+     * Returns the x-coordinate of this miner.
+     *
+     * @return the x-coordinate of this miner
+     */
+    @DoNotTouch
+    int getX();
+
+    /**
+     * Returns the y-coordinate of this miner.
+     *
+     * @return the y-coordinate of this miner
+     */
+    @DoNotTouch
+    int getY();
+
+    /**
+     * Returns the direction this miner is facing.
+     *
+     * @return the direction this miner is facing
+     */
+    @DoNotTouch
+    @NotNull
+    Direction getDirection();
 
     /**
      * Returns {@code true} if the battery is broken, {@code false} otherwise.
@@ -73,25 +123,36 @@ public interface Miner extends Equipable, TickBased {
     }
 
     /**
-     * Mines the resources at the current direction in front of the miner if its possible.
+     * Returns {@code true} if the camera is broken, {@code false} otherwise.
+     *
+     * @return {@code true} if the camera is broken, {@code false} otherwise
+     */
+    @DoNotTouch
+    default boolean isCameraBroken() {
+        return getCamera().getCondition() == EquipmentCondition.BROKEN;
+    }
+
+    /**
+     * Performs a mining action in the direction this miner is facing if there is a mineable entity in front of it.
      */
     @DoNotTouch
     void mine();
 
     /**
-     * Picks up the gear at the current direction in front of the miner if its possible.
+     * Pick up the gear on the current field if there is any.
      */
     @DoNotTouch
     void pickGear();
 
     /**
-     * Handles the key input for the miner which specifies his action.
+     * Handles key input for the miner, allowing it to perform actions based on the provided parameters.
      *
-     * @param direction     the direction in which the miner is facing, or {@code null} if no direction key is pressed
-     * @param selection     the current selection based on the pressed number keys, or -1 if no selection key is pressed
-     * @param isPickingGear whether the gear selection key (E) is pressed
-     * @param isMining      whether the mining action key (Space) is pressed
-     * @param isInfo        whether the info key (I) is pressed
+     * @param direction     the direction in which the miner should move or perform an action, or {@code null} if no
+     *                      movement is needed
+     * @param selection     the selection index for the usable equipment to be used, or -1 if no selection is made
+     * @param isPickingGear whether the miner is currently picking up gear
+     * @param isMining      whether the miner is currently mining
+     * @param isInfo        whether the miner is requesting information about its inventory
      */
     @DoNotTouch
     void handleKeyInput(

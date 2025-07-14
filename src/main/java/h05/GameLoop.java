@@ -2,23 +2,40 @@ package h05;
 
 import fopbot.KarelWorld;
 import fopbot.World;
-import h05.entity.Gear;
-import h05.entity.Loot;
+import h05.base.entity.Gear;
+import h05.base.entity.Loot;
+import h05.base.game.GameLoopBase;
+import h05.base.game.GameSettings;
 import h05.entity.MineBot;
-import h05.entity.RepairBot;
-import h05.game.GameLoopBase;
-import h05.gear.Axe;
-import h05.gear.Battery;
-import h05.gear.MiningDetector;
-import h05.gear.Pickaxe;
-import h05.gear.Powerbank;
-import h05.gear.TelephotoLens;
-import h05.gear.WallBreaker;
-import h05.loot.Rock;
-import h05.loot.Tree;
+import h05.entity.Miner;
+import h05.entity.Repairer;
+import h05.entity.TeleportRepairBot;
+import h05.entity.WallBreakerRepairBot;
+import h05.equipment.Axe;
+import h05.equipment.Pickaxe;
+import h05.equipment.Powerbank;
+import h05.equipment.TelephotoLens;
+import h05.equipment.WallBreaker;
+import h05.mineable.Rock;
+import h05.mineable.Tree;
+import org.tudalgo.algoutils.student.annotation.DoNotTouch;
+import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
+/**
+ * The game loop for simulating the MineBot world.
+ *
+ * @author Nhan Huynh, Nico Schnieders
+ */
 public class GameLoop extends GameLoopBase {
 
+    /**
+     * Constructs a new {@link GameLoop} instance for simulating the MineBot world.
+     */
+    @DoNotTouch
+    public GameLoop() {
+    }
+
+    @StudentImplementationRequired("H5.6")
     @Override
     protected void setupWorld() {
         World.placeHorizontalWall(0, 0);
@@ -73,8 +90,7 @@ public class GameLoop extends GameLoopBase {
         World.placeVerticalWall(6, 6);
 
         KarelWorld world = World.getGlobalWorld();
-        world.placeEntity(new Gear(3, 3, new Battery()));
-        world.placeEntity(new Gear(0, 6, new Battery()));
+        world.placeEntity(new Gear(0, 6, new Powerbank(25)));
         world.placeEntity(new Gear(2, 0, new Pickaxe()));
         world.placeEntity(new Gear(6, 3, new Axe()));
         world.placeEntity(new Loot(0, 3, new Tree()));
@@ -83,7 +99,6 @@ public class GameLoop extends GameLoopBase {
         world.placeEntity(new Loot(6, 5, new Rock()));
         world.placeEntity(new Loot(3, 0, new Rock()));
         world.placeEntity(new Loot(0, 0, new Rock()));
-        world.placeEntity(new Gear(3, 6, new MiningDetector()));
         world.placeEntity(new Gear(6, 6, new WallBreaker()));
         world.placeEntity(new Gear(5, 0, new WallBreaker()));
         world.placeEntity(new Gear(2, 2, new TelephotoLens(1)));
@@ -91,10 +106,12 @@ public class GameLoop extends GameLoopBase {
         world.placeEntity(new Gear(6, 4, new Powerbank(50)));
     }
 
+    @StudentImplementationRequired("H5.6")
     @Override
     protected void initRobots() {
-        MineBot miner = new MineBot(1, 0);
-        RepairBot repairer1 = new RepairBot(3, 2, 2);
-        RepairBot repairer2 = new RepairBot(4, 3, 2);
+        GameSettings settings = getGameSettings();
+        Miner miner = new MineBot(1, 0, settings);
+        Repairer repairer1 = new TeleportRepairBot(3, 2, settings, 2);
+        Repairer repairer2 = new WallBreakerRepairBot(4, 3, settings, 2);
     }
 }

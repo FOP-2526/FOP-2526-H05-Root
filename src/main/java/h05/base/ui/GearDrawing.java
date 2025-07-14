@@ -9,7 +9,7 @@ import h05.equipment.EquipmentCondition;
 import h05.equipment.Tool;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
-import java.awt.*;
+import java.awt.Image;
 import java.util.List;
 
 @DoNotTouch

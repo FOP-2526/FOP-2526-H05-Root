@@ -4,14 +4,9 @@ import fopbot.DrawingContext;
 import fopbot.PaintUtils;
 import fopbot.SvgBasedDrawing;
 import h05.base.entity.Gear;
-import h05.equipment.Battery;
-import h05.equipment.Camera;
 import h05.equipment.Equipment;
 import h05.equipment.EquipmentCondition;
-import h05.equipment.Powerbank;
-import h05.equipment.TelephotoLens;
 import h05.equipment.Tool;
-import h05.equipment.WallBreaker;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 
 import java.awt.Image;
@@ -24,12 +19,12 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
      * The available equipment types that can be used by the {@link Gear} entity.
      */
     @DoNotTouch
-    public static final List<Class<? extends Equipment>> AVAILABLE_EQUIPMENTS = List.of(
-        Battery.class,
-        Camera.class,
-        Powerbank.class,
-        TelephotoLens.class,
-        WallBreaker.class
+    public static final List<String> AVAILABLE_EQUIPMENTS = List.of(
+        "Battery",
+        "Camera",
+        "Powerbank",
+        "TelephotoLens",
+        "WallBreaker"
     );
 
     /**
@@ -54,29 +49,29 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
     protected Image getCurrentDrawingImage(Gear entity) {
         final Equipment equipment = entity.getEquipment();
         final int index;
-        final Class<? extends Equipment> clazz = equipment.getClass();
         final int numberOfConditions = EquipmentCondition.values().length;
         if (equipment instanceof Tool) {
-            index = AVAILABLE_EQUIPMENTS.size() * numberOfConditions + AVAILABLE_TOOLS.indexOf(clazz.getSimpleName());
+            index = AVAILABLE_EQUIPMENTS.size() * numberOfConditions + AVAILABLE_TOOLS.indexOf(equipment.getClass().getSimpleName());
         } else {
-            index = AVAILABLE_EQUIPMENTS.indexOf(clazz) * numberOfConditions + equipment.getCondition().ordinal();
+            index = AVAILABLE_EQUIPMENTS.indexOf(equipment.getClass().getSimpleName()) * numberOfConditions + equipment.getCondition().ordinal();
         }
         return getImage(index);
     }
+
 
     @DoNotTouch
     @Override
     protected void loadImages(int targetSize, DrawingContext<? extends Gear> context) {
         final EquipmentCondition[] conditions = EquipmentCondition.values();
-        for (Class<? extends Equipment> clazz : AVAILABLE_EQUIPMENTS) {
+        for (String name : AVAILABLE_EQUIPMENTS) {
             for (EquipmentCondition condition : conditions) {
-                final String path = clazz.getSimpleName().toLowerCase() + "_" + condition.name().toLowerCase() + EXTENSION;
+                final String path = name.toLowerCase() + "_" + condition.name().toLowerCase() + EXTENSION;
                 final Image image = PaintUtils.loadFieldImage(
                     getClass().getResourceAsStream(path),
                     0,
                     targetSize
                 );
-                setImage(AVAILABLE_EQUIPMENTS.indexOf(clazz) * conditions.length + condition.ordinal(), image);
+                setImage(AVAILABLE_EQUIPMENTS.indexOf(name) * conditions.length + condition.ordinal(), image);
             }
         }
         final int offset = AVAILABLE_EQUIPMENTS.size() * conditions.length;

@@ -1,17 +1,16 @@
 package h05;
 
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
-import org.tudalgo.algoutils.student.annotation.StudentCreationRequired;
 
 /**
  * Represents an object that has durability, which can be reduced.
  *
- * <p>he durability is a value between 0 and 100 (inclusive) that represents the percentage of durability remaining,
+ * <p>The durability is a value between 0 and 100 (inclusive) that represents the percentage of durability remaining,
  * where 100 means full durability and 0 means the object is broken.
  *
  * @author Nhan Huynh, Nico Schnieders
  */
-@StudentCreationRequired("H5.1")
+@DoNotTouch
 public interface Durable {
 
     /**

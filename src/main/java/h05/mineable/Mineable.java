@@ -5,6 +5,7 @@ import h05.equipment.Tool;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.tudalgo.algoutils.student.annotation.DoNotTouch;
+import org.tudalgo.algoutils.student.annotation.StudentImplementationRequired;
 
 /**
  * A mineable entity represents a resources in a world which can be mined.
@@ -28,6 +29,7 @@ public interface Mineable extends Durable {
      *
      * @return the progress of mining this entity
      */
+    @StudentImplementationRequired("H5.3")
     default @NotNull MiningProgress getProgress() {
         final double durability = getDurability();
         if (durability < 100 && durability > 50) {

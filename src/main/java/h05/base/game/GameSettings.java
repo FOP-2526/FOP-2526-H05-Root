@@ -101,7 +101,7 @@ public interface GameSettings {
      * @param x the x-coordinate of the gear
      * @param y the y-coordinate of the gear
      * @return the equipment contained in the gear if it exists, or {@code null} if no gear is present at the
-     *         coordinates
+     * coordinates
      */
     @DoNotTouch
     @Nullable Equipment getAndRemoveGearAt(int x, int y);

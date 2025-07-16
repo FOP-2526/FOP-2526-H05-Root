@@ -18,14 +18,14 @@ public interface Tool extends Equipment {
     @DoNotTouch
     double getMiningPower();
 
-    @Override
     @DoNotTouch
+    @Override
     default boolean isUsable() {
         return false;
     }
 
-    @Override
     @DoNotTouch
+    @Override
     default boolean isTool() {
         return true;
     }

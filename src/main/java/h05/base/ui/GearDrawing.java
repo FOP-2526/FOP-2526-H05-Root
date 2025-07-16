@@ -14,16 +14,17 @@ import java.util.List;
 
 @DoNotTouch
 public class GearDrawing extends SvgBasedDrawing<Gear> {
+
     /**
      * The available equipment types that can be used by the {@link Gear} entity.
      */
     @DoNotTouch
     public static final List<String> AVAILABLE_EQUIPMENTS = List.of(
-            "Battery",
-            "Camera",
-            "Powerbank",
-            "TelephotoLens",
-            "WallBreaker"
+        "Battery",
+        "Camera",
+        "Powerbank",
+        "TelephotoLens",
+        "WallBreaker"
     );
 
     /**
@@ -31,8 +32,8 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
      */
     @DoNotTouch
     public static final List<String> AVAILABLE_TOOLS = List.of(
-            "Axe",
-            "Pickaxe"
+        "Axe",
+        "Pickaxe"
     );
 
     /**
@@ -66,9 +67,9 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
             for (EquipmentCondition condition : conditions) {
                 final String path = name.toLowerCase() + "_" + condition.name().toLowerCase() + EXTENSION;
                 final Image image = PaintUtils.loadFieldImage(
-                        getClass().getResourceAsStream(path),
-                        0,
-                        targetSize
+                    getClass().getResourceAsStream(path),
+                    0,
+                    targetSize
                 );
                 setImage(AVAILABLE_EQUIPMENTS.indexOf(name) * conditions.length + condition.ordinal(), image);
             }
@@ -77,9 +78,9 @@ public class GearDrawing extends SvgBasedDrawing<Gear> {
         for (String name : AVAILABLE_TOOLS) {
             final String path = name.toLowerCase() + EXTENSION;
             final Image image = PaintUtils.loadFieldImage(
-                    getClass().getResourceAsStream(path),
-                    0,
-                    targetSize
+                getClass().getResourceAsStream(path),
+                0,
+                targetSize
             );
             setImage(offset + AVAILABLE_TOOLS.indexOf(name), image);
         }

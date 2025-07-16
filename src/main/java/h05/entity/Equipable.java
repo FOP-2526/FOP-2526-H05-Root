@@ -8,6 +8,7 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
 /**
  * An entity that can be equipped with various types of equipment.
  */
+@DoNotTouch
 public interface Equipable {
 
     /**
@@ -23,6 +24,7 @@ public interface Equipable {
      *
      * @return the number of equipments this entity has
      */
+    @DoNotTouch
     int getNumberOfEquipments();
 
     /**

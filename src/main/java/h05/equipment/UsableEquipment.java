@@ -9,6 +9,7 @@ import org.tudalgo.algoutils.student.annotation.DoNotTouch;
  *
  * @author Nhan Huynh, Nico Schnieders
  */
+@DoNotTouch
 public interface UsableEquipment extends Equipment {
 
     /**
@@ -19,11 +20,13 @@ public interface UsableEquipment extends Equipment {
     @DoNotTouch
     void use(@NotNull Miner miner);
 
+    @DoNotTouch
     @Override
     default boolean isUsable() {
         return true;
     }
 
+    @DoNotTouch
     @Override
     default boolean isTool() {
         return false;

@@ -8,6 +8,7 @@ import org.tudalgo.algoutils.student.annotation.StudentCreationRequired;
  * @author Nhan Huynh, Nico Schnieders
  */
 @StudentCreationRequired("H5.2.4")
+// TODO H5.2.4
 public class Axe extends AbstractEquipment implements Tool {
 
     /**

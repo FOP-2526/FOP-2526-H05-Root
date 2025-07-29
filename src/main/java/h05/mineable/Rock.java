@@ -23,6 +23,7 @@ public class Rock extends AbstractMinableEntity implements Mineable {
     @StudentImplementationRequired("H5.3")
     @Override
     public boolean onMined(@Nullable Tool tool) {
+        // TODO H5.3
         final double factor;
         if (tool == null) {
             factor = 5; // 5 * 1 = 5

@@ -28,6 +28,7 @@ public interface Equipment extends Durable {
      */
     @StudentImplementationRequired("H5.2.1")
     default @NotNull EquipmentCondition getCondition() {
+        // TODO H5.2.1
         final double durability = getDurability();
         if (durability > 80) {
             return EquipmentCondition.NEW;

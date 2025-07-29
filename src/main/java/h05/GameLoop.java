@@ -38,6 +38,7 @@ public class GameLoop extends GameLoopBase {
     @StudentImplementationRequired("H5.6")
     @Override
     protected void setupWorld() {
+        // TODO H5.6
         World.placeHorizontalWall(0, 0);
         World.placeVerticalWall(0, 1);
         World.placeHorizontalWall(0, 3);
@@ -109,6 +110,7 @@ public class GameLoop extends GameLoopBase {
     @StudentImplementationRequired("H5.6")
     @Override
     protected void initRobots() {
+        // TODO H5.6
         GameSettings settings = getGameSettings();
         Miner miner = new MineBot(1, 0, settings);
         Repairer repairer1 = new TeleportRepairBot(3, 2, settings, 2);

@@ -23,6 +23,7 @@ public class Battery extends AbstractEquipment {
      */
     @StudentImplementationRequired("H5.2.2")
     public void increaseDurability(double value) {
+        // TODO H5.2.2
         if (getCondition() == EquipmentCondition.BROKEN) {
             return;
         }

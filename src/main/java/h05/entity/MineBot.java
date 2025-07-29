@@ -116,6 +116,7 @@ public class MineBot extends Robot implements Miner {
     @StudentImplementationRequired("H5.4.2")
     @Override
     public @NotNull Point[] getVision(int x, int y) {
+        // TODO H5.4.2
         int visibilityRange = camera.getVisibilityRange();
         int fieldCount = 0;
         for (int dx = -visibilityRange; dx <= visibilityRange; dx++) {
@@ -153,6 +154,7 @@ public class MineBot extends Robot implements Miner {
     @StudentImplementationRequired("H5.4.2")
     @Override
     public void updateVision(int oldX, int oldY, int newX, int newY) {
+        // TODO H5.4.2
         Point[] oldPoints = getVision(oldX, oldY);
         Point[] newPoints = getVision(newX, newY);
         for (Point point : oldPoints) {
@@ -171,6 +173,7 @@ public class MineBot extends Robot implements Miner {
     @StudentImplementationRequired("H05.4.3")
     @Override
     public void move() {
+        // TODO H5.4.3
         if (isBatteryBroken()) {
             return;
         }
@@ -209,6 +212,7 @@ public class MineBot extends Robot implements Miner {
     @StudentImplementationRequired("H5.4.4")
     @Override
     public void use(int index) {
+        // TODO H5.4.4
         int currentIndex = 0;
         for (int i = 0; i < nextIndex; i++) {
             Equipment equipment = equipments[i];
@@ -302,6 +306,7 @@ public class MineBot extends Robot implements Miner {
     @StudentImplementationRequired("H5.4.1")
     @Override
     public void mine() {
+        // TODO H5.4.1
         Direction direction = getDirection();
         int x = getX() + direction.getDx();
         int y = getY() + direction.getDy();

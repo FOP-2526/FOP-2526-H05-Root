@@ -11,6 +11,7 @@ import org.tudalgo.algoutils.student.annotation.StudentCreationRequired;
  * @see Camera
  */
 @StudentCreationRequired("H5.2.3")
+// TODO H5.2.3
 public class TelephotoLens extends AbstractEquipment implements UsableEquipment {
 
     /**

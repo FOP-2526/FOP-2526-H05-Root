@@ -23,6 +23,7 @@ public class Tree extends AbstractMinableEntity implements Mineable {
     @StudentImplementationRequired("H5.3")
     @Override
     public boolean onMined(@Nullable Tool tool) {
+        // TODO H5.3
         final double factor;
         if (tool == null) {
             factor = 7.5; // 3 * 1 = 7.5

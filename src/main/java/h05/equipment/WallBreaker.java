@@ -25,6 +25,7 @@ public class WallBreaker extends AbstractEquipment implements UsableEquipment {
     @StudentImplementationRequired("H5.2.5")
     @Override
     public void use(@NotNull Miner miner) {
+        // TODO H5.2.5
         if (getCondition() == EquipmentCondition.BROKEN) {
             return;
         }

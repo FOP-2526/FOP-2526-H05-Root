@@ -47,6 +47,7 @@ public class Camera extends AbstractEquipment {
      */
     @StudentImplementationRequired("H5.2.2")
     public int getVisibilityRange() {
+        // TODO H5.2.2
         if (getCondition() == EquipmentCondition.BROKEN) {
             return 0;
         }
@@ -65,6 +66,7 @@ public class Camera extends AbstractEquipment {
      */
     @StudentImplementationRequired("H5.2.2")
     public void setVisibilityRange(int visibilityRange) {
+        // TODO H5.2.2
         this.visibilityRange = visibilityRange < 1 ? 1 : visibilityRange;
     }
 

@@ -68,6 +68,7 @@ public abstract class AbstractRepairBot extends Robot implements Repairer {
     @StudentImplementationRequired("H5.5")
     @Override
     public @Nullable Point scan() {
+        // TODO H5.5
         int x = getX();
         int y = getY();
         for (int dx = -radius; dx <= radius; dx++) {
@@ -92,6 +93,7 @@ public abstract class AbstractRepairBot extends Robot implements Repairer {
     @StudentImplementationRequired("H5.5")
     @Override
     public void repair(@NotNull Point point) {
+        // TODO H5.5
         move(point);
         Miner miner = getGameSettings().getMinerAt(getX(), getY());
         if (miner.isBatteryBroken()) {

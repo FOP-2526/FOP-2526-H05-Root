@@ -31,6 +31,7 @@ public interface Mineable extends Durable {
      */
     @StudentImplementationRequired("H5.3")
     default @NotNull MiningProgress getProgress() {
+        // TODO H5.3
         final double durability = getDurability();
         if (durability < 100 && durability > 50) {
             return MiningProgress.IN_PROGRESS;

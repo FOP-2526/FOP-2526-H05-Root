@@ -33,6 +33,6 @@ public class Tree extends AbstractMinableEntity implements Mineable {
             factor = 3; // 3 * 5 = 15
         }
         reduceDurability(tool == null ? 1 * factor : tool.getMiningPower() * factor);
-        return getDurability() <= 0;
+        return getDurability() == 0;
     }
 }

@@ -34,6 +34,6 @@ public class Rock extends AbstractMinableEntity implements Mineable {
         }
 
         reduceDurability(tool == null ? 1 * factor : tool.getMiningPower() * factor);
-        return getDurability() <= 0;
+        return getDurability() == 0;
     }
 }

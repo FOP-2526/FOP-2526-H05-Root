@@ -33,9 +33,9 @@ public interface Mineable extends Durable {
     default @NotNull MiningProgress getProgress() {
         // TODO H5.3
         final double durability = getDurability();
-        if (durability < 100 && durability > 50) {
+        if (durability < 100 && durability > 0) {
             return MiningProgress.IN_PROGRESS;
-        } else if (durability <= 50 && durability > 0) {
+        } else if (durability == 0) {
             return MiningProgress.COMPLETED;
         }
         return MiningProgress.UNSTARTED;

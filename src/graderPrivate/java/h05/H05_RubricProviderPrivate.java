@@ -89,7 +89,7 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                                     Criterion.builder()
                                             .shortDescription("H5.4.1 | mine()")
                                             .addChildCriteria(
-                                                    criterion("Die Methode mine() von der Klasse MineBot berechnet die korrekte Position, an dem ein Rohstoff abgebaut werden soll.", 1
+                                                    criterion("Die Methode mine() von der Klasse MineBot ruft settings.getLootAt(x,y) mit den richtigen Parametern auf.", 1
                                                     ),
                                                     criterion("Die Methode mine() von der Klasse MineBot bricht ab, sollte dort kein Rohstoff existieren.", 1
                                                     ),

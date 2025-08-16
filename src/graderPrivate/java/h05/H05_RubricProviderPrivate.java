@@ -62,7 +62,9 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                                     Criterion.builder()
                                             .shortDescription("H5.2.5 | Wallbreaker")
                                             .addChildCriteria(
-                                                    criterion("Die Methode use() der Klasse Wallbreaker ist korrekt implementiert.", 2
+                                                    criterion("Die Methode use() der Klasse Wallbreaker berechnet die korrekte Position, an der eine Wand gebrochen werden soll.", 1
+                                                    ),
+                                                    criterion("Die Methode use() der Klasse Wallbreaker entfernt die Wand aus der Welt.", 1
                                                     )
                                             )
                                             .build()

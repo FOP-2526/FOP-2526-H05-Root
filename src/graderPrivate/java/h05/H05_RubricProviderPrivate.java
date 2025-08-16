@@ -26,9 +26,9 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                                     Criterion.builder()
                                             .shortDescription("H5.2.1 | Zustand von Ausrüstungen")
                                             .addChildCriteria(
-                                                    criterion("Die Methode getCondition() gibt für mindestens einen Fall die richtige EquipmentCondition zurück.", 1
+                                                    criterion("Die Methode getCondition() des Interfaces Equipments gibt für mindestens einen Fall die richtige EquipmentCondition zurück.", 1
                                                     ),
-                                                    criterion("Die Methode getCondition() gibt für alle Fälle die richtige EquipmentCondition zurück.", 1
+                                                    criterion("Die Methode getCondition() des Interfaces Equipments gibt für alle Fälle die richtige EquipmentCondition zurück.", 1
                                                     )
                                             )
                                             .build(),
@@ -44,7 +44,7 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                                     Criterion.builder()
                                             .shortDescription("H5.2.3 | Powerbank und TelephotoLens")
                                             .addChildCriteria(
-                                                    criterion("Powerbank und TelephotoLens sind korrekt definiert.", 1
+                                                    criterion("Die Klassen Powerbank und TelphotoLense müssen vollständig und korrekt erstellt, implementiert (mit Ausnahme der Methode use())) und initialisiert werden.", 1
                                                     ),
                                                     criterion("Die Methode use() der Klasse Powerbank ist korrekt implementiert.", 1
                                                     ),
@@ -55,16 +55,14 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                                     Criterion.builder()
                                             .shortDescription("H5.2.4 | Tools")
                                             .addChildCriteria(
-                                                    criterion("Die Klassen Axe und Pickaxe sind korrekt definiert und initialisiert.", 1
+                                                    criterion("Die Klassen Axe und Pickaxe sind vollständig und korrekt erstellt, implementiert und initialisiert.", 1
                                                     )
                                             )
                                             .build(),
                                     Criterion.builder()
                                             .shortDescription("H5.2.5 | Wallbreaker")
                                             .addChildCriteria(
-                                                    criterion("Das Feld, an welchem die Wand entfernt werden soll, wird in use() korrekt berechnet.", 1
-                                                    ),
-                                                    criterion("Die Wand, und nur die Wand, wird in use() korrekt aus der Welt entfernt.", 1
+                                                    criterion("Die Methode use() der Klasse Wallbreaker ist korrekt implementiert.", 2
                                                     )
                                             )
                                             .build()
@@ -89,44 +87,44 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                                     Criterion.builder()
                                             .shortDescription("H5.4.1 | mine()")
                                             .addChildCriteria(
-                                                    criterion("Punkt, an welchem gemined wird, wird korrekt berechnet und liegt nur innerhalb der Welt.", 1
+                                                    criterion("Die Methode mine() von der Klasse MineBot berechnet die korrekte Position, an dem ein Rohstoff abgebaut werden soll.", 1
                                                     ),
-                                                    criterion("Die Methode bricht ab, sollte an diesem Punkt kein mineable existieren.", 1
+                                                    criterion("Die Methode mine() von der Klasse MineBot bricht ab, sollte dort kein Rohstoff existieren.", 1
                                                     ),
-                                                    criterion("Die Methode onMined() der Klasse mineable wird korrekt aufgerufen, wenn  es nicht vollständig abgebaut ist.", 1
-                                                    )
-                                                    , criterion("Nach dem minen wird das mineable korrekt in das Inventar aufgenommen.", 1
+                                                    criterion("Die Methode mine() von der Klasse MineBot ruft die Methode onMined() des Rohstoffes auf, sollte er nicht vollständig abgebaut sein.", 1
+                                                    ),
+                                                    criterion("Die Methode mine() von der Klasse MineBot nimmt den Rohstoff nach dem Abbauen ins Inventar auf, sollte dort noch Platz sein.", 1
                                                     )
                                             )
                                             .build(),
                                     Criterion.builder()
                                             .shortDescription("H5.4.2 | Sichtweite aktualisieren")
                                             .addChildCriteria(
-                                                    criterion("Die Größe des Arrays der sichtbaren Felder in getVision() wird korrekt bestimmt.", 1
+                                                    criterion("Die Methode getVision() der Klasse MineBot berechnet die korrekte Größe des Arrays der sichtbaren Punkte.", 1
                                                     ),
-                                                    criterion("Die sichtbaren Felder werden in getVision() korrekt berechnet.", 1
+                                                    criterion("Die Methode getVision() der Klasse MineBot berechnet die sichtbaren Punkte korrekt.", 1
                                                     ),
-                                                    criterion("Die alten und neuen sichtbaren Felder werden in updateVision() korrekt berechnet.", 1
+                                                    criterion("Die Methode updateVision() der Klasse MineBot berechnet die abzudeckenden Felder korrekt und platziert dort Fog.", 1
                                                     ),
-                                                    criterion("Die neu sichtbaren Felder werden in updateVision() korrekt aufgedeckt, die nichtmehr sichtbaren Felder korrekt verdeckt.", 1
+                                                    criterion("Die Methode updateVision() der Klasse MineBot berechnet die aufzudeckenden Felder korrekt und entfernt dort Fog.", 1
                                                     )
                                             )
                                             .build(),
                                     Criterion.builder()
                                             .shortDescription("H5.4.3 | move()")
                                             .addChildCriteria(
-                                                    criterion("updateVision wird mit den korrekten Parametern aufgerufen.", 1
+                                                    criterion("Die Methode move() der Klasse MineBot ruft updateVision mit den korrekten Parametern auf", 1
                                                     ),
-                                                    criterion("Die Haltbarkeit der Batterie wird um den korrekten Wert reduziert.", 1
+                                                    criterion("Die Methode move() der Klasse MineBot reduziert die Haltbarkeit der Batterie um den korrekten Wert.", 1
                                                     )
                                             )
                                             .build(),
                                     Criterion.builder()
                                             .shortDescription("H5.4.4 | Anwenden von Ausrüstung")
                                             .addChildCriteria(
-                                                    criterion("Es wird das richtige Equipment in use() benutzt.", 1
+                                                    criterion("Die Methode use() der Klasse MineBot benutzt das richtige Equipment.", 1
                                                     ),
-                                                    criterion("Bei einer TelephotoLens wird updateVision mit den korrekten Parametern aufgerufen.", 1
+                                                    criterion("Die Methode use() der Klasse MineBot ruft, sollte das zu benutzende Equipment eine TelephotoLens sein, die Methode updateVision() mit den richtigen Parametern auf.", 1
                                                     )
                                             )
                                             .build()
@@ -135,13 +133,13 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                     Criterion.builder()
                             .shortDescription("H5.5 | First Aid Bot – Ihr persönlicher Gesundheitsbegleiter")
                             .addChildCriteria(
-                                    criterion("Die Methode scan() in der Klasse gibt MineBots mit beschädigter Ausrüstung im korrekten Radius zurück.", 1
+                                    criterion("Die Methode scan() in der Klasse AbstractRepairBot gibt MineBots mit beschädigter Ausrüstung im korrekten Radius zurück.", 1
                                     ),
-                                    criterion("Die Methode scan() in der Klasse gibt null zurück, sollte es keine MineBots mit beschädigter Ausrüstung im Radius geben.", 1
+                                    criterion("Die Methode scan() in der Klasse AbstractRepairBot gibt null zurück, sollte es keine MineBots mit beschädigter Ausrüstung im Radius geben.", 1
                                     ),
-                                    criterion("Die Methode repair() equippt eine neue Kamera/Batterie, sollte die alte kaputt sein.", 1
+                                    criterion("Die Methode repair() in der Klasse AbstractRepairBot equippt eine neue Kamera/Batterie, sollte die alte kaputt sein.", 1
                                     ),
-                                    criterion("Die Methode repair() entfernt alle beschädigten Equipments.", 1
+                                    criterion("Die Methode repair() in der Klasse AbstractRepairBot entfernt alle beschädigten Equipments.", 1
                                     )
                             )
                             .build()

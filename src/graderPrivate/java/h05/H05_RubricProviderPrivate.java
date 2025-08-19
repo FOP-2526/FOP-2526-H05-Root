@@ -2,6 +2,7 @@ package h05;
 
 
 import org.sourcegrade.jagr.api.rubric.Criterion;
+import org.sourcegrade.jagr.api.rubric.JUnitTestRef;
 import org.sourcegrade.jagr.api.rubric.Rubric;
 import org.sourcegrade.jagr.api.rubric.RubricProvider;
 
@@ -14,8 +15,12 @@ public class H05_RubricProviderPrivate implements RubricProvider {
             Criterion.builder()
                 .shortDescription("H5.1 | Haltbarkeitsdatum abgelaufen")
                 .addChildCriteria(
-                    criterion("Die Methoden von Durable sind in mindestens 4 Klassen korrekt und vollständig implementiert.", 1),
-                    criterion("Die Methoden von Durable sind in allen Klassen korrekt und vollständig implementiert.", 1)
+                    criterion("Die Methoden von Durable sind in mindestens 4 Klassen korrekt und vollständig implementiert.",
+                        1,
+                        JUnitTestRef.ofMethod(() -> TestDurableImpls.class.getDeclaredMethod("testDurableImplsMinimum"))),
+                    criterion("Die Methoden von Durable sind in allen Klassen korrekt und vollständig implementiert.",
+                        1,
+                        JUnitTestRef.ofMethod(() -> TestDurableImpls.class.getDeclaredMethod("testDurableImplsAll")))
                 )
                 .build(),
             Criterion.builder()

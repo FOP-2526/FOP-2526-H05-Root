@@ -58,13 +58,13 @@ public final class BasicGameSettings implements GameSettings {
         if (getEntityAt(x, y, Fog.class) != null) {
             return;
         }
-        World.getGlobalWorld().placeEntity(new Fog(x, y));
+        World.getGlobalWorld().placeFieldEntity(new Fog(x, y));
     }
 
     @DoNotTouch
     @Override
     public void removeFog(int x, int y) {
-        World.getGlobalWorld().removeEntity(x, y, Fog.class);
+        World.getGlobalWorld().removeFieldEntity(x, y, Fog.class);
     }
 
     @Override
@@ -121,7 +121,7 @@ public final class BasicGameSettings implements GameSettings {
     @Override
     public void placeGearAt(int x, int y, Equipment equipment) {
         Gear gear = new Gear(x, y, equipment);
-        World.getGlobalWorld().placeEntity(gear);
+        World.getGlobalWorld().placeFieldEntity(gear);
     }
 
     @Override
@@ -153,7 +153,7 @@ public final class BasicGameSettings implements GameSettings {
     @Override
     @DoNotTouch
     public void removeEntity(@NotNull FieldEntity entity) {
-        World.getGlobalWorld().removeEntity(entity);
+        World.getGlobalWorld().removeFieldEntity(entity);
     }
 
     @Override

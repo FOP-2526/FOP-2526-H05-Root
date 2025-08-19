@@ -1,6 +1,9 @@
 package h05;
 
 
+import h05.equipment.BatteryTest;
+import h05.equipment.CameraTest;
+import h05.equipment.TestEquipmentImpls;
 import org.sourcegrade.jagr.api.rubric.Criterion;
 import org.sourcegrade.jagr.api.rubric.JUnitTestRef;
 import org.sourcegrade.jagr.api.rubric.Rubric;
@@ -29,15 +32,24 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                     Criterion.builder()
                         .shortDescription("H5.2.1 | Zustand von Ausrüstungen")
                         .addChildCriteria(
-                            criterion("Die Methode getCondition() des Interfaces Equipments gibt für mindestens einen Fall die richtige EquipmentCondition zurück.", 1),
-                            criterion("Die Methode getCondition() des Interfaces Equipments gibt für alle Fälle die richtige EquipmentCondition zurück.", 1)
+                            criterion("Die Methode getCondition() des Interfaces Equipments gibt für mindestens einen Fall die richtige EquipmentCondition zurück.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> TestEquipmentImpls.class.getDeclaredMethod("testEquipmentImplsMinimum"))),
+                            criterion("Die Methode getCondition() des Interfaces Equipments gibt für alle Fälle die richtige EquipmentCondition zurück.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> TestEquipmentImpls.class.getDeclaredMethod("testEquipmentImplsAll")))
                         )
                         .build(),
                     Criterion.builder()
                         .shortDescription("H5.2.2 | Batterie und Kamera")
                         .addChildCriteria(
-                            criterion("Die Methode increaseDurability(double) der Klasse Battery ist korrekt und vollständig implementiert. ", 1),
-                            criterion("Die Methoden getVisibilityRange() und setVisibilityRange(double) der Klasse Camera sind korrekt und vollständig implementiert. ", 1)
+                            criterion("Die Methode increaseDurability(double) der Klasse Battery ist korrekt und vollständig implementiert.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> BatteryTest.class.getDeclaredMethod("testIncreaseDurability"))),
+                            criterion("Die Methoden getVisibilityRange() und setVisibilityRange(double) der Klasse Camera sind korrekt und vollständig implementiert.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> CameraTest.class.getDeclaredMethod("testGetVisibility")),
+                                JUnitTestRef.ofMethod(() -> CameraTest.class.getDeclaredMethod("testSetVisibility", int.class)))
                         )
                         .build(),
                     Criterion.builder()

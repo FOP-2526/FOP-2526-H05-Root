@@ -11,36 +11,18 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
-import org.tudalgo.algoutils.tutor.general.match.Matcher;
 import org.tudalgo.algoutils.tutor.general.reflections.*;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
+import static h05.Links.*;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 
 @TestForSubmission
 public class TelephotoLensTest {
-
-    private static final Supplier<TypeLink> TELEPHOTO_LENS_TYPE_LINK = () ->
-        BasicPackageLink.of("h05.equipment").getType(Matcher.of(typeLink -> typeLink.name().equals("TelephotoLens")));
-    private static final Supplier<ConstructorLink> TELEPHOTO_LENS_CONSTRUCTOR_LINK = () ->
-        TELEPHOTO_LENS_TYPE_LINK.get().getConstructor(Matcher.of(constructorLink ->
-            constructorLink.typeList().equals(List.of(BasicTypeLink.of(int.class)))));
-    private static final Supplier<FieldLink> TELEPHOTO_LENS_RANGE_ENHANCEMENT_FIELD_LINK = () ->
-        TELEPHOTO_LENS_TYPE_LINK.get().getField(Matcher.of(fieldLink -> fieldLink.name().equals("rangeEnhancement")));
-    private static final Supplier<MethodLink> TELEPHOTO_LENS_GET_RANGE_ENHANCEMENT_METHOD_LINK = () ->
-        TELEPHOTO_LENS_TYPE_LINK.get().getMethod(Matcher.of(methodLink ->
-            methodLink.name().equals("getRangeEnhancement") && methodLink.typeList().isEmpty()));
-    private static final Supplier<MethodLink> TELEPHOTO_LENS_USE_METHOD_LINK = () ->
-        TELEPHOTO_LENS_TYPE_LINK.get().getMethod(Matcher.of(methodLink ->
-            methodLink.name().equals("use") && methodLink.typeList().equals(List.of(BasicTypeLink.of(Miner.class)))));
 
     @Test
     public void testDefinition() {
@@ -62,15 +44,7 @@ public class TelephotoLensTest {
         assertEquals(int.class, rangeEnhancementField.type().reflection(), emptyContext(),
             r -> "Field 'rangeEnhancement' in class TelephotoLens does not have type int");
 
-        List<Method> actualMethods = List.of(type.reflection().getMethods());
-        for (Method expectedMethod : UsableEquipment.class.getMethods()) {
-            String expectedName = expectedMethod.getName();
-            Class<?>[] expectedParameterTypes = expectedMethod.getParameterTypes();
-            assertTrue(actualMethods.stream().anyMatch(method -> Utils.methodSignatureEquals(method, expectedName, expectedParameterTypes)),
-                emptyContext(),
-                r -> "Class TelephotoLens does not have method %s(%s)"
-                    .formatted(expectedName, Arrays.stream(expectedParameterTypes).map(Class::toString).collect(Collectors.joining(", "))));
-        }
+        Utils.testPublicMethodsExist(type.name(), UsableEquipment.class.getMethods(), type.reflection().getMethods());
     }
 
     @ParameterizedTest

@@ -30,12 +30,13 @@ public class TestDurableImpls {
     }
 
     private static final Map<Class<? extends Durable>, Supplier<? extends Durable>> DURABLE_IMPL_SUPPLIERS = Map.of(
+        // FIXME: indirectly link to classes that may not exist (Axe, Pickaxe, Powerbank, TelephotoLens)
         Axe.class, Axe::new,
         Battery.class, Battery::new,
         Camera.class, Camera::new,
         Pickaxe.class, Pickaxe::new,
-        Powerbank.class, () -> new Powerbank(0), // FIXME: class not guaranteed to exist
-        TelephotoLens.class, () -> new TelephotoLens(0), // FIXME: same here
+        Powerbank.class, () -> new Powerbank(0),
+        TelephotoLens.class, () -> new TelephotoLens(0),
         WallBreaker.class, WallBreaker::new,
         Rock.class, Rock::new,
         Tree.class, Tree::new

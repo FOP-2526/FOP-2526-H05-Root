@@ -41,6 +41,7 @@ public class TestEquipmentImpls {
     }
 
     private static final List<Class<? extends Equipment>> EQUIPMENT_IMPLS = List.of(
+        // FIXME: indirectly link to classes that may not exist (Axe, Pickaxe, Powerbank, TelephotoLens)
         Axe.class,
         Battery.class,
         Camera.class,

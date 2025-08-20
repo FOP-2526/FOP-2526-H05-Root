@@ -1,9 +1,7 @@
 package h05;
 
 
-import h05.equipment.BatteryTest;
-import h05.equipment.CameraTest;
-import h05.equipment.TestEquipmentImpls;
+import h05.equipment.*;
 import org.sourcegrade.jagr.api.rubric.Criterion;
 import org.sourcegrade.jagr.api.rubric.JUnitTestRef;
 import org.sourcegrade.jagr.api.rubric.Rubric;
@@ -55,9 +53,20 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                     Criterion.builder()
                         .shortDescription("H5.2.3 | Powerbank und TelephotoLens")
                         .addChildCriteria(
-                            criterion("Die Klassen Powerbank und TelphotoLense sind vollständig und korrekt erstellt, implementiert (mit Ausnahme der Methode use(Miner))) und initialisiert.", 1),
-                            criterion("Die Methode use(Miner) der Klasse Powerbank ist vollständig und korrekt implementiert.", 1),
-                            criterion("Die Methode use(Miner) der Klasse TelephotoLens ist vollständig und korrekt implementiert.", 1)
+                            criterion("Die Klassen Powerbank und TelephotoLense sind vollständig und korrekt erstellt, implementiert (getCapacity() bzw. getRangeEnhancement()) und initialisiert.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> PowerbankTest.class.getDeclaredMethod("testDefinition")),
+                                JUnitTestRef.ofMethod(() -> PowerbankTest.class.getDeclaredMethod("testConstructor", double.class)),
+                                JUnitTestRef.ofMethod(() -> PowerbankTest.class.getDeclaredMethod("testGetCapacity", double.class)),
+                                JUnitTestRef.ofMethod(() -> TelephotoLensTest.class.getDeclaredMethod("testDefinition")),
+                                JUnitTestRef.ofMethod(() -> TelephotoLensTest.class.getDeclaredMethod("testConstructor", int.class)),
+                                JUnitTestRef.ofMethod(() -> TelephotoLensTest.class.getDeclaredMethod("testGetRangeEnhancement", int.class))),
+                            criterion("Die Methode use(Miner) der Klasse Powerbank ist vollständig und korrekt implementiert.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> PowerbankTest.class.getDeclaredMethod("testUse", EquipmentCondition.class))),
+                            criterion("Die Methode use(Miner) der Klasse TelephotoLens ist vollständig und korrekt implementiert.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> TelephotoLensTest.class.getDeclaredMethod("testUse", EquipmentCondition.class)))
                         )
                         .build(),
                     Criterion.builder()

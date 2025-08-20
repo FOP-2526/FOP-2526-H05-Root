@@ -34,8 +34,8 @@ public class TestDurableImpls {
         Battery.class, Battery::new,
         Camera.class, Camera::new,
         Pickaxe.class, Pickaxe::new,
-        Powerbank.class, () -> new Powerbank(0),
-        TelephotoLens.class, () -> new TelephotoLens(0),
+        Powerbank.class, () -> new Powerbank(0), // FIXME: class not guaranteed to exist
+        TelephotoLens.class, () -> new TelephotoLens(0), // FIXME: same here
         WallBreaker.class, WallBreaker::new,
         Rock.class, Rock::new,
         Tree.class, Tree::new

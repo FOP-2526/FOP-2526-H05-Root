@@ -1,6 +1,7 @@
 package h05;
 
 
+import fopbot.Direction;
 import h05.equipment.*;
 import org.sourcegrade.jagr.api.rubric.Criterion;
 import org.sourcegrade.jagr.api.rubric.JUnitTestRef;
@@ -83,8 +84,12 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                     Criterion.builder()
                         .shortDescription("H5.2.5 | Wallbreaker")
                         .addChildCriteria(
-                            criterion("Die Methode use(Miner) der Klasse Wallbreaker ruft settings.getWallAt(int,int) mit den richtigen Parametern auf.", 1),
-                            criterion("Die Methode use(Miner) der Klasse Wallbreaker entfernt die Wand aus der Welt.", 1)
+                            criterion("Die Methode use(Miner) der Klasse Wallbreaker ruft settings.getWallAt(int,int) mit den richtigen Parametern auf.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> WallBreakerTest.class.getDeclaredMethod("testUse_callsGetWallsAt", Direction.class))),
+                            criterion("Die Methode use(Miner) der Klasse Wallbreaker entfernt die Wand aus der Welt.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> WallBreakerTest.class.getDeclaredMethod("testUse_removesWalls", Direction.class)))
                         )
                         .build()
                 )

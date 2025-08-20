@@ -72,7 +72,12 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                     Criterion.builder()
                         .shortDescription("H5.2.4 | Tools")
                         .addChildCriteria(
-                            criterion("Die Klassen Axe und Pickaxe sind vollständig und korrekt erstellt, implementiert und initialisiert.", 1)
+                            criterion("Die Klassen Axe und Pickaxe sind vollständig und korrekt erstellt, implementiert und initialisiert.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> AxeTest.class.getDeclaredMethod("testDefinition")),
+                                JUnitTestRef.ofMethod(() -> AxeTest.class.getDeclaredMethod("testGetMiningPower")),
+                                JUnitTestRef.ofMethod(() -> PickaxeTest.class.getDeclaredMethod("testDefinition")),
+                                JUnitTestRef.ofMethod(() -> PickaxeTest.class.getDeclaredMethod("testGetMiningPower")))
                         )
                         .build(),
                     Criterion.builder()

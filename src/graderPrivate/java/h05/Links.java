@@ -12,6 +12,26 @@ public class Links {
 
     private static final PackageLink H05_EQUIPMENT_PACKAGE = BasicPackageLink.of("h05.equipment");
 
+    // h05.equipment.Axe
+
+    public static final Supplier<TypeLink> AXE_TYPE_LINK = Suppliers.memoize(() ->
+        H05_EQUIPMENT_PACKAGE.getType(Matcher.of(typeLink -> typeLink.name().equals("Axe"))));
+    public static final Supplier<ConstructorLink> AXE_CONSTRUCTOR_LINK = Suppliers.memoize(() ->
+        AXE_TYPE_LINK.get().getConstructor(Matcher.of(constructorLink -> constructorLink.typeList().isEmpty())));
+    public static final Supplier<MethodLink> AXE_GET_MINING_POWER_METHOD_LINK = Suppliers.memoize(() ->
+        AXE_TYPE_LINK.get().getMethod(Matcher.of(methodLink ->
+            methodLink.name().equals("getMiningPower") && methodLink.typeList().isEmpty())));
+
+    // h05.equipment.Pickaxe
+
+    public static final Supplier<TypeLink> PICKAXE_TYPE_LINK = Suppliers.memoize(() ->
+        H05_EQUIPMENT_PACKAGE.getType(Matcher.of(typeLink -> typeLink.name().equals("Pickaxe"))));
+    public static final Supplier<ConstructorLink> PICKAXE_CONSTRUCTOR_LINK = Suppliers.memoize(() ->
+        PICKAXE_TYPE_LINK.get().getConstructor(Matcher.of(constructorLink -> constructorLink.typeList().isEmpty())));
+    public static final Supplier<MethodLink> PICKAXE_GET_MINING_POWER_METHOD_LINK = Suppliers.memoize(() ->
+        PICKAXE_TYPE_LINK.get().getMethod(Matcher.of(methodLink ->
+            methodLink.name().equals("getMiningPower") && methodLink.typeList().isEmpty())));
+
     // h05.equipment.Powerbank
 
     public static final Supplier<TypeLink> POWERBANK_TYPE_LINK = Suppliers.memoize(() ->

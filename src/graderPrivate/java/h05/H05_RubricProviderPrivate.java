@@ -3,10 +3,15 @@ package h05;
 
 import fopbot.Direction;
 import h05.equipment.*;
+import h05.mineable.MiningProgress;
+import h05.mineable.RockTest;
+import h05.mineable.TreeTest;
 import org.sourcegrade.jagr.api.rubric.Criterion;
 import org.sourcegrade.jagr.api.rubric.JUnitTestRef;
 import org.sourcegrade.jagr.api.rubric.Rubric;
 import org.sourcegrade.jagr.api.rubric.RubricProvider;
+
+import java.util.Optional;
 
 import static org.tudalgo.algoutils.tutor.general.jagr.RubricUtils.criterion;
 
@@ -97,10 +102,20 @@ public class H05_RubricProviderPrivate implements RubricProvider {
             Criterion.builder()
                 .shortDescription("H5.3 | Breaking Blocks")
                 .addChildCriteria(
-                    criterion("Die Methoden getName() und getProgress() sind in der Klasse Rock vollständig und korrekt implementiert.", 1),
-                    criterion("Die Methoden getName() und getProgress() sind in der Klasse Tree vollständig und korrekt implementiert.", 1),
-                    criterion("Die Methode onMined(Tool) sind in der Klasse Rock vollständig und korrekt implementiert.", 1),
-                    criterion("Die Methode onMined(Tool) sind in der Klasse Tree vollständig und korrekt implementiert.", 1)
+                    criterion("Die Methoden getName() und getProgress() sind in der Klasse Rock vollständig und korrekt implementiert.",
+                        1,
+                        JUnitTestRef.ofMethod(() -> RockTest.class.getDeclaredMethod("testGetName")),
+                        JUnitTestRef.ofMethod(() -> RockTest.class.getDeclaredMethod("testGetProgress", double.class, MiningProgress.class))),
+                    criterion("Die Methoden getName() und getProgress() sind in der Klasse Tree vollständig und korrekt implementiert.",
+                        1,
+                        JUnitTestRef.ofMethod(() -> TreeTest.class.getDeclaredMethod("testGetName")),
+                        JUnitTestRef.ofMethod(() -> TreeTest.class.getDeclaredMethod("testGetProgress", double.class, MiningProgress.class))),
+                    criterion("Die Methode onMined(Tool) sind in der Klasse Rock vollständig und korrekt implementiert.",
+                        1,
+                        JUnitTestRef.ofMethod(() -> RockTest.class.getDeclaredMethod("testOnMined", Utils.ToolClass.class, Optional.class))),
+                    criterion("Die Methode onMined(Tool) sind in der Klasse Tree vollständig und korrekt implementiert.",
+                        1,
+                        JUnitTestRef.ofMethod(() -> TreeTest.class.getDeclaredMethod("testOnMined", Utils.ToolClass.class, Optional.class)))
                 )
                 .build(),
             Criterion.builder()

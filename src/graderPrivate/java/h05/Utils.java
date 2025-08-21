@@ -8,9 +8,12 @@ import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.tudalgo.algoutils.tutor.general.reflections.TypeLink;
 
+import java.awt.*;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,6 +21,10 @@ import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.assertT
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.emptyContext;
 
 public class Utils {
+
+    public static boolean pointInWorld(int worldSize, Point point) {
+        return point.x >= 0 && point.x < worldSize && point.y >= 0 && point.y < worldSize;
+    }
 
     public static boolean methodSignatureEquals(Method method, String methodName, Class<?>... parameterTypes) {
         return method.getName().equals(methodName) && Arrays.equals(method.getParameterTypes(), parameterTypes);

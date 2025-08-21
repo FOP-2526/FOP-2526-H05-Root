@@ -142,10 +142,18 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                     Criterion.builder()
                         .shortDescription("H5.4.2 | Sichtweite aktualisieren")
                         .addChildCriteria(
-                            criterion("Die Methode getVision(int ,int) der Klasse MineBot berechnet die korrekte Größe des Arrays der sichtbaren Punkte.", 1),
-                            criterion("Die Methode getVision(int ,int) der Klasse MineBot berechnet die sichtbaren Punkte korrekt.", 1),
-                            criterion("Die Methode updateVision(int, int, int, int) der Klasse MineBot berechnet die abzudeckenden Felder korrekt und platziert dort Fog.", 1),
-                            criterion("Die Methode updateVision(int, int, int, int) der Klasse MineBot berechnet die aufzudeckenden Felder korrekt und entfernt dort Fog.", 1)
+                            criterion("Die Methode getVision(int ,int) der Klasse MineBot berechnet die korrekte Größe des Arrays der sichtbaren Punkte.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> MineBotTest.class.getDeclaredMethod("testGetVision_correctNumberOfPoints", int.class))),
+                            criterion("Die Methode getVision(int ,int) der Klasse MineBot berechnet die sichtbaren Punkte korrekt.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> MineBotTest.class.getDeclaredMethod("testGetVision_correctPoints", int.class))),
+                            criterion("Die Methode updateVision(int, int, int, int) der Klasse MineBot berechnet die abzudeckenden Felder korrekt und platziert dort Fog.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> MineBotTest.class.getDeclaredMethod("testUpdateVision_placeFog", int.class))),
+                            criterion("Die Methode updateVision(int, int, int, int) der Klasse MineBot berechnet die aufzudeckenden Felder korrekt und entfernt dort Fog.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> MineBotTest.class.getDeclaredMethod("testUpdateVision_removeFog", int.class)))
                         )
                         .build(),
                     Criterion.builder()

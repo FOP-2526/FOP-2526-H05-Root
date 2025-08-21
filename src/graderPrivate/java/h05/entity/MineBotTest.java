@@ -3,14 +3,17 @@ package h05.entity;
 import fopbot.Direction;
 import fopbot.World;
 import h05.Utils;
+import h05.base.entity.Fog;
 import h05.base.game.BasicGameSettings;
 import h05.base.game.GameSettings;
+import h05.equipment.Camera;
 import h05.equipment.Tool;
 import h05.mineable.Mineable;
 import kotlin.Triple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
@@ -20,8 +23,12 @@ import java.awt.*;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
@@ -29,19 +36,24 @@ import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 @TestForSubmission
 public class MineBotTest {
 
+    private static final int WORLD_SIZE = 5;
+    private static final Point STARTING_POS = new  Point(1, 1);
     private final AtomicReference<Direction> currentDirection = new AtomicReference<>();
     private final Context context = contextBuilder()
-        .add("world layout", "world size: 3x3, MineBot at (1, 1), loot at (1, 0) and (1, 2)")
+        .add("world layout", "world size: %dx%d, MineBot at (%d, %d), loot at (1, 0) and (1, 2)"
+            .formatted(WORLD_SIZE, WORLD_SIZE, STARTING_POS.x, STARTING_POS.y))
         .add("direction", currentDirection)
         .build();
     private Map<Point, Triple<Mineable, AtomicBoolean, AtomicBoolean>> lootMocks;
     private AtomicReference<Point> getLootAt_argsRef;
     private GameSettings gameSettingsMock;
+    private AtomicBoolean mockGetVision;
+    private final AtomicInteger visibilityRange = new AtomicInteger();
     private MineBot mineBotMock;
 
     @BeforeEach
     public void setup() {
-        World.setSize(3, 3);
+        World.setSize(WORLD_SIZE, WORLD_SIZE);
         World.setVisible(false);
         World.setDelay(0);
 
@@ -55,7 +67,8 @@ public class MineBotTest {
 
         getLootAt_argsRef = new AtomicReference<>();
         Answer<?> gameSettingsAnswer = invocation -> {
-            if (Utils.methodSignatureEquals(invocation.getMethod(), "getLootAt", int.class, int.class)) {
+            Method invokedMethod = invocation.getMethod();
+            if (Utils.methodSignatureEquals(invokedMethod, "getLootAt", int.class, int.class)) {
                 getLootAt_argsRef.set(new Point(invocation.getArgument(0, Integer.class), invocation.getArgument(1, Integer.class)));
                 if (lootMocks.containsKey(getLootAt_argsRef.get())) {
                     return lootMocks.get(getLootAt_argsRef.get()).getFirst();
@@ -69,14 +82,24 @@ public class MineBotTest {
         gameSettingsMock = Mockito.mock(BasicGameSettings.class, gameSettingsAnswer);
 
 
+        mockGetVision = new AtomicBoolean();
         Answer<?> mineBotAnswer = invocation -> {
-            if (Utils.methodSignatureEquals(invocation.getMethod(), "getDirection")) {
-                return currentDirection.get();
+            Method invokedMethod = invocation.getMethod();
+            if (Utils.methodSignatureEquals(invokedMethod, "getDirection")) {
+                return currentDirection.get() == null ? Direction.UP : currentDirection.get();
+            } else if (Utils.methodSignatureEquals(invokedMethod, "getVision", int.class, int.class)) {
+                if (mockGetVision.get()) {
+                    return getValidVisionPoints(invocation.getArgument(0, Integer.class), invocation.getArgument(0, Integer.class), visibilityRange.get());
+                } else {
+                    return invocation.callRealMethod();
+                }
             } else {
                 return invocation.callRealMethod();
             }
         };
-        mineBotMock = Mockito.mock(MineBot.class, Mockito.withSettings().useConstructor(1, 1, gameSettingsMock).defaultAnswer(mineBotAnswer));
+        mineBotMock = Mockito.mock(MineBot.class, Mockito.withSettings()
+            .useConstructor(STARTING_POS.x, STARTING_POS.y, gameSettingsMock)
+            .defaultAnswer(mineBotAnswer));
     }
 
     @ParameterizedTest
@@ -147,6 +170,86 @@ public class MineBotTest {
                 .formatted(1 + direction.getDx(), 1 + direction.getDy()));
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3, 4, 5})
+    public void testGetVision_correctNumberOfPoints(int visibilityRange) {
+        testGetVision(visibilityRange, false);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3, 4, 5})
+    public void testGetVision_correctPoints(int visibilityRange) {
+        testGetVision(visibilityRange, true);
+    }
+
+    private void testGetVision(int visibilityRange, boolean assertPoints) {
+        Camera cameraMock = makeCameraMock(visibilityRange);
+        mineBotMock.equip(cameraMock);
+        Point[] points = callObject(() -> mineBotMock.getVision(STARTING_POS.x, STARTING_POS.y), context,
+            r -> "An exception occurred while invoking MineBot.getVision(int, int)");
+        Point[] validPoints = getValidVisionPoints(STARTING_POS.x, STARTING_POS.y, visibilityRange);
+
+        assertEquals(validPoints.length, points.length, context,
+            r -> "The returned array does not have the correct number of points");
+        if (assertPoints) {
+            Set<Point> expectedPoints = Set.of(validPoints);
+            Set<Point> actualPoints = Set.of(points);
+            assertTrue(actualPoints.containsAll(expectedPoints), context,
+                r -> "The returned array does not contain all valid points. Missing: " +
+                    expectedPoints.stream()
+                        .filter(Predicate.not(actualPoints::contains))
+                        .map(point -> "(%d, %d)".formatted(point.x, point.y))
+                        .collect(Collectors.joining(", ")));
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3, 4, 5})
+    public void testUpdateVision_placeFog(int visibilityRange) {
+        Set<Point> visiblePointsStart = Set.of(getValidVisionPoints(STARTING_POS.x, STARTING_POS.y, visibilityRange));
+        Set<Point> visiblePointsEnd = Set.of(getValidVisionPoints(WORLD_SIZE - 1, WORLD_SIZE - 1, visibilityRange));
+
+        testUpdateVision(visibilityRange, visiblePointsStart, visiblePointsEnd, true);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 1, 2, 3, 4, 5})
+    public void testUpdateVision_removeFog(int visibilityRange) {
+        Set<Point> visiblePointsStart = Set.of(getValidVisionPoints(STARTING_POS.x, STARTING_POS.y, visibilityRange));
+        Set<Point> visiblePointsEnd = Set.of(getValidVisionPoints(WORLD_SIZE - 1, WORLD_SIZE - 1, visibilityRange));
+
+        testUpdateVision(visibilityRange, visiblePointsStart, visiblePointsEnd, false);
+    }
+
+    private void testUpdateVision(int visibilityRange, Set<Point> visiblePointsStart, Set<Point> visiblePointsEnd, boolean checkPlacement) {
+        for (int x = 0; x < WORLD_SIZE; x++) {
+            for (int y = 0; y < WORLD_SIZE; y++) {
+                Point point = new Point(x, y);
+                if (!visiblePointsStart.contains(point)) {
+                    gameSettingsMock.placeFog(x, y);
+                }
+            }
+        }
+
+        mockGetVision.set(true);
+        this.visibilityRange.set(visibilityRange);
+        call(() -> mineBotMock.updateVision(STARTING_POS.x, STARTING_POS.y, WORLD_SIZE - 1, WORLD_SIZE - 1), context,
+            r -> "An exception occurred while invoking MineBot.updateVision(int, int, int, int)");
+        if (checkPlacement) {
+            visiblePointsStart.stream()
+                .filter(point -> !visiblePointsEnd.contains(point))
+                .forEach(point -> assertTrue(
+                    World.getGlobalWorld().getField(point.x, point.y).getEntities().stream().anyMatch(Fog.class::isInstance),
+                    context,
+                    r -> "MineBot.updateVision(int, int, int, int) did not place fog on field (%d, %d)".formatted(point.x, point.y)));
+        } else {
+            visiblePointsEnd.forEach(point -> assertTrue(
+                World.getGlobalWorld().getField(point.x, point.y).getEntities().stream().noneMatch(Fog.class::isInstance),
+                context,
+                r -> "MineBot.updateVision(int, int, int, int) did not remove fog on field (%d, %d)".formatted(point.x, point.y)));
+        }
+    }
+
     private Mineable makeLootMock(AtomicBoolean isCalled, AtomicBoolean onMinedReturnValue) {
         Answer<?> answer = invocation -> {
             Method invokedMethod = invocation.getMethod();
@@ -160,5 +263,30 @@ public class MineBotTest {
             }
         };
         return Mockito.mock(Mineable.class, answer);
+    }
+
+    private Camera makeCameraMock(int visibilityRange) {
+        Answer<?> cameraAnswer = invocation -> {
+            Method invokedMethod = invocation.getMethod();
+            if (Utils.methodSignatureEquals(invokedMethod, "getName")) {
+                return "Camera";
+            } else if (Utils.methodSignatureEquals(invokedMethod, "getVisibilityRange")) {
+                return visibilityRange;
+            } else {
+                return Mockito.RETURNS_DEFAULTS.answer(invocation);
+            }
+        };
+        return Mockito.mock(Camera.class, cameraAnswer);
+    }
+
+    private Point[] getValidVisionPoints(int xPos, int yPos, int visibilityRange) {
+        return IntStream.rangeClosed(0, 2 * visibilityRange)
+            .map(x -> x + xPos - visibilityRange)
+            .mapToObj(x -> IntStream.rangeClosed(0, 2 * visibilityRange)
+                .map(y -> y + yPos - visibilityRange)
+                .mapToObj(y -> new Point(x, y)))
+            .flatMap(Function.identity())
+            .filter(point -> Utils.pointInWorld(WORLD_SIZE, point))
+            .toArray(Point[]::new);
     }
 }

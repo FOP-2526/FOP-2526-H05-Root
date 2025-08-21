@@ -2,6 +2,7 @@ package h05;
 
 
 import fopbot.Direction;
+import h05.entity.MineBotTest;
 import h05.equipment.*;
 import h05.mineable.MiningProgress;
 import h05.mineable.RockTest;
@@ -124,10 +125,18 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                     Criterion.builder()
                         .shortDescription("H5.4.1 | mine()")
                         .addChildCriteria(
-                            criterion("Die Methode mine() der Klasse MineBot ruft settings.getLootAt(int, int) mit den richtigen Parametern auf.", 1),
-                            criterion("Die Methode mine() der Klasse MineBot bricht ab, sollte dort kein Rohstoff existieren.", 1),
-                            criterion("Die Methode mine() der Klasse MineBot ruft die Methode onMined(Mineable) des Rohstoffes auf, sollte er nicht vollständig abgebaut sein.", 1),
-                            criterion("Die Methode mine() der Klasse MineBot nimmt den Rohstoff nach dem Abbauen ins Inventar auf, sollte dort noch Platz sein.", 1)
+                            criterion("Die Methode mine() der Klasse MineBot ruft settings.getLootAt(int, int) mit den richtigen Parametern auf.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> MineBotTest.class.getDeclaredMethod("testMine_callsGetLootAt", Direction.class))),
+                            criterion("Die Methode mine() der Klasse MineBot bricht ab, sollte dort kein Rohstoff existieren.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> MineBotTest.class.getDeclaredMethod("testMine_returnsOnNoLoot", Direction.class))),
+                            criterion("Die Methode mine() der Klasse MineBot ruft die Methode onMined(Mineable) des Rohstoffes auf, sollte er nicht vollständig abgebaut sein.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> MineBotTest.class.getDeclaredMethod("testMine_callsOnMined", Direction.class))),
+                            criterion("Die Methode mine() der Klasse MineBot nimmt den Rohstoff nach dem Abbauen ins Inventar auf, sollte dort noch Platz sein.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> MineBotTest.class.getDeclaredMethod("testMine_placesInInventory", Direction.class)))
                         )
                         .build(),
                     Criterion.builder()

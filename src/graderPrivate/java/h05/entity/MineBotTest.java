@@ -7,10 +7,7 @@ import h05.Utils;
 import h05.base.entity.Fog;
 import h05.base.game.BasicGameSettings;
 import h05.base.game.GameSettings;
-import h05.equipment.Battery;
-import h05.equipment.Camera;
-import h05.equipment.EquipmentCondition;
-import h05.equipment.Tool;
+import h05.equipment.*;
 import h05.mineable.Mineable;
 import kotlin.Pair;
 import kotlin.Triple;
@@ -74,6 +71,9 @@ public class MineBotTest {
         for (MockedClass mockedClass : MockedClass.values()) {
             methodBehaviour.put(mockedClass, new HashMap<>());
         }
+        methodBehaviour.get(MockedClass.GAME_SETTINGS)
+            .put(method -> Utils.methodSignatureEquals(method, "update"),
+                invocation -> null);
         methodBehaviour.get(MockedClass.MINE_BOT)
             .put(method -> Utils.methodSignatureEquals(method, "getDirection"),
                 invocation -> currentDirection.get() == null ? Direction.UP : currentDirection.get());
@@ -363,6 +363,48 @@ public class MineBotTest {
         }
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"Equipment", "Thing", "Tool", "Object"})
+    public void testUse_correctEquipment(String equipmentName) {
+        AtomicReference<? extends Miner> use_argsRef = new AtomicReference<>();
+        Equipment equipmentMock = makeUsableEquipmentMock(equipmentName, use_argsRef);
+
+        mineBotMock.equip(equipmentMock);
+        call(() -> mineBotMock.use(0), context, r -> "An exception occurred while invoking MineBot.use(int)");
+        assertSame(mineBotMock, use_argsRef.get(), context,
+            r -> "MineBot.use(int) did not invoke use(Miner) on the equipment with itself as argument (aka 'this')");
+    }
+
+    @Test
+    public void testUse_telephotoLens() {
+        Equipment equipmentMock = makeUsableEquipmentMock("TelephotoLens", new AtomicReference<>());
+        mineBotMock.equip(equipmentMock);
+
+        AtomicReference<Pair<Point, Point>> updateVision_argsRef = new AtomicReference<>();
+        methodBehaviour.get(MockedClass.MINE_BOT)
+            .put(method -> Utils.methodSignatureEquals(method, "updateVision", int.class, int.class, int.class, int.class),
+                invocation -> {
+                    Point oldXY = new Point(invocation.getArgument(0), invocation.getArgument(1));
+                    Point newXY = new Point(invocation.getArgument(2), invocation.getArgument(3));
+                    updateVision_argsRef.set(new Pair<>(oldXY, newXY));
+                    return null;
+                });
+
+        call(() -> mineBotMock.use(0), context, r -> "An exception occurred while invoking MineBot.use(int)");
+        Pair<Point, Point> args = assertCallNotNull(updateVision_argsRef::get, context,
+            r -> "MineBot.use(int) did not call MineBot.updateVision(int, int, int, int)");
+        Point oldXY = args.getFirst();
+        Point newXY = args.getSecond();
+        assertEquals(STARTING_POS.x, oldXY.x, context,
+            r -> "MineBot.use(int) passed the wrong value to the first parameter of MineBot.updateVision(int, int, int, int)");
+        assertEquals(STARTING_POS.y, oldXY.y, context,
+            r -> "MineBot.use(int) passed the wrong value to the second parameter of MineBot.updateVision(int, int, int, int)");
+        assertEquals(STARTING_POS.x, newXY.x, context,
+            r -> "MineBot.use(int) passed the wrong value to the third parameter of MineBot.updateVision(int, int, int, int)");
+        assertEquals(STARTING_POS.y, newXY.y, context,
+            r -> "MineBot.use(int) passed the wrong value to the fourth parameter of MineBot.updateVision(int, int, int, int)");
+    }
+
     private Mineable makeLootMock(AtomicBoolean isCalled, AtomicBoolean onMinedReturnValue) {
         Answer<?> answer = invocation -> {
             Method invokedMethod = invocation.getMethod();
@@ -421,6 +463,25 @@ public class MineBotTest {
             }
         };
         return Mockito.mock(Battery.class, batteryAnswer);
+    }
+
+    private UsableEquipment makeUsableEquipmentMock(String equipmentName, AtomicReference<? extends Miner> use_argsRef) {
+        Answer<?> equipmentAnswer = invocation -> {
+            Method invokedMethod = invocation.getMethod();
+            if (Utils.methodSignatureEquals(invokedMethod, "getName")) {
+                return equipmentName;
+            } else if (Utils.methodSignatureEquals(invokedMethod, "use", Miner.class)) {
+                use_argsRef.set(invocation.getArgument(0));
+                return null;
+            } else if (Utils.methodSignatureEquals(invokedMethod, "isUsable")) {
+                return true;
+            } else if (Utils.methodSignatureEquals(invokedMethod, "isTool")) {
+                return false;
+            } else {
+                return Mockito.RETURNS_DEFAULTS.answer(invocation);
+            }
+        };
+        return Mockito.mock(UsableEquipment.class, equipmentAnswer);
     }
 
     private Point[] getValidVisionPoints(int xPos, int yPos, int visibilityRange) {

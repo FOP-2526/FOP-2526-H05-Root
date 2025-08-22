@@ -170,8 +170,12 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                     Criterion.builder()
                         .shortDescription("H5.4.4 | Anwenden von Ausrüstung")
                         .addChildCriteria(
-                            criterion("Die Methode use(int index) der Klasse MineBot benutzt das richtige Equipment.", 1),
-                            criterion("Die Methode use(int) der Klasse MineBot ruft, sollte das zu benutzende Equipment eine TelephotoLens sein, die Methode updateVision(int, int, int, int) mit den richtigen Parametern auf.", 1)
+                            criterion("Die Methode use(int index) der Klasse MineBot benutzt das richtige Equipment.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> MineBotTest.class.getDeclaredMethod("testUse_correctEquipment", String.class))),
+                            criterion("Die Methode use(int) der Klasse MineBot ruft, sollte das zu benutzende Equipment eine TelephotoLens sein, die Methode updateVision(int, int, int, int) mit den richtigen Parametern auf.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> MineBotTest.class.getDeclaredMethod("testUse_telephotoLens")))
                         )
                         .build()
                 )

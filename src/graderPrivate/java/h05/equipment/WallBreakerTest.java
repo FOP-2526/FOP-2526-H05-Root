@@ -26,7 +26,7 @@ import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 public class WallBreakerTest {
 
     private final Context context = contextBuilder()
-        .add("world layout", "world size: 3x3, Miner at (1, 1), walls on all sides")
+        .add("world layout", "world size: 3x3, Miner at (1, 1), surrounded by walls on all sides")
         .build();
     private final AtomicReference<Direction> currentDirection = new AtomicReference<>();
     private AtomicReference<Point> getWallsAt_argsRef;
@@ -36,8 +36,8 @@ public class WallBreakerTest {
     @BeforeEach
     public void setup() {
         World.setSize(3, 3);
-        World.setVisible(true);
-        World.setDelay(1000);
+        World.setVisible(false);
+        World.setDelay(0);
         World.placeHorizontalWall(1, 1);
         World.placeHorizontalWall(1, 0);
         World.placeVerticalWall(1, 1);

@@ -1,12 +1,15 @@
 package h05.equipment;
 
 import h05.Durable;
+import h05.Links;
 import h05.Utils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
+import org.tudalgo.algoutils.tutor.general.reflections.BasicTypeLink;
+import org.tudalgo.algoutils.tutor.general.reflections.TypeLink;
 
 import java.lang.reflect.Method;
 import java.util.EnumMap;
@@ -15,10 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.contextBuilder;
-import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.fail;
+import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 
 @TestForSubmission
 public class TestEquipmentImpls {
@@ -40,38 +43,33 @@ public class TestEquipmentImpls {
         }
     }
 
-    private static final List<Class<? extends Equipment>> EQUIPMENT_IMPLS = List.of(
-        // FIXME: indirectly link to classes that may not exist (Axe, Pickaxe, Powerbank, TelephotoLens)
-        Axe.class,
-        Battery.class,
-        Camera.class,
-        Pickaxe.class,
-        Powerbank.class,
-        TelephotoLens.class,
-        WallBreaker.class
+    private static final Map<String, Supplier<TypeLink>> EQUIPMENT_IMPLS = Map.of(
+        "h05.equipment.Axe", Links.AXE_TYPE_LINK,
+        "h05.equipment.Battery", () -> BasicTypeLink.of(Battery.class),
+        "h05.equipment.Camera", () -> BasicTypeLink.of(Camera.class),
+        "h05.equipment.Pickaxe", Links.PICKAXE_TYPE_LINK,
+        "h05.equipment.Powerbank", Links.POWERBANK_TYPE_LINK,
+        "h05.equipment.TelephotoLens", Links.TELEPHOTO_LENS_TYPE_LINK,
+        "h05.equipment.WallBreaker", () -> BasicTypeLink.of(WallBreaker.class)
     );
 
     @Test
     public void testEquipmentImplsMinimum() {
-        Map<Class<? extends Equipment>, Map<TestCase, Boolean>> results = testDurableImpls();
-        Map<Class<? extends Equipment>, List<TestCase>> classesWithFailedTests = results.entrySet()
+        testEquipmentImpls(results -> results.values()
             .stream()
-            .map(entry -> Map.entry(entry.getKey(),
-                entry.getValue().entrySet().stream().filter(Predicate.not(Map.Entry::getValue)).map(Map.Entry::getKey).toList()))
-            .filter(entry -> !entry.getValue().isEmpty())
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-        if (results.values().stream().flatMap(map -> map.values().stream()).noneMatch(b -> b)) {
-            Context.Builder<?> contextBuilder = contextBuilder();
-            classesWithFailedTests.forEach((clazz, testCaseResults) -> {
-                contextBuilder.add("failed test cases for %s".formatted(clazz), testCaseResults);
-            });
-            fail(contextBuilder.build(), r -> "At least one class has not passed all test cases");
-        }
+            .flatMap(map -> map.values().stream())
+            .noneMatch(b -> b));
     }
 
     @Test
     public void testEquipmentImplsAll() {
+        testEquipmentImpls(results -> !results.values()
+            .stream()
+            .flatMap(map -> map.values().stream())
+            .allMatch(b -> b));
+    }
+
+    private void testEquipmentImpls(Predicate<Map<Class<? extends Equipment>, Map<TestCase, Boolean>>> testCase) {
         Map<Class<? extends Equipment>, Map<TestCase, Boolean>> results = testDurableImpls();
         Map<Class<? extends Durable>, List<TestCase>> classesWithFailedTests = results.entrySet()
             .stream()
@@ -80,7 +78,7 @@ public class TestEquipmentImpls {
             .filter(entry -> !entry.getValue().isEmpty())
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        if (!results.values().stream().flatMap(map -> map.values().stream()).allMatch(b -> b)) {
+        if (testCase.test(results)) {
             Context.Builder<?> contextBuilder = contextBuilder();
             classesWithFailedTests.forEach((clazz, testCaseResults) -> {
                 contextBuilder.add("failed test cases for %s".formatted(clazz), testCaseResults);
@@ -92,7 +90,10 @@ public class TestEquipmentImpls {
     private Map<Class<? extends Equipment>, Map<TestCase, Boolean>> testDurableImpls() {
         Map<Class<? extends Equipment>, Map<TestCase, Boolean>> results = new HashMap<>();
 
-        for (Class<? extends Equipment> equipmentClass : EQUIPMENT_IMPLS) {
+        for (Map.Entry<String, Supplier<TypeLink>> entry : EQUIPMENT_IMPLS.entrySet()) {
+            TypeLink typeLink = assertCallNotNull(entry.getValue()::get, emptyContext(),
+                r -> "Could not find class " + entry.getKey());
+            Class<? extends Equipment> equipmentClass = (Class<? extends Equipment>) typeLink.reflection();
             Map<TestCase, Boolean> testCaseResults = new EnumMap<>(TestCase.class);
 
             for (TestCase testCase : TestCase.values()) {

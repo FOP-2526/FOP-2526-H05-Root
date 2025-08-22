@@ -4,8 +4,11 @@ import h05.equipment.*;
 import h05.mineable.Rock;
 import h05.mineable.Tree;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
+import org.tudalgo.algoutils.tutor.general.reflections.BasicTypeLink;
+import org.tudalgo.algoutils.tutor.general.reflections.TypeLink;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -29,17 +32,27 @@ public class TestDurableImpls {
         GET_DURABILITY_AFTER_REDUCE_DURABILITY
     }
 
-    private static final Map<Class<? extends Durable>, Supplier<? extends Durable>> DURABLE_IMPL_SUPPLIERS = Map.of(
-        // FIXME: indirectly link to classes that may not exist (Axe, Pickaxe, Powerbank, TelephotoLens)
-        Axe.class, Axe::new,
-        Battery.class, Battery::new,
-        Camera.class, Camera::new,
-        Pickaxe.class, Pickaxe::new,
-        Powerbank.class, () -> new Powerbank(0),
-        TelephotoLens.class, () -> new TelephotoLens(0),
-        WallBreaker.class, WallBreaker::new,
-        Rock.class, Rock::new,
-        Tree.class, Tree::new
+    private static final Map<String, Supplier<TypeLink>> DURABLE_IMPL_SUPPLIERS = Map.of(
+        "h05.equipment.Axe", Links.AXE_TYPE_LINK,
+        "h05.equipment.Battery", () -> BasicTypeLink.of(Battery.class),
+        "h05.equipment.Camera", () -> BasicTypeLink.of(Camera.class),
+        "h05.equipment.Pickaxe", Links.PICKAXE_TYPE_LINK,
+        "h05.equipment.Powerbank", Links.POWERBANK_TYPE_LINK,
+        "h05.equipment.TelephotoLens", Links.TELEPHOTO_LENS_TYPE_LINK,
+        "h05.equipment.WallBreaker", () -> BasicTypeLink.of(WallBreaker.class),
+        "h05.mineable.Rock", () -> BasicTypeLink.of(Rock.class),
+        "h05.mineable.Tree", () -> BasicTypeLink.of(Tree.class)
+    );
+    private static final Map<String, Object[]> CONSTRUCTOR_ARGS = Map.of(
+        "h05.equipment.Axe", new Object[0],
+        "h05.equipment.Battery", new Object[0],
+        "h05.equipment.Camera", new Object[0],
+        "h05.equipment.Pickaxe", new Object[0],
+        "h05.equipment.Powerbank", new Object[] {0d},
+        "h05.equipment.TelephotoLens", new Object[] {0},
+        "h05.equipment.WallBreaker", new Object[0],
+        "h05.mineable.Rock", new Object[0],
+        "h05.mineable.Tree", new Object[0]
     );
 
     @Test
@@ -55,11 +68,16 @@ public class TestDurableImpls {
     private void testDurableImpls(int minimumCorrect) {
         Map<Class<? extends Durable>, Map<TestCase, Boolean>> results = new HashMap<>();
 
-        for (Map.Entry<Class<? extends Durable>, Supplier<? extends Durable>> entry : DURABLE_IMPL_SUPPLIERS.entrySet()) {
+        for (Map.Entry<String, Supplier<TypeLink>> entry : DURABLE_IMPL_SUPPLIERS.entrySet()) {
+            TypeLink typeLink = assertCallNotNull(entry.getValue()::get, emptyContext(),
+                r -> "Could not find class " + entry.getKey());
+            Class<? extends Durable> durableClass = (Class<? extends Durable>) typeLink.reflection();
             Map<TestCase, Boolean> testCaseResults = new EnumMap<>(TestCase.class);
 
             for (TestCase testCase : TestCase.values()) {
-                Durable instance = entry.getValue().get();
+                Durable instance = Mockito.mock(durableClass, Mockito.withSettings()
+                    .useConstructor(CONSTRUCTOR_ARGS.get(entry.getKey()))
+                    .defaultAnswer(Mockito.CALLS_REAL_METHODS));
                 Boolean result = switch (testCase) {
                     case INITIAL_DURABILITY -> testGetDurabilityInitial(instance);
                     case SET_DURABILITY -> testSetDurability(instance);
@@ -71,7 +89,7 @@ public class TestDurableImpls {
                 testCaseResults.put(testCase, result);
             }
 
-            results.put(entry.getKey(), testCaseResults);
+            results.put(durableClass, testCaseResults);
         }
 
         Map<Class<? extends Durable>, List<TestCase>> classesWithFailedTests = results.entrySet()

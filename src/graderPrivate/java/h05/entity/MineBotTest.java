@@ -15,6 +15,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
@@ -23,7 +24,6 @@ import java.awt.*;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -40,15 +40,22 @@ public class MineBotTest {
     private static final Point STARTING_POS = new  Point(1, 1);
     private final AtomicReference<Direction> currentDirection = new AtomicReference<>();
     private final Context context = contextBuilder()
-        .add("world layout", "world size: %dx%d, MineBot at (%d, %d), loot at (1, 0) and (1, 2)"
-            .formatted(WORLD_SIZE, WORLD_SIZE, STARTING_POS.x, STARTING_POS.y))
+        .add("world layout", "world size: %dx%d, MineBot at (%d, %d), loot at (%d, %d) and (%d, %d)"
+            .formatted(WORLD_SIZE, WORLD_SIZE,
+                STARTING_POS.x, STARTING_POS.y,
+                STARTING_POS.x, STARTING_POS.y - 1,
+                STARTING_POS.x, STARTING_POS.y + 1))
         .add("direction", currentDirection)
         .build();
+
+    private enum MockedClass {
+        GAME_SETTINGS,
+        MINE_BOT
+    }
+
     private Map<Point, Triple<Mineable, AtomicBoolean, AtomicBoolean>> lootMocks;
-    private AtomicReference<Point> getLootAt_argsRef;
+    private final Map<MockedClass, Map<Predicate<Method>, Function<InvocationOnMock, Object>>> methodBehaviour = new EnumMap<>(MockedClass.class);
     private GameSettings gameSettingsMock;
-    private AtomicBoolean mockGetVision;
-    private final AtomicInteger visibilityRange = new AtomicInteger();
     private MineBot mineBotMock;
 
     @BeforeEach
@@ -57,7 +64,15 @@ public class MineBotTest {
         World.setVisible(false);
         World.setDelay(0);
 
-        lootMocks = Stream.of(new Point(1, 0), new Point(1, 2))
+        methodBehaviour.clear();
+        for (MockedClass mockedClass : MockedClass.values()) {
+            methodBehaviour.put(mockedClass, new HashMap<>());
+        }
+        methodBehaviour.get(MockedClass.MINE_BOT)
+            .put(method -> Utils.methodSignatureEquals(method, "getDirection"),
+                invocation -> currentDirection.get() == null ? Direction.UP : currentDirection.get());
+
+        lootMocks = Stream.of(new Point(STARTING_POS.x, STARTING_POS.y - 1), new Point(STARTING_POS.x, STARTING_POS.y + 1))
             .map(point -> {
                 AtomicBoolean isCalled = new AtomicBoolean();
                 AtomicBoolean onMinedReturnValue = new AtomicBoolean();
@@ -65,37 +80,42 @@ public class MineBotTest {
             })
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        getLootAt_argsRef = new AtomicReference<>();
         Answer<?> gameSettingsAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getLootAt", int.class, int.class)) {
-                getLootAt_argsRef.set(new Point(invocation.getArgument(0, Integer.class), invocation.getArgument(1, Integer.class)));
-                if (lootMocks.containsKey(getLootAt_argsRef.get())) {
-                    return lootMocks.get(getLootAt_argsRef.get()).getFirst();
-                } else {
-                    return null;
-                }
-            } else {
-                return invocation.callRealMethod();
-            }
+            return methodBehaviour.get(MockedClass.GAME_SETTINGS)
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getKey().test(invokedMethod))
+                .findFirst()
+                .map(Map.Entry::getValue)
+                .orElseGet(() -> invocationOnMock -> {
+                    try {
+                        return invocationOnMock.callRealMethod();
+                    } catch (Throwable e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .apply(invocation);
         };
         gameSettingsMock = Mockito.mock(BasicGameSettings.class, gameSettingsAnswer);
 
 
-        mockGetVision = new AtomicBoolean();
         Answer<?> mineBotAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getDirection")) {
-                return currentDirection.get() == null ? Direction.UP : currentDirection.get();
-            } else if (Utils.methodSignatureEquals(invokedMethod, "getVision", int.class, int.class)) {
-                if (mockGetVision.get()) {
-                    return getValidVisionPoints(invocation.getArgument(0, Integer.class), invocation.getArgument(0, Integer.class), visibilityRange.get());
-                } else {
-                    return invocation.callRealMethod();
-                }
-            } else {
-                return invocation.callRealMethod();
-            }
+            return methodBehaviour.get(MockedClass.MINE_BOT)
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getKey().test(invokedMethod))
+                .findFirst()
+                .map(Map.Entry::getValue)
+                .orElseGet(() -> invocationOnMock -> {
+                    try {
+                        return invocationOnMock.callRealMethod();
+                    } catch (Throwable e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .apply(invocation);
         };
         mineBotMock = Mockito.mock(MineBot.class, Mockito.withSettings()
             .useConstructor(STARTING_POS.x, STARTING_POS.y, gameSettingsMock)
@@ -106,14 +126,15 @@ public class MineBotTest {
     @EnumSource(Direction.class)
     public void testMine_callsGetLootAt(Direction direction) {
         currentDirection.set(direction);
+        AtomicReference<Point> getLootAt_argsRef = testMine_setup(direction);
         call(mineBotMock::mine, context, r -> "An exception occurred while invoking MineBot.mine()");
         Point args = getLootAt_argsRef.get();
 
         assertNotNull(args, context, r ->
             "MineBot.mine() did not call GameSettings.getLootAt(int, int)");
-        assertEquals(1 + direction.getDx(), args.x, context, r ->
+        assertEquals(STARTING_POS.x + direction.getDx(), args.x, context, r ->
             "MineBot.mine() did not call GameSettings.getLootAt(int, int) with the correct arguments (wrong x coordinate)");
-        assertEquals(1 + direction.getDy(), args.y, context, r ->
+        assertEquals(STARTING_POS.y + direction.getDy(), args.y, context, r ->
             "MineBot.mine() did not call GameSettings.getLootAt(int, int) with the correct arguments (wrong y coordinate)");
     }
 
@@ -126,14 +147,13 @@ public class MineBotTest {
         currentDirection.set(direction);
         call(mineBotMock::mine, context, r -> "An exception occurred while invoking MineBot.mine()");
 
-        lootMocks.values().forEach(triple -> {
-            assertFalse(triple.getSecond().get(), context,
-                r -> "There is no loot at (%d, %d), MineBot should have returned"
-                    .formatted(1 + direction.getDx(), 1 + direction.getDy()));
-        });
+        lootMocks.values().forEach(triple -> assertFalse(triple.getSecond().get(),
+            context,
+            r -> "There is no loot at (%d, %d), MineBot should have returned"
+                .formatted(STARTING_POS.x + direction.getDx(), STARTING_POS.y + direction.getDy())));
         assertEquals(0, mineBotMock.getInventory().size(), context,
             r -> "There is no loot at (%d, %d), MineBot should have returned and not modify the inventory"
-                .formatted(1 + direction.getDx(), 1 + direction.getDy()));
+                .formatted(STARTING_POS.x + direction.getDx(), STARTING_POS.y + direction.getDy()));
     }
 
     @ParameterizedTest
@@ -142,13 +162,13 @@ public class MineBotTest {
         if (direction.isHorizontal()) {
             return;
         }
-        currentDirection.set(direction);
+        testMine_setup(direction);
         call(mineBotMock::mine, context, r -> "An exception occurred while invoking MineBot.mine()");
 
-        AtomicBoolean onMinedCalled = lootMocks.get(new Point(1 + direction.getDx(), 1 + direction.getDy())).getSecond();
+        AtomicBoolean onMinedCalled = lootMocks.get(new Point(STARTING_POS.x + direction.getDx(), STARTING_POS.y + direction.getDy())).getSecond();
         assertTrue(onMinedCalled.get(), context,
             r -> "There is loot at (%d, %d) but MineBot did not call Mineable.onMined(Tool) on it"
-                .formatted(1 + direction.getDx(), 1 + direction.getDy()));
+                .formatted(STARTING_POS.x + direction.getDx(), STARTING_POS.y + direction.getDy()));
     }
 
     @ParameterizedTest
@@ -157,17 +177,33 @@ public class MineBotTest {
         if (direction.isHorizontal()) {
             return;
         }
-        currentDirection.set(direction);
-        lootMocks.get(new Point(1 + direction.getDx(), 1 + direction.getDy())).getThird().set(true);
+        testMine_setup(direction);
+        lootMocks.get(new Point(STARTING_POS.x + direction.getDx(), STARTING_POS.y + direction.getDy())).getThird().set(true);
         call(mineBotMock::mine, context, r -> "An exception occurred while invoking MineBot.mine()");
 
         assertEquals(1, mineBotMock.getInventory().size(), context,
             r -> "There is loot at (%d, %d) but MineBot did not place it in its inventory"
-                .formatted(1 + direction.getDx(), 1 + direction.getDy()));
+                .formatted(STARTING_POS.x + direction.getDx(), STARTING_POS.y + direction.getDy()));
         assertTrue(Arrays.stream(mineBotMock.getInventory().getNames()).filter(Objects::nonNull).findFirst().map("Loot"::equals).orElse(false),
             context,
             r -> "There is loot at (%d, %d) but MineBot did not place it in its inventory"
-                .formatted(1 + direction.getDx(), 1 + direction.getDy()));
+                .formatted(STARTING_POS.x + direction.getDx(), STARTING_POS.y + direction.getDy()));
+    }
+
+    private AtomicReference<Point> testMine_setup(Direction direction) {
+        AtomicReference<Point> getLootAt_argsRef = new AtomicReference<>();
+        currentDirection.set(direction);
+        methodBehaviour.get(MockedClass.GAME_SETTINGS)
+            .put(method -> Utils.methodSignatureEquals(method, "getLootAt", int.class, int.class),
+                invocation -> {
+                    getLootAt_argsRef.set(new Point(invocation.getArgument(0), invocation.getArgument(1)));
+                    if (lootMocks.containsKey(getLootAt_argsRef.get())) {
+                        return lootMocks.get(getLootAt_argsRef.get()).getFirst();
+                    } else {
+                        return null;
+                    }
+                });
+        return getLootAt_argsRef;
     }
 
     @ParameterizedTest
@@ -231,8 +267,9 @@ public class MineBotTest {
             }
         }
 
-        mockGetVision.set(true);
-        this.visibilityRange.set(visibilityRange);
+        methodBehaviour.get(MockedClass.MINE_BOT)
+            .put(method -> Utils.methodSignatureEquals(method, "getVision", int.class, int.class),
+                invocation -> getValidVisionPoints(invocation.getArgument(0), invocation.getArgument(0), visibilityRange));
         call(() -> mineBotMock.updateVision(STARTING_POS.x, STARTING_POS.y, WORLD_SIZE - 1, WORLD_SIZE - 1), context,
             r -> "An exception occurred while invoking MineBot.updateVision(int, int, int, int)");
         if (checkPlacement) {

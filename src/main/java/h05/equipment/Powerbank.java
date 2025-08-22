@@ -42,7 +42,7 @@ public class Powerbank extends AbstractEquipment implements UsableEquipment {
         if (getCondition() == EquipmentCondition.BROKEN) {
             return;
         }
-        miner.getBattery().increaseDurability(capacity / 2);
-        reduceDurability(50);
+        miner.getBattery().increaseDurability(100);
+        reduceDurability(capacity / 2);
     }
 }

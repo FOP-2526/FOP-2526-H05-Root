@@ -2,6 +2,7 @@ package h05;
 
 
 import fopbot.Direction;
+import h05.entity.AbstractRepairBotTest;
 import h05.entity.MineBotTest;
 import h05.equipment.*;
 import h05.mineable.MiningProgress;
@@ -183,10 +184,18 @@ public class H05_RubricProviderPrivate implements RubricProvider {
             Criterion.builder()
                 .shortDescription("H5.5 | First Aid Bot – Ihr persönlicher Gesundheitsbegleiter")
                 .addChildCriteria(
-                    criterion("Die Methode scan() in der Klasse AbstractRepairBot gibt MineBots mit beschädigter Ausrüstung im korrekten Radius zurück.", 1),
-                    criterion("Die Methode scan() in der Klasse AbstractRepairBot gibt null zurück, sollte es keine MineBots mit beschädigter Ausrüstung im Radius geben.", 1),
-                    criterion("Die Methode repair(Point) in der Klasse AbstractRepairBot rüstet den MineBot mit einer neuen Kamera/Batterie aus, sollte die alte kaputt sein.", 1),
-                    criterion("Die Methode repair(Point) in der Klasse AbstractRepairBot entfernt alle beschädigten Equipments.", 1)
+                    criterion("Die Methode scan() in der Klasse AbstractRepairBot gibt MineBots mit beschädigter Ausrüstung im korrekten Radius zurück.",
+                        1,
+                        JUnitTestRef.ofMethod(() -> AbstractRepairBotTest.class.getDeclaredMethod("testScan_withBrokenBot"))),
+                    criterion("Die Methode scan() in der Klasse AbstractRepairBot gibt null zurück, sollte es keine MineBots mit beschädigter Ausrüstung im Radius geben.",
+                        1,
+                        JUnitTestRef.ofMethod(() -> AbstractRepairBotTest.class.getDeclaredMethod("testScan_noBrokenBots"))),
+                    criterion("Die Methode repair(Point) in der Klasse AbstractRepairBot rüstet den MineBot mit einer neuen Kamera/Batterie aus, sollte die alte kaputt sein.",
+                        1,
+                        JUnitTestRef.ofMethod(() -> AbstractRepairBotTest.class.getDeclaredMethod("testRepair_batteryAndCamera"))),
+                    criterion("Die Methode repair(Point) in der Klasse AbstractRepairBot entfernt alle beschädigten Equipments.",
+                        1,
+                        JUnitTestRef.ofMethod(() -> AbstractRepairBotTest.class.getDeclaredMethod("testRepair_otherEquipment")))
                 )
                 .build()
 

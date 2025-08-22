@@ -1,16 +1,21 @@
 package h05.entity;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import fopbot.Direction;
 import fopbot.World;
 import h05.Utils;
 import h05.base.entity.Fog;
 import h05.base.game.BasicGameSettings;
 import h05.base.game.GameSettings;
+import h05.equipment.Battery;
 import h05.equipment.Camera;
+import h05.equipment.EquipmentCondition;
 import h05.equipment.Tool;
 import h05.mineable.Mineable;
+import kotlin.Pair;
 import kotlin.Triple;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -23,6 +28,7 @@ import org.tudalgo.algoutils.tutor.general.assertions.Context;
 import java.awt.*;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -287,6 +293,76 @@ public class MineBotTest {
         }
     }
 
+    @ParameterizedTest
+    @EnumSource(Direction.class)
+    public void testMove_callsUpdateVision(Direction direction) {
+        currentDirection.set(direction);
+        List<Pair<Point, Point>> updateVisionArgs = new ArrayList<>();
+        methodBehaviour.get(MockedClass.MINE_BOT)
+            .put(method -> Utils.methodSignatureEquals(method, "updateVision", int.class, int.class, int.class, int.class),
+                invocation -> {
+                    Point oldPoint = new Point(invocation.getArgument(0), invocation.getArgument(1));
+                    Point newPoint = new Point(invocation.getArgument(2), invocation.getArgument(3));
+                    updateVisionArgs.add(new Pair<>(oldPoint, newPoint));
+
+                    return null;
+                });
+        call(mineBotMock::move, context, r -> "An exception occurred while invoking MineBot.move()");
+
+        assertEquals(1, updateVisionArgs.size(), context,
+            r -> "MineBot.move() did not call MineBot.updateVision(int, int, int, int) exactly once");
+        Pair<Point, Point> args = updateVisionArgs.getFirst();
+        Point oldXY = args.getFirst();
+        Point newXY = args.getSecond();
+        assertEquals(STARTING_POS.x, oldXY.x, context,
+            r -> "MineBot.move() passed the wrong value to the first parameter of MineBot.updateVision(int, int, int, int)");
+        assertEquals(STARTING_POS.y, oldXY.y, context,
+            r -> "MineBot.move() passed the wrong value to the second parameter of MineBot.updateVision(int, int, int, int)");
+        assertEquals(STARTING_POS.x + direction.getDx(), newXY.x, context,
+            r -> "MineBot.move() passed the wrong value to the third parameter of MineBot.updateVision(int, int, int, int)");
+        assertEquals(STARTING_POS.y + direction.getDy(), newXY.y, context,
+            r -> "MineBot.move() passed the wrong value to the fourth parameter of MineBot.updateVision(int, int, int, int)");
+    }
+
+    @ParameterizedTest
+    @EnumSource(EquipmentCondition.class)
+    public void testMove_reducesBattery(EquipmentCondition condition) {
+        double initialBatteryDurability = switch (condition) {
+            case NEW -> 100d;
+            case USED -> 80d;
+            case DAMAGED -> 40d;
+            case BROKEN -> 0d;
+        };
+        AtomicDouble batteryDurability = new AtomicDouble(initialBatteryDurability);
+        Battery batteryMock = makeBatteryMock(batteryDurability);
+
+        currentDirection.set(Direction.UP);
+        methodBehaviour.get(MockedClass.MINE_BOT)
+            .put(method -> Utils.methodSignatureEquals(method, "updateVision", int.class, int.class, int.class, int.class),
+                invocation -> null);
+        methodBehaviour.get(MockedClass.MINE_BOT)
+            .put(method -> Utils.methodSignatureEquals(method, "getNumberOfEquipments"),
+                invocation -> (condition.ordinal() + 1) * 10);
+
+        mineBotMock.equip(batteryMock);
+        call(mineBotMock::move, context, r -> "An exception occurred while invoking MineBot.move()");
+        if (condition != EquipmentCondition.BROKEN) {
+            assertEquals(initialBatteryDurability - ((condition.ordinal()) + 1) * 10, batteryDurability.get(), context,
+                r -> "MineBot.move() did not reduce the battery's durability by the correct amount");
+            assertEquals(STARTING_POS.x + currentDirection.get().getDx(), mineBotMock.getX(), context,
+                r -> "MineBot.move() did not move the Robot to the correct x coordinate");
+            assertEquals(STARTING_POS.y + currentDirection.get().getDy(), mineBotMock.getY(), context,
+                r -> "MineBot.move() did not move the Robot to the correct y coordinate");
+        } else {
+            assertEquals(0d, batteryDurability.get(), context,
+                r -> "MineBot.move() did not reduce the battery's durability by the correct amount");
+            assertEquals(STARTING_POS.x, mineBotMock.getX(), context,
+                r -> "MineBot.move() moved the Robot despite the battery being broken (incorrect x coordinate)");
+            assertEquals(STARTING_POS.y, mineBotMock.getY(), context,
+                r -> "MineBot.move() moved the Robot despite the battery being broken (incorrect y coordinate)");
+        }
+    }
+
     private Mineable makeLootMock(AtomicBoolean isCalled, AtomicBoolean onMinedReturnValue) {
         Answer<?> answer = invocation -> {
             Method invokedMethod = invocation.getMethod();
@@ -314,6 +390,37 @@ public class MineBotTest {
             }
         };
         return Mockito.mock(Camera.class, cameraAnswer);
+    }
+
+    private Battery makeBatteryMock(AtomicDouble batteryDurability) {
+        Answer<?> batteryAnswer = invocation -> {
+            Method invokedMethod = invocation.getMethod();
+            if (Utils.methodSignatureEquals(invokedMethod, "getName")) {
+                return "Battery";
+            } else if (Utils.methodSignatureEquals(invokedMethod, "getDurability")) {
+                return batteryDurability.get();
+            } else if (Utils.methodSignatureEquals(invokedMethod, "setDurability", double.class)) {
+                batteryDurability.set(Math.max(0d, Math.min(invocation.getArgument(0), 100d)));
+                return null;
+            } else if (Utils.methodSignatureEquals(invokedMethod, "reduceDurability", double.class)) {
+                batteryDurability.set(Math.max(0d, batteryDurability.get() - invocation.getArgument(0, Double.class)));
+                return null;
+            } else if (Utils.methodSignatureEquals(invokedMethod, "getCondition")) {
+                double durability = batteryDurability.get();
+                if (durability > 80) {
+                    return EquipmentCondition.NEW;
+                } else if (durability > 40) {
+                    return EquipmentCondition.USED;
+                } else if (durability > 0) {
+                    return EquipmentCondition.DAMAGED;
+                } else {
+                    return EquipmentCondition.BROKEN;
+                }
+            } else {
+                return invocation.callRealMethod();
+            }
+        };
+        return Mockito.mock(Battery.class, batteryAnswer);
     }
 
     private Point[] getValidVisionPoints(int xPos, int yPos, int visibilityRange) {

@@ -159,8 +159,12 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                     Criterion.builder()
                         .shortDescription("H5.4.3 | move()")
                         .addChildCriteria(
-                            criterion("Die Methode move() der Klasse MineBot ruft updateVision(int, int , int , int) mit den korrekten Parametern auf", 1),
-                            criterion("Die Methode move() der Klasse MineBot reduziert die Haltbarkeit der Batterie um den korrekten Wert.", 1)
+                            criterion("Die Methode move() der Klasse MineBot ruft updateVision(int, int, int, int) mit den korrekten Parametern auf",
+                                1,
+                                JUnitTestRef.ofMethod(() -> MineBotTest.class.getDeclaredMethod("testMove_callsUpdateVision", Direction.class))),
+                            criterion("Die Methode move() der Klasse MineBot reduziert die Haltbarkeit der Batterie um den korrekten Wert.",
+                                1,
+                                JUnitTestRef.ofMethod(() -> MineBotTest.class.getDeclaredMethod("testMove_reducesBattery", EquipmentCondition.class)))
                         )
                         .build(),
                     Criterion.builder()

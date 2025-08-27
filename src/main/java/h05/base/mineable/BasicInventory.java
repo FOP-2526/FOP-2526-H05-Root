@@ -143,7 +143,7 @@ public final class BasicInventory implements Inventory {
     private void updateGui(@NotNull Mineable item) {
         for (FieldEntity entity : World.getGlobalWorld().getAllFieldEntities()) {
             if (entity instanceof Loot loot && loot.getMineable().equals(item)) {
-                World.getGlobalWorld().removeEntity(entity);
+                World.getGlobalWorld().removeFieldEntity(entity);
             }
         }
     }

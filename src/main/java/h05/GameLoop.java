@@ -90,20 +90,20 @@ public class GameLoop extends GameLoopBase {
         World.placeVerticalWall(6, 6);
 
         KarelWorld world = World.getGlobalWorld();
-        world.placeEntity(new Gear(0, 6, new Powerbank(25)));
-        world.placeEntity(new Gear(2, 0, new Pickaxe()));
-        world.placeEntity(new Gear(6, 3, new Axe()));
-        world.placeEntity(new Loot(0, 3, new Tree()));
-        world.placeEntity(new Loot(6, 0, new Tree()));
-        world.placeEntity(new Loot(3, 4, new Tree()));
-        world.placeEntity(new Loot(6, 5, new Rock()));
-        world.placeEntity(new Loot(3, 0, new Rock()));
-        world.placeEntity(new Loot(0, 0, new Rock()));
-        world.placeEntity(new Gear(6, 6, new WallBreaker()));
-        world.placeEntity(new Gear(5, 0, new WallBreaker()));
-        world.placeEntity(new Gear(2, 2, new TelephotoLens(1)));
-        world.placeEntity(new Gear(5, 3, new TelephotoLens(1)));
-        world.placeEntity(new Gear(6, 4, new Powerbank(50)));
+        world.placeFieldEntity(new Gear(0, 6, new Powerbank(25)));
+        world.placeFieldEntity(new Gear(2, 0, new Pickaxe()));
+        world.placeFieldEntity(new Gear(6, 3, new Axe()));
+        world.placeFieldEntity(new Loot(0, 3, new Tree()));
+        world.placeFieldEntity(new Loot(6, 0, new Tree()));
+        world.placeFieldEntity(new Loot(3, 4, new Tree()));
+        world.placeFieldEntity(new Loot(6, 5, new Rock()));
+        world.placeFieldEntity(new Loot(3, 0, new Rock()));
+        world.placeFieldEntity(new Loot(0, 0, new Rock()));
+        world.placeFieldEntity(new Gear(6, 6, new WallBreaker()));
+        world.placeFieldEntity(new Gear(5, 0, new WallBreaker()));
+        world.placeFieldEntity(new Gear(2, 2, new TelephotoLens(1)));
+        world.placeFieldEntity(new Gear(5, 3, new TelephotoLens(1)));
+        world.placeFieldEntity(new Gear(6, 4, new Powerbank(50)));
     }
 
     @StudentImplementationRequired("H5.6")

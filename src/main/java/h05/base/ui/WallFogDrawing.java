@@ -39,10 +39,10 @@ public class WallFogDrawing implements Drawable<Wall> {
         final int x = entity.getX();
         final int y = entity.getY();
         final boolean isHorizontal = entity.isHorizontal();
-        final boolean isFogHere = context.field().contains(Fog.class);
+        final boolean isFogHere = context.field().containsEntity(Fog.class);
         final boolean isFogInNextField = isHorizontal
-            ? (y + 1 < world.getHeight() && world.getField(x, y + 1).contains(Fog.class))
-            : (x + 1 < world.getWidth() && world.getField(x + 1, y).contains(Fog.class));
+            ? (y + 1 < world.getHeight() && world.getField(x, y + 1).containsEntity(Fog.class))
+            : (x + 1 < world.getWidth() && world.getField(x + 1, y).containsEntity(Fog.class));
 
         if (GameConstants.FOG_VISIBILITY && isFogHere && isFogInNextField) {
             return;

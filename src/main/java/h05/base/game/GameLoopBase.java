@@ -176,7 +176,7 @@ public abstract class GameLoopBase {
         );
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                world.placeEntity(new Fog(x, y));
+                world.placeFieldEntity(new Fog(x, y));
             }
         }
     }

@@ -44,8 +44,8 @@ public class Utils {
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
             return Stream.of(
                 Arguments.of(100d, MiningProgress.UNSTARTED),
-                Arguments.of(60d, MiningProgress.IN_PROGRESS),
-                Arguments.of(20d, MiningProgress.COMPLETED)
+                Arguments.of(50d, MiningProgress.IN_PROGRESS),
+                Arguments.of(0d, MiningProgress.COMPLETED)
             );
         }
     }

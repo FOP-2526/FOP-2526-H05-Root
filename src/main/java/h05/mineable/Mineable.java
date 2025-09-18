@@ -32,12 +32,13 @@ public interface Mineable extends Durable {
     @StudentImplementationRequired("H5.3")
     default @NotNull MiningProgress getProgress() {
         final double durability = getDurability();
-        if (durability < 100 && durability > 50) {
+        if (durability == 100) {
+            return MiningProgress.UNSTARTED;
+        } else if (durability < 100 && durability > 0) {
             return MiningProgress.IN_PROGRESS;
-        } else if (durability <= 50 && durability > 0) {
+        } else {
             return MiningProgress.COMPLETED;
         }
-        return MiningProgress.UNSTARTED;
     }
 
     /**

@@ -43,7 +43,9 @@ public class WallBreakerRepairBot extends AbstractRepairBot {
             }
             while (destX != getX()) {
                 if (!isFrontClear()) {
-                    settings.removeEntity(settings.getWallAt(getX(), getY(), false));
+                    int wallX = getX();
+                    if(getDirection() == Direction.LEFT) wallX--;
+                    settings.removeEntity(settings.getWallAt(wallX, getY(), false));
                 }
                 move();
             }
@@ -56,7 +58,9 @@ public class WallBreakerRepairBot extends AbstractRepairBot {
             }
             while (destY != getY()) {
                 if (!isFrontClear()) {
-                    settings.removeEntity(settings.getWallAt(getX(), getY(), true));
+                    int wallY = getY();
+                    if(getDirection() == Direction.DOWN) wallY--;
+                    settings.removeEntity(settings.getWallAt(getX(), wallY, true));
                 }
                 move();
             }

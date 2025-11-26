@@ -1,6 +1,6 @@
 package h05.equipment;
 
-import h05.Utils;
+import h05.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.reflections.BasicTypeLink;
@@ -27,7 +27,7 @@ public class PickaxeTest {
         ConstructorLink constructor =  PICKAXE_CONSTRUCTOR_LINK.get();
         assertNotNull(constructor, emptyContext(), r -> "Class Pickaxe has no constructor Pickaxe()");
 
-        Utils.testPublicMethodsExist(type.name(), Tool.class.getMethods(), type.reflection().getMethods());
+        TestUtils.testPublicMethodsExist(type.name(), Tool.class.getMethods(), type.reflection().getMethods());
     }
 
     @Test

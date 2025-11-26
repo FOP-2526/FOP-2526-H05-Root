@@ -114,10 +114,10 @@ public class H05_RubricProviderPrivate implements RubricProvider {
                         JUnitTestRef.ofMethod(() -> TreeTest.class.getDeclaredMethod("testGetProgress", double.class, MiningProgress.class))),
                     criterion("Die Methode onMined(Tool) sind in der Klasse Rock vollständig und korrekt implementiert.",
                         1,
-                        JUnitTestRef.ofMethod(() -> RockTest.class.getDeclaredMethod("testOnMined", Utils.ToolClass.class, Optional.class))),
+                        JUnitTestRef.ofMethod(() -> RockTest.class.getDeclaredMethod("testOnMined", TestUtils.ToolClass.class, Optional.class))),
                     criterion("Die Methode onMined(Tool) sind in der Klasse Tree vollständig und korrekt implementiert.",
                         1,
-                        JUnitTestRef.ofMethod(() -> TreeTest.class.getDeclaredMethod("testOnMined", Utils.ToolClass.class, Optional.class)))
+                        JUnitTestRef.ofMethod(() -> TreeTest.class.getDeclaredMethod("testOnMined", TestUtils.ToolClass.class, Optional.class)))
                 )
                 .build(),
             Criterion.builder()

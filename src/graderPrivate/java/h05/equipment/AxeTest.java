@@ -1,6 +1,6 @@
 package h05.equipment;
 
-import h05.Utils;
+import h05.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.reflections.*;
@@ -25,7 +25,7 @@ public class AxeTest {
         ConstructorLink constructor =  AXE_CONSTRUCTOR_LINK.get();
         assertNotNull(constructor, emptyContext(), r -> "Class Axe has no constructor Axe()");
 
-        Utils.testPublicMethodsExist(type.name(), Tool.class.getMethods(), type.reflection().getMethods());
+        TestUtils.testPublicMethodsExist(type.name(), Tool.class.getMethods(), type.reflection().getMethods());
     }
 
     @Test

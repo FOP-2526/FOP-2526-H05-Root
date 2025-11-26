@@ -3,7 +3,7 @@ package h05.entity;
 import com.google.common.util.concurrent.AtomicDouble;
 import fopbot.Direction;
 import fopbot.World;
-import h05.Utils;
+import h05.TestUtils;
 import h05.base.entity.Fog;
 import h05.base.game.BasicGameSettings;
 import h05.base.game.GameSettings;
@@ -72,10 +72,10 @@ public class MineBotTest {
             methodBehaviour.put(mockedClass, new HashMap<>());
         }
         methodBehaviour.get(MockedClass.GAME_SETTINGS)
-            .put(method -> Utils.methodSignatureEquals(method, "update"),
+            .put(method -> TestUtils.methodSignatureEquals(method, "update"),
                 invocation -> null);
         methodBehaviour.get(MockedClass.MINE_BOT)
-            .put(method -> Utils.methodSignatureEquals(method, "getDirection"),
+            .put(method -> TestUtils.methodSignatureEquals(method, "getDirection"),
                 invocation -> currentDirection.get() == null ? Direction.UP : currentDirection.get());
 
         lootMocks = Stream.of(new Point(STARTING_POS.x, STARTING_POS.y - 1), new Point(STARTING_POS.x, STARTING_POS.y + 1))
@@ -200,7 +200,7 @@ public class MineBotTest {
         AtomicReference<Point> getLootAt_argsRef = new AtomicReference<>();
         currentDirection.set(direction);
         methodBehaviour.get(MockedClass.GAME_SETTINGS)
-            .put(method -> Utils.methodSignatureEquals(method, "getLootAt", int.class, int.class),
+            .put(method -> TestUtils.methodSignatureEquals(method, "getLootAt", int.class, int.class),
                 invocation -> {
                     getLootAt_argsRef.set(new Point(invocation.getArgument(0), invocation.getArgument(1)));
                     if (lootMocks.containsKey(getLootAt_argsRef.get())) {
@@ -274,7 +274,7 @@ public class MineBotTest {
         }
 
         methodBehaviour.get(MockedClass.MINE_BOT)
-            .put(method -> Utils.methodSignatureEquals(method, "getVision", int.class, int.class),
+            .put(method -> TestUtils.methodSignatureEquals(method, "getVision", int.class, int.class),
                 invocation -> getValidVisionPoints(invocation.getArgument(0), invocation.getArgument(0), visibilityRange));
         call(() -> mineBotMock.updateVision(STARTING_POS.x, STARTING_POS.y, WORLD_SIZE - 1, WORLD_SIZE - 1), context,
             r -> "An exception occurred while invoking MineBot.updateVision(int, int, int, int)");
@@ -299,7 +299,7 @@ public class MineBotTest {
         currentDirection.set(direction);
         List<Pair<Point, Point>> updateVisionArgs = new ArrayList<>();
         methodBehaviour.get(MockedClass.MINE_BOT)
-            .put(method -> Utils.methodSignatureEquals(method, "updateVision", int.class, int.class, int.class, int.class),
+            .put(method -> TestUtils.methodSignatureEquals(method, "updateVision", int.class, int.class, int.class, int.class),
                 invocation -> {
                     Point oldPoint = new Point(invocation.getArgument(0), invocation.getArgument(1));
                     Point newPoint = new Point(invocation.getArgument(2), invocation.getArgument(3));
@@ -338,10 +338,10 @@ public class MineBotTest {
 
         currentDirection.set(Direction.UP);
         methodBehaviour.get(MockedClass.MINE_BOT)
-            .put(method -> Utils.methodSignatureEquals(method, "updateVision", int.class, int.class, int.class, int.class),
+            .put(method -> TestUtils.methodSignatureEquals(method, "updateVision", int.class, int.class, int.class, int.class),
                 invocation -> null);
         methodBehaviour.get(MockedClass.MINE_BOT)
-            .put(method -> Utils.methodSignatureEquals(method, "getNumberOfEquipments"),
+            .put(method -> TestUtils.methodSignatureEquals(method, "getNumberOfEquipments"),
                 invocation -> (condition.ordinal() + 1) * 10);
 
         mineBotMock.equip(batteryMock);
@@ -382,7 +382,7 @@ public class MineBotTest {
 
         AtomicReference<Pair<Point, Point>> updateVision_argsRef = new AtomicReference<>();
         methodBehaviour.get(MockedClass.MINE_BOT)
-            .put(method -> Utils.methodSignatureEquals(method, "updateVision", int.class, int.class, int.class, int.class),
+            .put(method -> TestUtils.methodSignatureEquals(method, "updateVision", int.class, int.class, int.class, int.class),
                 invocation -> {
                     Point oldXY = new Point(invocation.getArgument(0), invocation.getArgument(1));
                     Point newXY = new Point(invocation.getArgument(2), invocation.getArgument(3));
@@ -408,10 +408,10 @@ public class MineBotTest {
     private Mineable makeLootMock(AtomicBoolean isCalled, AtomicBoolean onMinedReturnValue) {
         Answer<?> answer = invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "onMined", Tool.class)) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "onMined", Tool.class)) {
                 isCalled.set(true);
                 return onMinedReturnValue.get();
-            } else if (Utils.methodSignatureEquals(invokedMethod, "getName")) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "getName")) {
                 return "Loot";
             } else {
                 return Mockito.RETURNS_DEFAULTS.answer(invocation);
@@ -423,9 +423,9 @@ public class MineBotTest {
     private Camera makeCameraMock(int visibilityRange) {
         Answer<?> cameraAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getName")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getName")) {
                 return "Camera";
-            } else if (Utils.methodSignatureEquals(invokedMethod, "getVisibilityRange")) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "getVisibilityRange")) {
                 return visibilityRange;
             } else {
                 return Mockito.RETURNS_DEFAULTS.answer(invocation);
@@ -437,17 +437,17 @@ public class MineBotTest {
     private Battery makeBatteryMock(AtomicDouble batteryDurability) {
         Answer<?> batteryAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getName")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getName")) {
                 return "Battery";
-            } else if (Utils.methodSignatureEquals(invokedMethod, "getDurability")) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "getDurability")) {
                 return batteryDurability.get();
-            } else if (Utils.methodSignatureEquals(invokedMethod, "setDurability", double.class)) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "setDurability", double.class)) {
                 batteryDurability.set(Math.max(0d, Math.min(invocation.getArgument(0), 100d)));
                 return null;
-            } else if (Utils.methodSignatureEquals(invokedMethod, "reduceDurability", double.class)) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "reduceDurability", double.class)) {
                 batteryDurability.set(Math.max(0d, batteryDurability.get() - invocation.getArgument(0, Double.class)));
                 return null;
-            } else if (Utils.methodSignatureEquals(invokedMethod, "getCondition")) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "getCondition")) {
                 double durability = batteryDurability.get();
                 if (durability > 80) {
                     return EquipmentCondition.NEW;
@@ -468,14 +468,14 @@ public class MineBotTest {
     private UsableEquipment makeUsableEquipmentMock(String equipmentName, AtomicReference<? extends Miner> use_argsRef) {
         Answer<?> equipmentAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getName")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getName")) {
                 return equipmentName;
-            } else if (Utils.methodSignatureEquals(invokedMethod, "use", Miner.class)) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "use", Miner.class)) {
                 use_argsRef.set(invocation.getArgument(0));
                 return null;
-            } else if (Utils.methodSignatureEquals(invokedMethod, "isUsable")) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "isUsable")) {
                 return true;
-            } else if (Utils.methodSignatureEquals(invokedMethod, "isTool")) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "isTool")) {
                 return false;
             } else {
                 return Mockito.RETURNS_DEFAULTS.answer(invocation);
@@ -491,7 +491,7 @@ public class MineBotTest {
                 .map(y -> y + yPos - visibilityRange)
                 .mapToObj(y -> new Point(x, y)))
             .flatMap(Function.identity())
-            .filter(point -> Utils.pointInWorld(WORLD_SIZE, point))
+            .filter(point -> TestUtils.pointInWorld(WORLD_SIZE, point))
             .toArray(Point[]::new);
     }
 }

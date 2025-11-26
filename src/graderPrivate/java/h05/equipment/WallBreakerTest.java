@@ -3,7 +3,7 @@ package h05.equipment;
 import fopbot.Direction;
 import fopbot.Wall;
 import fopbot.World;
-import h05.Utils;
+import h05.TestUtils;
 import h05.base.game.BasicGameSettings;
 import h05.base.game.GameSettings;
 import h05.entity.Miner;
@@ -45,7 +45,7 @@ public class WallBreakerTest {
 
         getWallsAt_argsRef = new AtomicReference<>();
         Answer<?> gameSettingsAnswer = invocation -> {
-            if (Utils.methodSignatureEquals(invocation.getMethod(), "getWallsAt", int.class, int.class)) {
+            if (TestUtils.methodSignatureEquals(invocation.getMethod(), "getWallsAt", int.class, int.class)) {
                 getWallsAt_argsRef.set(new Point(invocation.getArgument(0, Integer.class), invocation.getArgument(1, Integer.class)));
             }
             return invocation.callRealMethod();
@@ -53,11 +53,11 @@ public class WallBreakerTest {
         gameSettingsMock = Mockito.mock(BasicGameSettings.class, gameSettingsAnswer);
         Answer<?> minerAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getX") || Utils.methodSignatureEquals(invokedMethod, "getY")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getX") || TestUtils.methodSignatureEquals(invokedMethod, "getY")) {
                 return 1;
-            } else if (Utils.methodSignatureEquals(invokedMethod, "getDirection")) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "getDirection")) {
                 return currentDirection.get();
-            } else if (Utils.methodSignatureEquals(invokedMethod, "getGameSettings")) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "getGameSettings")) {
                 return gameSettingsMock;
             } else {
                 return Mockito.RETURNS_DEFAULTS.answer(invocation);

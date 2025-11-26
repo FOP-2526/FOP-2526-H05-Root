@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.assertTrue;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.emptyContext;
 
-public class Utils {
+public class TestUtils {
 
     public static boolean pointInWorld(int worldSize, Point point) {
         return point.x >= 0 && point.x < worldSize && point.y >= 0 && point.y < worldSize;
@@ -32,7 +32,7 @@ public class Utils {
         for (Method expectedMethod : expectedMethods) {
             String expectedName = expectedMethod.getName();
             Class<?>[] expectedParameterTypes = expectedMethod.getParameterTypes();
-            assertTrue(Arrays.stream(actualMethods).anyMatch(method -> Utils.methodSignatureEquals(method, expectedName, expectedParameterTypes)),
+            assertTrue(Arrays.stream(actualMethods).anyMatch(method -> TestUtils.methodSignatureEquals(method, expectedName, expectedParameterTypes)),
                 emptyContext(),
                 r -> "Class %s does not have method %s(%s)"
                     .formatted(className, expectedName, Arrays.stream(expectedParameterTypes).map(Class::toString).collect(Collectors.joining(", "))));

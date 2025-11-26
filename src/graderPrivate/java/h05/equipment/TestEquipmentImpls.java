@@ -2,7 +2,7 @@ package h05.equipment;
 
 import h05.Durable;
 import h05.Links;
-import h05.Utils;
+import h05.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -125,7 +125,7 @@ public class TestEquipmentImpls {
     private Equipment getEquipmentMock(Class<? extends Equipment> clazz, AtomicInteger durability) {
         Answer<?> answer = invocationOnMock -> {
             Method invokedMethod = invocationOnMock.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getDurability")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getDurability")) {
                 return (double) durability.get();
             } else {
                 return invocationOnMock.callRealMethod();

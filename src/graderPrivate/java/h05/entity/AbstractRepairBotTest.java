@@ -1,7 +1,7 @@
 package h05.entity;
 
 import fopbot.World;
-import h05.Utils;
+import h05.TestUtils;
 import h05.base.game.BasicGameSettings;
 import h05.base.game.GameSettings;
 import h05.equipment.Battery;
@@ -60,10 +60,10 @@ public class AbstractRepairBotTest {
             methodBehaviour.put(mockedClass, new HashMap<>());
         }
         methodBehaviour.get(MockedClass.GAME_SETTINGS)
-            .put(method -> Utils.methodSignatureEquals(method, "update"),
+            .put(method -> TestUtils.methodSignatureEquals(method, "update"),
                 invocation -> null);
         methodBehaviour.get(MockedClass.ABSTRACT_REPAIR_BOT)
-            .put(method -> Utils.methodSignatureEquals(method, "move", Point.class),
+            .put(method -> TestUtils.methodSignatureEquals(method, "move", Point.class),
                 invocation -> null);
 
         Answer<?> gameSettingsAnswer = invocation -> {
@@ -122,7 +122,7 @@ public class AbstractRepairBotTest {
     @Test
     public void testScan_noBrokenBots() {
         methodBehaviour.get(MockedClass.GAME_SETTINGS)
-            .put(method -> Utils.methodSignatureEquals(method, "getMinerAt", int.class, int.class),
+            .put(method -> TestUtils.methodSignatureEquals(method, "getMinerAt", int.class, int.class),
                 invocation -> null);
         Context context = contextBuilder()
             .add("world layout", "world size: %dx%d, RepairBot at (%d, %d), no broken MineBots"
@@ -136,10 +136,10 @@ public class AbstractRepairBotTest {
     @Test
     public void testRepair_batteryAndCamera() {
         methodBehaviour.get(MockedClass.ABSTRACT_REPAIR_BOT)
-            .put(method -> Utils.methodSignatureEquals(method, "getX"),
+            .put(method -> TestUtils.methodSignatureEquals(method, "getX"),
                 invocation -> STARTING_POS.x + 1);
         methodBehaviour.get(MockedClass.ABSTRACT_REPAIR_BOT)
-            .put(method -> Utils.methodSignatureEquals(method, "getY"),
+            .put(method -> TestUtils.methodSignatureEquals(method, "getY"),
                 invocation -> STARTING_POS.y + 1);
 
         call(() -> repairBotMock.repair(new Point(STARTING_POS.x + 1, STARTING_POS.y + 1)), context,
@@ -155,10 +155,10 @@ public class AbstractRepairBotTest {
     @Test
     public void testRepair_otherEquipment() {
         methodBehaviour.get(MockedClass.ABSTRACT_REPAIR_BOT)
-            .put(method -> Utils.methodSignatureEquals(method, "getX"),
+            .put(method -> TestUtils.methodSignatureEquals(method, "getX"),
                 invocation -> STARTING_POS.x + 1);
         methodBehaviour.get(MockedClass.ABSTRACT_REPAIR_BOT)
-            .put(method -> Utils.methodSignatureEquals(method, "getY"),
+            .put(method -> TestUtils.methodSignatureEquals(method, "getY"),
                 invocation -> STARTING_POS.y + 1);
 
         call(() -> repairBotMock.repair(new Point(STARTING_POS.x + 1, STARTING_POS.y + 1)), context,
@@ -172,11 +172,11 @@ public class AbstractRepairBotTest {
     private MineBot makeBrokenMineBotMock() {
         Function<String, Answer<?>> equipmentAnswerForName = name -> invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getName")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getName")) {
                 return name;
-            } else if (Utils.methodSignatureEquals(invokedMethod, "getDurability")) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "getDurability")) {
                 return 0d;
-            } else if (Utils.methodSignatureEquals(invokedMethod, "getCondition")) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "getCondition")) {
                 return EquipmentCondition.BROKEN;
             } else {
                 return Mockito.RETURNS_DEFAULTS.answer(invocation);

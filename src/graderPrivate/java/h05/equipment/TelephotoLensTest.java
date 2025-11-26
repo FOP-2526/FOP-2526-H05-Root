@@ -1,7 +1,7 @@
 package h05.equipment;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import h05.Utils;
+import h05.TestUtils;
 import h05.entity.Miner;
 import kotlin.Pair;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ public class TelephotoLensTest {
         assertEquals(int.class, rangeEnhancementField.type().reflection(), emptyContext(),
             r -> "Field 'rangeEnhancement' in class TelephotoLens does not have type int");
 
-        Utils.testPublicMethodsExist(type.name(), UsableEquipment.class.getMethods(), type.reflection().getMethods());
+        TestUtils.testPublicMethodsExist(type.name(), UsableEquipment.class.getMethods(), type.reflection().getMethods());
     }
 
     @ParameterizedTest
@@ -100,9 +100,9 @@ public class TelephotoLensTest {
     private Pair<Miner, Object> getMocks(AtomicReference<EquipmentCondition> condition, AtomicDouble durability, AtomicInteger cameraVisibilityRange) {
         Answer<?> cameraAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getVisibilityRange")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getVisibilityRange")) {
                 return cameraVisibilityRange.get();
-            } else if (Utils.methodSignatureEquals(invokedMethod, "setVisibilityRange", int.class)) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "setVisibilityRange", int.class)) {
                 cameraVisibilityRange.set(Math.max(1, invocation.getArgument(0, Integer.class)));
                 return null;
             } else {
@@ -112,7 +112,7 @@ public class TelephotoLensTest {
         Camera cameraMock = Mockito.mock(Camera.class, cameraAnswer);
         Answer<?> minerAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getCamera")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getCamera")) {
                 return cameraMock;
             } else {
                 return Mockito.RETURNS_DEFAULTS.answer(invocation);
@@ -121,14 +121,14 @@ public class TelephotoLensTest {
         Miner minerMock = Mockito.mock(Miner.class, minerAnswer);
         Answer<?> telephotoLensAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getCondition")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getCondition")) {
                 return condition.get();
-            } else if (Utils.methodSignatureEquals(invokedMethod, "getDurability")) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "getDurability")) {
                 return durability.get();
-            } else if (Utils.methodSignatureEquals(invokedMethod, "setDurability", double.class)) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "setDurability", double.class)) {
                 durability.set(Math.max(0, Math.min(invocation.getArgument(0, Double.class), 100)));
                 return null;
-            } else if (Utils.methodSignatureEquals(invokedMethod, "reduceDurability", double.class)) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "reduceDurability", double.class)) {
                 durability.set(Math.max(0, Math.min(durability.get() - invocation.getArgument(0, Double.class), 100)));
                 return null;
             } else {

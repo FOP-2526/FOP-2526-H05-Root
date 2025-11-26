@@ -1,7 +1,7 @@
 package h05.equipment;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import h05.Utils;
+import h05.TestUtils;
 import h05.entity.Miner;
 import kotlin.Pair;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ public class PowerbankTest {
         assertEquals(double.class, capacityField.type().reflection(), emptyContext(),
             r -> "Field 'capacity' in class Powerbank does not have type double");
 
-        Utils.testPublicMethodsExist(type.name(), UsableEquipment.class.getMethods(), type.reflection().getMethods());
+        TestUtils.testPublicMethodsExist(type.name(), UsableEquipment.class.getMethods(), type.reflection().getMethods());
     }
 
     @ParameterizedTest
@@ -99,9 +99,9 @@ public class PowerbankTest {
     private Pair<Miner, Object> getMocks(AtomicReference<EquipmentCondition> condition, AtomicDouble durability, AtomicDouble batteryDurability) {
         Answer<?> batteryAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getDurability")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getDurability")) {
                 return batteryDurability.get();
-            } else if (Utils.methodSignatureEquals(invokedMethod, "setDurability", double.class)) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "setDurability", double.class)) {
                 batteryDurability.set(Math.max(0, Math.min(invocation.getArgument(0, Double.class), 100)));
                 return null;
             } else {
@@ -111,7 +111,7 @@ public class PowerbankTest {
         Battery batteryMock = Mockito.mock(Battery.class, batteryAnswer);
         Answer<?> minerAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getBattery")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getBattery")) {
                 return batteryMock;
             } else {
                 return Mockito.RETURNS_DEFAULTS.answer(invocation);
@@ -120,14 +120,14 @@ public class PowerbankTest {
         Miner minerMock = Mockito.mock(Miner.class, minerAnswer);
         Answer<?> powerbankAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getCondition")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getCondition")) {
                 return condition.get();
-            } else if (Utils.methodSignatureEquals(invokedMethod, "getDurability")) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "getDurability")) {
                 return durability.get();
-            } else if (Utils.methodSignatureEquals(invokedMethod, "setDurability", double.class)) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "setDurability", double.class)) {
                 durability.set(Math.max(0, Math.min(invocation.getArgument(0, Double.class), 100)));
                 return null;
-            } else if (Utils.methodSignatureEquals(invokedMethod, "reduceDurability", double.class)) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "reduceDurability", double.class)) {
                 durability.set(Math.max(0, Math.min(durability.get() - invocation.getArgument(0, Double.class), 100)));
                 return null;
             } else {

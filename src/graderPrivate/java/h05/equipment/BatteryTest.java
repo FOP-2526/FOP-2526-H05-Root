@@ -1,7 +1,7 @@
 package h05.equipment;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import h05.Utils;
+import h05.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -28,12 +28,12 @@ public class BatteryTest {
         AtomicDouble durability = new AtomicDouble();
         Answer<?> answer = invocationOnMock -> {
             Method invokedMethod = invocationOnMock.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getDurability")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getDurability")) {
                 return durability.get();
-            } else if (Utils.methodSignatureEquals(invokedMethod, "setDurability", double.class)) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "setDurability", double.class)) {
                 durability.set(invocationOnMock.getArgument(0, Double.class));
                 return null;
-            } else if (Utils.methodSignatureEquals(invokedMethod, "getCondition")) {
+            } else if (TestUtils.methodSignatureEquals(invokedMethod, "getCondition")) {
                 return condition.get();
             } else {
                 return invocationOnMock.callRealMethod();

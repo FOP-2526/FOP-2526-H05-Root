@@ -1,6 +1,6 @@
 package h05.equipment;
 
-import h05.Utils;
+import h05.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -28,7 +28,7 @@ public class CameraTest {
         AtomicReference<EquipmentCondition> condition = new AtomicReference<>();
         Answer<?> answer = invocationOnMock -> {
             Method invokedMethod = invocationOnMock.getMethod();
-            if (Utils.methodSignatureEquals(invokedMethod, "getCondition")) {
+            if (TestUtils.methodSignatureEquals(invokedMethod, "getCondition")) {
                 return condition.get();
             } else {
                 return invocationOnMock.callRealMethod();

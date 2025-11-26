@@ -74,9 +74,6 @@ public class MineBotTest {
         methodBehaviour.get(MockedClass.GAME_SETTINGS)
             .put(method -> TestUtils.methodSignatureEquals(method, "update"),
                 invocation -> null);
-        methodBehaviour.get(MockedClass.MINE_BOT)
-            .put(method -> TestUtils.methodSignatureEquals(method, "getDirection"),
-                invocation -> currentDirection.get() == null ? Direction.UP : currentDirection.get());
 
         lootMocks = Stream.of(new Point(STARTING_POS.x, STARTING_POS.y - 1), new Point(STARTING_POS.x, STARTING_POS.y + 1))
             .map(point -> {
@@ -131,7 +128,7 @@ public class MineBotTest {
     @ParameterizedTest
     @EnumSource(Direction.class)
     public void testMine_callsGetLootAt(Direction direction) {
-        currentDirection.set(direction);
+        setDirection(direction);
         AtomicReference<Point> getLootAt_argsRef = testMine_setup(direction);
         call(mineBotMock::mine, context, r -> "An exception occurred while invoking MineBot.mine()");
         Point args = getLootAt_argsRef.get();
@@ -150,7 +147,7 @@ public class MineBotTest {
         if (direction.isVertical()) {
             return;
         }
-        currentDirection.set(direction);
+        setDirection(direction);
         call(mineBotMock::mine, context, r -> "An exception occurred while invoking MineBot.mine()");
 
         lootMocks.values().forEach(triple -> assertFalse(triple.getSecond().get(),
@@ -198,7 +195,7 @@ public class MineBotTest {
 
     private AtomicReference<Point> testMine_setup(Direction direction) {
         AtomicReference<Point> getLootAt_argsRef = new AtomicReference<>();
-        currentDirection.set(direction);
+        setDirection(direction);
         methodBehaviour.get(MockedClass.GAME_SETTINGS)
             .put(method -> TestUtils.methodSignatureEquals(method, "getLootAt", int.class, int.class),
                 invocation -> {
@@ -297,7 +294,7 @@ public class MineBotTest {
     @ParameterizedTest
     @EnumSource(Direction.class)
     public void testMove_callsUpdateVision(Direction direction) {
-        currentDirection.set(direction);
+        setDirection(direction);
         List<Pair<Point, Point>> updateVisionArgs = new ArrayList<>();
         methodBehaviour.get(MockedClass.MINE_BOT)
             .put(method -> TestUtils.methodSignatureEquals(method, "updateVision", int.class, int.class, int.class, int.class),
@@ -337,7 +334,7 @@ public class MineBotTest {
         AtomicDouble batteryDurability = new AtomicDouble(initialBatteryDurability);
         Battery batteryMock = makeBatteryMock(batteryDurability);
 
-        currentDirection.set(Direction.UP);
+        setDirection(Direction.UP);
         methodBehaviour.get(MockedClass.MINE_BOT)
             .put(method -> TestUtils.methodSignatureEquals(method, "updateVision", int.class, int.class, int.class, int.class),
                 invocation -> null);
@@ -494,5 +491,12 @@ public class MineBotTest {
             .flatMap(Function.identity())
             .filter(point -> TestUtils.pointInWorld(WORLD_SIZE, point))
             .toArray(Point[]::new);
+    }
+
+    private void setDirection(Direction direction) {
+        currentDirection.set(direction);
+        while (mineBotMock.getDirection() != direction) {
+            mineBotMock.turnLeft();
+        }
     }
 }

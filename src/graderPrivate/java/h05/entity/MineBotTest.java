@@ -231,8 +231,6 @@ public class MineBotTest {
             r -> "An exception occurred while invoking MineBot.getVision(int, int)");
         Point[] validPoints = getValidVisionPoints(STARTING_POS.x, STARTING_POS.y, visibilityRange);
 
-        assertEquals(validPoints.length, points.length, context,
-            r -> "The returned array does not have the correct number of points");
         if (assertPoints) {
             Set<Point> expectedPoints = Set.of(validPoints);
             Set<Point> actualPoints = Set.of(points);
@@ -242,6 +240,9 @@ public class MineBotTest {
                         .filter(Predicate.not(actualPoints::contains))
                         .map(point -> "(%d, %d)".formatted(point.x, point.y))
                         .collect(Collectors.joining(", ")));
+        } else {
+            assertEquals(validPoints.length, points.length, context,
+                r -> "The returned array does not have the correct number of points");
         }
     }
 

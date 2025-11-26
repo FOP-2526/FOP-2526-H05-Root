@@ -237,6 +237,12 @@ public class MineBotTest {
                         .filter(Predicate.not(actualPoints::contains))
                         .map(point -> "(%d, %d)".formatted(point.x, point.y))
                         .collect(Collectors.joining(", ")));
+            assertEquals(Collections.emptySet(), actualPoints.stream()
+                    .filter(Objects::nonNull)
+                    .filter(Predicate.not(expectedPoints::contains))
+                    .collect(Collectors.toUnmodifiableSet()),
+                context,
+                r -> "The returned array contains invalid points");
         } else {
             assertEquals(validPoints.length, points.length, context,
                 r -> "The returned array does not have the correct number of points");

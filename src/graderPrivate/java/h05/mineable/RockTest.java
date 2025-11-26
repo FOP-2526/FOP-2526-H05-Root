@@ -20,9 +20,10 @@ import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 public class RockTest {
 
     @Test
-    public void testGetName() {
+    public void testGetName() throws NoSuchMethodException {
+        Method getNameMethod = Rock.class.getMethod("getName");
         Rock instance = new Rock();
-        assertCallEquals("Rock", instance::getName, emptyContext(),
+        assertCallEquals("Rock", () -> getNameMethod.invoke(instance), emptyContext(),
             r -> "Rock.getName() did not return the correct value");
     }
 

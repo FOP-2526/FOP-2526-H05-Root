@@ -20,9 +20,10 @@ import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 public class TreeTest {
 
     @Test
-    public void testGetName() {
+    public void testGetName() throws NoSuchMethodException {
+        Method getNameMethod = Tree.class.getMethod("getName");
         Tree instance = new Tree();
-        assertCallEquals("Tree", instance::getName, emptyContext(),
+        assertCallEquals("Tree", () -> getNameMethod.invoke(instance), emptyContext(),
             r -> "Tree.getName() did not return the correct value");
     }
 

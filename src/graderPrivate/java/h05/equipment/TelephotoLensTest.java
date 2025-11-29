@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
+import org.mockito.exceptions.base.MockitoException;
 import org.mockito.stubbing.Answer;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.reflections.*;
@@ -135,8 +136,13 @@ public class TelephotoLensTest {
                 return invocation.callRealMethod();
             }
         };
-        Object telephotoLensMock = Mockito.mock(TELEPHOTO_LENS_TYPE_LINK.get().reflection(),
-            Mockito.withSettings().useConstructor(10).defaultAnswer(telephotoLensAnswer));
+        Object telephotoLensMock;
+        try {
+            telephotoLensMock = Mockito.mock(TELEPHOTO_LENS_TYPE_LINK.get().reflection(),
+                Mockito.withSettings().useConstructor(10).defaultAnswer(telephotoLensAnswer));
+        } catch (MockitoException e) {
+            throw new RuntimeException(e.getCause());
+        }
 
         return new Pair<>(minerMock, telephotoLensMock);
     }

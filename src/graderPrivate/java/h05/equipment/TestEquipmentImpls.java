@@ -5,6 +5,7 @@ import h05.Links;
 import h05.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.exceptions.base.MockitoException;
 import org.mockito.stubbing.Answer;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
@@ -131,6 +132,10 @@ public class TestEquipmentImpls {
                 return invocationOnMock.callRealMethod();
             }
         };
-        return Mockito.mock(clazz, answer);
+        try {
+            return Mockito.mock(clazz, answer);
+        } catch (MockitoException e) {
+            throw new RuntimeException(e.getCause());
+        }
     }
 }

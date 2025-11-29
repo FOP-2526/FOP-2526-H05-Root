@@ -5,6 +5,7 @@ import h05.mineable.Rock;
 import h05.mineable.Tree;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.exceptions.base.MockitoException;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
 import org.tudalgo.algoutils.tutor.general.reflections.BasicTypeLink;
@@ -75,9 +76,14 @@ public class TestDurableImpls {
             Map<TestCase, Boolean> testCaseResults = new EnumMap<>(TestCase.class);
 
             for (TestCase testCase : TestCase.values()) {
-                Durable instance = Mockito.mock(durableClass, Mockito.withSettings()
-                    .useConstructor(CONSTRUCTOR_ARGS.get(entry.getKey()))
-                    .defaultAnswer(Mockito.CALLS_REAL_METHODS));
+                Durable instance;
+                try {
+                    instance = Mockito.mock(durableClass, Mockito.withSettings()
+                        .useConstructor(CONSTRUCTOR_ARGS.get(entry.getKey()))
+                        .defaultAnswer(Mockito.CALLS_REAL_METHODS));
+                } catch (MockitoException e) {
+                    throw new RuntimeException(e.getCause());
+                }
                 Boolean result = switch (testCase) {
                     case INITIAL_DURABILITY -> testGetDurabilityInitial(instance);
                     case SET_DURABILITY -> testSetDurability(instance);

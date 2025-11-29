@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
+import org.mockito.exceptions.base.MockitoException;
 import org.mockito.stubbing.Answer;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.reflections.*;
@@ -134,8 +135,13 @@ public class PowerbankTest {
                 return invocation.callRealMethod();
             }
         };
-        Object powerbankMock = Mockito.mock(POWERBANK_TYPE_LINK.get().reflection(),
-            Mockito.withSettings().useConstructor(100d).defaultAnswer(powerbankAnswer));
+        Object powerbankMock;
+        try {
+            powerbankMock = Mockito.mock(POWERBANK_TYPE_LINK.get().reflection(),
+                Mockito.withSettings().useConstructor(100d).defaultAnswer(powerbankAnswer));
+        } catch (MockitoException e) {
+            throw new RuntimeException(e.getCause());
+        }
 
         return new Pair<>(minerMock, powerbankMock);
     }

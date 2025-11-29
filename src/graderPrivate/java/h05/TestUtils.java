@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.mockito.Mockito;
+import org.mockito.exceptions.base.MockitoException;
 import org.mockito.stubbing.Answer;
 import org.tudalgo.algoutils.tutor.general.reflections.TypeLink;
 
@@ -69,9 +70,14 @@ public class TestUtils {
                     return invocation.callRealMethod();
                 }
             };
-            Optional<?> axeMock = Optional.ofNullable(Links.AXE_TYPE_LINK.get())
-                .map(TypeLink::reflection)
-                .map(clazz -> Mockito.mock(clazz, axeAnswer));
+            Optional<?> axeMock;
+            try {
+                axeMock = Optional.ofNullable(Links.AXE_TYPE_LINK.get())
+                    .map(TypeLink::reflection)
+                    .map(clazz -> Mockito.mock(clazz, axeAnswer));
+            } catch (MockitoException e) {
+                throw new RuntimeException(e.getCause());
+            }
             Answer<?> pickaxeAnswer = invocation -> {
                 Method invokedMethod = invocation.getMethod();
                 if (methodSignatureEquals(invokedMethod, "getName")) {
@@ -82,9 +88,14 @@ public class TestUtils {
                     return invocation.callRealMethod();
                 }
             };
-            Optional<?> pickaxeMock = Optional.ofNullable(Links.PICKAXE_TYPE_LINK.get())
-                .map(TypeLink::reflection)
-                .map(clazz -> Mockito.mock(clazz, pickaxeAnswer));
+            Optional<?> pickaxeMock;
+            try {
+                pickaxeMock = Optional.ofNullable(Links.PICKAXE_TYPE_LINK.get())
+                    .map(TypeLink::reflection)
+                    .map(clazz -> Mockito.mock(clazz, pickaxeAnswer));
+            } catch (MockitoException e) {
+                throw new RuntimeException(e.getCause());
+            }
 
             return Stream.of(
                 Arguments.of(ToolClass.NONE, Optional.empty()),

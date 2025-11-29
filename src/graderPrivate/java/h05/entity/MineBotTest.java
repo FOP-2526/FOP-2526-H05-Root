@@ -395,7 +395,7 @@ public class MineBotTest {
                 });
 
         call(() -> mineBotMock.use(0), context, r -> "An exception occurred while invoking MineBot.use(int)");
-        Pair<Point, Point> args = assertCallNotNull(updateVision_argsRef::get, context,
+        Pair<Point, Point> args = assertNotNull(updateVision_argsRef.get(), context,
             r -> "MineBot.use(int) did not call MineBot.updateVision(int, int, int, int)");
         Point oldXY = args.getFirst();
         Point newXY = args.getSecond();

@@ -40,7 +40,7 @@ public class TreeTest {
         };
         Tree treeMock = Mockito.mock(Tree.class, answer);
 
-        assertCallEquals(expected, treeMock::getProgress, context,
+        assertEquals(expected, treeMock.getProgress(), context,
             r -> "Tree.getProgress() did not return the correct value");
     }
 
@@ -74,7 +74,7 @@ public class TreeTest {
             .add("tool", toolClass)
             .add("tool mining power", 1d)
             .build();
-        assertCallFalse(() -> treeMock.onMined(toolClass == TestUtils.ToolClass.NONE ? null : tool.orElseThrow()), context,
+        assertFalse(treeMock.onMined(toolClass == TestUtils.ToolClass.NONE ? null : tool.orElseThrow()), context,
             r -> "The resource was not mined completely but Tree.onMined(Tool) returned true");
         assertEquals(100d - expectedReduction, durability.get(), context,
             r -> "Tree.onMine(Tool) did not reduce the durability by the correct amount");
@@ -85,7 +85,7 @@ public class TreeTest {
             .add("tool", toolClass)
             .add("tool mining power", 1d)
             .build();
-        assertCallTrue(() -> treeMock.onMined(toolClass == TestUtils.ToolClass.NONE ? null : tool.orElseThrow()), context,
+        assertTrue(treeMock.onMined(toolClass == TestUtils.ToolClass.NONE ? null : tool.orElseThrow()), context,
             r -> "The resource was mined completely but Tree.onMined(Tool) returned false");
         assertEquals(0d, durability.get(), context,
             r -> "Tree.onMine(Tool) did not reduce the durability to zero");

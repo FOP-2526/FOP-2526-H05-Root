@@ -40,7 +40,7 @@ public class RockTest {
         };
         Rock rockMock = Mockito.mock(Rock.class, answer);
 
-        assertCallEquals(expected, rockMock::getProgress, context,
+        assertEquals(expected, rockMock.getProgress(), context,
             r -> "Rock.getProgress() did not return the correct value");
     }
 
@@ -74,7 +74,7 @@ public class RockTest {
             .add("tool", toolClass)
             .add("tool mining power", 1d)
             .build();
-        assertCallFalse(() -> rockMock.onMined(toolClass == TestUtils.ToolClass.NONE ? null : tool.orElseThrow()), context,
+        assertFalse(rockMock.onMined(toolClass == TestUtils.ToolClass.NONE ? null : tool.orElseThrow()), context,
             r -> "The resource was not mined completely but Rock.onMined(Tool) returned true");
         assertEquals(100d - expectedReduction, durability.get(), context,
             r -> "Rock.onMine(Tool) did not reduce the durability by the correct amount");
@@ -85,7 +85,7 @@ public class RockTest {
             .add("tool", toolClass)
             .add("tool mining power", 1d)
             .build();
-        assertCallTrue(() -> rockMock.onMined(toolClass == TestUtils.ToolClass.NONE ? null : tool.orElseThrow()), context,
+        assertTrue(rockMock.onMined(toolClass == TestUtils.ToolClass.NONE ? null : tool.orElseThrow()), context,
             r -> "The resource was mined completely but Rock.onMined(Tool) returned false");
         assertEquals(0d, durability.get(), context,
             r -> "Rock.onMine(Tool) did not reduce the durability to zero");

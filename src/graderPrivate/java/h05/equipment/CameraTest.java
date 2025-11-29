@@ -38,7 +38,7 @@ public class CameraTest {
 
         for (Map.Entry<EquipmentCondition, Integer> entry : conditionMapping.entrySet()) {
             condition.set(entry.getKey());
-            assertCallEquals(entry.getValue(), instance::getVisibilityRange, emptyContext(),
+            assertEquals(entry.getValue(), instance.getVisibilityRange(), emptyContext(),
                 r -> "getVisibilityRange() did return the correct value for condition = " + entry.getValue());
         }
     }
@@ -48,7 +48,7 @@ public class CameraTest {
     public void testSetVisibility(int visibility) {
         Camera instance = new Camera();
         call(() -> instance.setVisibilityRange(visibility));
-        assertCallEquals(Math.max(visibility, 1), instance::getVisibilityRange, emptyContext(),
+        assertEquals(Math.max(visibility, 1), instance.getVisibilityRange(), emptyContext(),
             r -> "setVisibilityRange(int) did not set the visibility to the correct value");
     }
 }

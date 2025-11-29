@@ -31,7 +31,7 @@ public class AxeTest {
     @Test
     public void testGetMiningPower() throws Throwable {
         Object instance = AXE_CONSTRUCTOR_LINK.get().invoke();
-        assertCallEquals(5d, () -> AXE_GET_MINING_POWER_METHOD_LINK.get().invoke(instance), emptyContext(),
+        assertEquals(5d, AXE_GET_MINING_POWER_METHOD_LINK.get().invoke(instance), emptyContext(),
             r -> "Axe.getMiningPower() did not return the correct value");
     }
 }

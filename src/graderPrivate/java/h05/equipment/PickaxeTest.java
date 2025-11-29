@@ -33,7 +33,7 @@ public class PickaxeTest {
     @Test
     public void testGetMiningPower() throws Throwable {
         Object instance = PICKAXE_CONSTRUCTOR_LINK.get().invoke();
-        assertCallEquals(15d, () -> PICKAXE_GET_MINING_POWER_METHOD_LINK.get().invoke(instance), emptyContext(),
+        assertEquals(15d, PICKAXE_GET_MINING_POWER_METHOD_LINK.get().invoke(instance), emptyContext(),
             r -> "Pickaxe.getMiningPower() did not return the correct value");
     }
 }

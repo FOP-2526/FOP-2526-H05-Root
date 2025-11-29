@@ -111,7 +111,7 @@ public class AbstractRepairBotTest {
 
     @Test
     public void testScan_withBrokenBot() {
-        Point point = assertCallNotNull(repairBotMock::scan, context,
+        Point point = assertNotNull(repairBotMock.scan(), context,
             r -> "AbstractRepairBot.scan() returned null even though a broken MineBot is in its radius (1)");
         assertEquals(STARTING_POS.x + 1, point.x, context,
             r -> "AbstractRepairBot.scan() returned an incorrect point (wrong x coordinate)");

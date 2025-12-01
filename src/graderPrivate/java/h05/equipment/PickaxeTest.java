@@ -21,7 +21,7 @@ public class PickaxeTest {
         assertNotNull(type, emptyContext(), r -> "Could not find class h05.equipment.Pickaxe");
         assertTrue((type.modifiers() & Modifier.ABSTRACT) == 0, emptyContext(),
             r -> "Class Pickaxe is abstract");
-        assertTrue(type.interfaces().contains(BasicTypeLink.of(Tool.class)), emptyContext(),
+        assertTrue(TestUtils.getInterfaces(type.reflection()).contains(Tool.class), emptyContext(),
             r -> "Class Pickaxe does not implement interface Tool");
 
         ConstructorLink constructor =  PICKAXE_CONSTRUCTOR_LINK.get();

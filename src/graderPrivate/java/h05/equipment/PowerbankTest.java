@@ -30,7 +30,7 @@ public class PowerbankTest {
         assertNotNull(type, emptyContext(), r -> "Could not find class h05.equipment.Powerbank");
         assertTrue((type.modifiers() & Modifier.ABSTRACT) == 0, emptyContext(),
             r -> "Class Powerbank is abstract");
-        assertTrue(type.interfaces().contains(BasicTypeLink.of(UsableEquipment.class)), emptyContext(),
+        assertTrue(TestUtils.getInterfaces(type.reflection()).contains(UsableEquipment.class), emptyContext(),
             r -> "Class Powerbank does not implement interface UsableEquipment");
 
         ConstructorLink constructor = POWERBANK_CONSTRUCTOR_LINK.get();

@@ -11,8 +11,7 @@ import org.tudalgo.algoutils.tutor.general.reflections.TypeLink;
 
 import java.awt.*;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,6 +37,21 @@ public class TestUtils {
                 r -> "Class %s does not have method %s(%s)"
                     .formatted(className, expectedName, Arrays.stream(expectedParameterTypes).map(Class::toString).collect(Collectors.joining(", "))));
         }
+    }
+
+    public static Set<Class<?>> getInterfaces(Class<?> clazz) {
+        Set<Class<?>> interfaces = new HashSet<>();
+        getInterfacesHelper(clazz, interfaces);
+        return Collections.unmodifiableSet(interfaces);
+    }
+
+    private static void getInterfacesHelper(Class<?> clazz, Set<Class<?>> interfaces) {
+        if (clazz == null || clazz == Object.class) return;
+        for (Class<?> _interface : clazz.getInterfaces()) {
+            interfaces.add(_interface);
+            getInterfacesHelper(_interface, interfaces);
+        }
+        getInterfacesHelper(clazz.getSuperclass(), interfaces);
     }
 
     public static class GetProgressArgumentsProvider implements ArgumentsProvider {

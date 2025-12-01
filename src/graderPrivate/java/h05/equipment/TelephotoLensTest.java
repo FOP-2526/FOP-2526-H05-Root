@@ -31,7 +31,7 @@ public class TelephotoLensTest {
         assertNotNull(type, emptyContext(), r -> "Could not find class h05.equipment.TelephotoLens");
         assertTrue((type.modifiers() & Modifier.ABSTRACT) == 0, emptyContext(),
             r -> "Class TelephotoLens is abstract");
-        assertTrue(type.interfaces().contains(BasicTypeLink.of(UsableEquipment.class)), emptyContext(),
+        assertTrue(TestUtils.getInterfaces(type.reflection()).contains(UsableEquipment.class), emptyContext(),
             r -> "Class TelephotoLens does not implement interface UsableEquipment");
 
         ConstructorLink constructor = TELEPHOTO_LENS_CONSTRUCTOR_LINK.get();

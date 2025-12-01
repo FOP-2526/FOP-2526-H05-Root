@@ -19,7 +19,7 @@ public class AxeTest {
         assertNotNull(type, emptyContext(), r -> "Could not find class h05.equipment.Axe");
         assertTrue((type.modifiers() & Modifier.ABSTRACT) == 0, emptyContext(),
             r -> "Class Axe is abstract");
-        assertTrue(type.interfaces().contains(BasicTypeLink.of(Tool.class)), emptyContext(),
+        assertTrue(TestUtils.getInterfaces(type.reflection()).contains(Tool.class), emptyContext(),
             r -> "Class Axe does not implement interface Tool");
 
         ConstructorLink constructor =  AXE_CONSTRUCTOR_LINK.get();

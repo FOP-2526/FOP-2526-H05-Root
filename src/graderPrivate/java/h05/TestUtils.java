@@ -88,7 +88,8 @@ public class TestUtils {
             try {
                 axeMock = Optional.ofNullable(Links.AXE_TYPE_LINK.get())
                     .map(TypeLink::reflection)
-                    .map(clazz -> Mockito.mock(clazz, axeAnswer));
+                    .map(clazz -> Mockito.mock(clazz,
+                        Mockito.withSettings().useConstructor().defaultAnswer(axeAnswer)));
             } catch (MockitoException e) {
                 throw new RuntimeException(e.getCause());
             }
@@ -106,7 +107,8 @@ public class TestUtils {
             try {
                 pickaxeMock = Optional.ofNullable(Links.PICKAXE_TYPE_LINK.get())
                     .map(TypeLink::reflection)
-                    .map(clazz -> Mockito.mock(clazz, pickaxeAnswer));
+                    .map(clazz -> Mockito.mock(clazz,
+                        Mockito.withSettings().useConstructor().defaultAnswer(pickaxeAnswer)));
             } catch (MockitoException e) {
                 throw new RuntimeException(e.getCause());
             }

@@ -435,7 +435,7 @@ public class MineBotTest {
                 return Mockito.RETURNS_DEFAULTS.answer(invocation);
             }
         };
-        return Mockito.mock(Camera.class, cameraAnswer);
+        return Mockito.mock(Camera.class, Mockito.withSettings().useConstructor(visibilityRange).defaultAnswer(cameraAnswer));
     }
 
     private Battery makeBatteryMock(AtomicDouble batteryDurability) {
@@ -466,7 +466,7 @@ public class MineBotTest {
                 return invocation.callRealMethod();
             }
         };
-        return Mockito.mock(Battery.class, batteryAnswer);
+        return Mockito.mock(Battery.class, Mockito.withSettings().useConstructor().defaultAnswer(batteryAnswer));
     }
 
     private UsableEquipment makeUsableEquipmentMock(String equipmentName, AtomicReference<? extends Miner> use_argsRef) {

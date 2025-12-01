@@ -38,7 +38,7 @@ public class TreeTest {
                 return invocation.callRealMethod();
             }
         };
-        Tree treeMock = Mockito.mock(Tree.class, answer);
+        Tree treeMock = Mockito.mock(Tree.class, Mockito.withSettings().useConstructor().defaultAnswer(answer));
 
         assertEquals(expected, treeMock.getProgress(), context,
             r -> "Tree.getProgress() did not return the correct value");
@@ -67,7 +67,7 @@ public class TreeTest {
                 return invocation.callRealMethod();
             }
         };
-        Tree treeMock = Mockito.mock(Tree.class, answer);
+        Tree treeMock = Mockito.mock(Tree.class, Mockito.withSettings().useConstructor().defaultAnswer(answer));
 
         Context context = contextBuilder()
             .add("durability", durability.get())

@@ -38,7 +38,7 @@ public class RockTest {
                 return invocation.callRealMethod();
             }
         };
-        Rock rockMock = Mockito.mock(Rock.class, answer);
+        Rock rockMock = Mockito.mock(Rock.class, Mockito.withSettings().useConstructor().defaultAnswer(answer));
 
         assertEquals(expected, rockMock.getProgress(), context,
             r -> "Rock.getProgress() did not return the correct value");
@@ -67,7 +67,7 @@ public class RockTest {
                 return invocation.callRealMethod();
             }
         };
-        Rock rockMock = Mockito.mock(Rock.class, answer);
+        Rock rockMock = Mockito.mock(Rock.class, Mockito.withSettings().useConstructor().defaultAnswer(answer));
 
         Context context = contextBuilder()
             .add("durability", durability.get())

@@ -202,9 +202,12 @@ public class AbstractRepairBotTest {
         MineBot brokenMineBotMock = Mockito.mock(MineBot.class, Mockito.withSettings()
             .useConstructor(STARTING_POS.x + 1, STARTING_POS.y + 1, gameSettingsMock)
             .defaultAnswer(mineBotAnswer));
-        brokenMineBotMock.equip(Mockito.mock(Battery.class, equipmentAnswerForName.apply("Battery")));
-        brokenMineBotMock.equip(Mockito.mock(Camera.class, equipmentAnswerForName.apply("Camera")));
-        brokenMineBotMock.equip(Mockito.mock(Camera.class, equipmentAnswerForName.apply("BrokenThingy")));
+        brokenMineBotMock.equip(Mockito.mock(Battery.class,
+            Mockito.withSettings().useConstructor().defaultAnswer(equipmentAnswerForName.apply("Battery"))));
+        brokenMineBotMock.equip(Mockito.mock(Camera.class,
+            Mockito.withSettings().useConstructor().defaultAnswer(equipmentAnswerForName.apply("Camera"))));
+        brokenMineBotMock.equip(Mockito.mock(Camera.class,
+            Mockito.withSettings().useConstructor().defaultAnswer(equipmentAnswerForName.apply("BrokenThingy"))));
 
         return brokenMineBotMock;
     }

@@ -110,7 +110,8 @@ public class TelephotoLensTest {
                 return invocation.callRealMethod();
             }
         };
-        Camera cameraMock = Mockito.mock(Camera.class, cameraAnswer);
+        Camera cameraMock = Mockito.mock(Camera.class,
+            Mockito.withSettings().useConstructor(cameraVisibilityRange.get()).defaultAnswer(cameraAnswer));
         Answer<?> minerAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
             if (TestUtils.methodSignatureEquals(invokedMethod, "getCamera")) {

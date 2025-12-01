@@ -39,7 +39,7 @@ public class BatteryTest {
                 return invocationOnMock.callRealMethod();
             }
         };
-        Battery instance = Mockito.mock(Battery.class, answer);
+        Battery instance = Mockito.mock(Battery.class, Mockito.withSettings().useConstructor().defaultAnswer(answer));
 
         for (Map.Entry<EquipmentCondition, Double> entry : conditionMapping.entrySet()) {
             condition.set(entry.getKey());

@@ -109,7 +109,7 @@ public class PowerbankTest {
                 return invocation.callRealMethod();
             }
         };
-        Battery batteryMock = Mockito.mock(Battery.class, batteryAnswer);
+        Battery batteryMock = Mockito.mock(Battery.class, Mockito.withSettings().useConstructor().defaultAnswer(batteryAnswer));
         Answer<?> minerAnswer = invocation -> {
             Method invokedMethod = invocation.getMethod();
             if (TestUtils.methodSignatureEquals(invokedMethod, "getBattery")) {

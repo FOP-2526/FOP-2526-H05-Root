@@ -135,7 +135,7 @@ public class TestEquipmentImpls {
         try {
             return Mockito.mock(clazz, answer);
         } catch (MockitoException e) {
-            throw new RuntimeException(e.getCause());
+            throw (RuntimeException) e.getCause();
         }
     }
 }

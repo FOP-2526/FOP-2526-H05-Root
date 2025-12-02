@@ -91,7 +91,7 @@ public class TestUtils {
                     .map(clazz -> Mockito.mock(clazz,
                         Mockito.withSettings().useConstructor().defaultAnswer(axeAnswer)));
             } catch (MockitoException e) {
-                throw new RuntimeException(e.getCause());
+                throw (RuntimeException) e.getCause();
             }
             Answer<?> pickaxeAnswer = invocation -> {
                 Method invokedMethod = invocation.getMethod();
@@ -110,7 +110,7 @@ public class TestUtils {
                     .map(clazz -> Mockito.mock(clazz,
                         Mockito.withSettings().useConstructor().defaultAnswer(pickaxeAnswer)));
             } catch (MockitoException e) {
-                throw new RuntimeException(e.getCause());
+                throw (RuntimeException) e.getCause();
             }
 
             return Stream.of(

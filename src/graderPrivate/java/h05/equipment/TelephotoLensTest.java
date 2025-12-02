@@ -142,7 +142,7 @@ public class TelephotoLensTest {
             telephotoLensMock = Mockito.mock(TELEPHOTO_LENS_TYPE_LINK.get().reflection(),
                 Mockito.withSettings().useConstructor(10).defaultAnswer(telephotoLensAnswer));
         } catch (MockitoException e) {
-            throw new RuntimeException(e.getCause());
+            throw (RuntimeException) e.getCause();
         }
 
         return new Pair<>(minerMock, telephotoLensMock);

@@ -140,7 +140,7 @@ public class PowerbankTest {
             powerbankMock = Mockito.mock(POWERBANK_TYPE_LINK.get().reflection(),
                 Mockito.withSettings().useConstructor(100d).defaultAnswer(powerbankAnswer));
         } catch (MockitoException e) {
-            throw new RuntimeException(e.getCause());
+            throw (RuntimeException) e.getCause();
         }
 
         return new Pair<>(minerMock, powerbankMock);

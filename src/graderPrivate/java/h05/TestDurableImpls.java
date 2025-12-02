@@ -82,7 +82,7 @@ public class TestDurableImpls {
                         .useConstructor(CONSTRUCTOR_ARGS.get(entry.getKey()))
                         .defaultAnswer(Mockito.CALLS_REAL_METHODS));
                 } catch (MockitoException e) {
-                    throw new RuntimeException(e.getCause());
+                    throw (RuntimeException) e.getCause();
                 }
                 Boolean result = switch (testCase) {
                     case INITIAL_DURABILITY -> testGetDurabilityInitial(instance);

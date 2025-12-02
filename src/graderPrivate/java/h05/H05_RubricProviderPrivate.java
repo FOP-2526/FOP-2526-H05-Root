@@ -211,5 +211,6 @@ public class H05_RubricProviderPrivate implements RubricProvider {
     @Override
     public void configure(RubricConfiguration configuration) {
         configuration.addTransformer(new MineBotTransformer());
+        configuration.addTransformer(new CallTransformer());
     }
 }

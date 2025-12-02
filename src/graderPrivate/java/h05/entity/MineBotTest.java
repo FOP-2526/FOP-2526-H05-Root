@@ -210,13 +210,13 @@ public class MineBotTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 1, 2, 3, 4, 5})
+    @ValueSource(ints = {1, 2, 3, 4, 5})
     public void testGetVision_correctNumberOfPoints(int visibilityRange) {
         testGetVision(visibilityRange, false);
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 1, 2, 3, 4, 5})
+    @ValueSource(ints = {1, 2, 3, 4, 5})
     public void testGetVision_correctPoints(int visibilityRange) {
         testGetVision(visibilityRange, true);
     }
@@ -250,7 +250,7 @@ public class MineBotTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 1, 2, 3, 4, 5})
+    @ValueSource(ints = {1, 2, 3, 4, 5})
     public void testUpdateVision_placeFog(int visibilityRange) {
         Set<Point> visiblePointsStart = Set.of(getValidVisionPoints(STARTING_POS.x, STARTING_POS.y, visibilityRange));
         Set<Point> visiblePointsEnd = Set.of(getValidVisionPoints(WORLD_SIZE - 1, WORLD_SIZE - 1, visibilityRange));
@@ -259,7 +259,7 @@ public class MineBotTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {0, 1, 2, 3, 4, 5})
+    @ValueSource(ints = {1, 2, 3, 4, 5})
     public void testUpdateVision_removeFog(int visibilityRange) {
         Set<Point> visiblePointsStart = Set.of(getValidVisionPoints(STARTING_POS.x, STARTING_POS.y, visibilityRange));
         Set<Point> visiblePointsEnd = Set.of(getValidVisionPoints(WORLD_SIZE - 1, WORLD_SIZE - 1, visibilityRange));

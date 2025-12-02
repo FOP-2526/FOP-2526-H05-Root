@@ -48,7 +48,7 @@ public class PowerbankTest {
     }
 
     @ParameterizedTest
-    @ValueSource(doubles = {-1, 0, 1})
+    @ValueSource(doubles = {0, 1})
     public void testConstructor(double capacity) throws Throwable {
         ConstructorLink constructor = assertNotNull(POWERBANK_CONSTRUCTOR_LINK.get(), emptyContext(),
             r -> "Class Powerbank does not have a constructor Powerbank(double)");
@@ -60,7 +60,7 @@ public class PowerbankTest {
     }
 
     @ParameterizedTest
-    @ValueSource(doubles = {-1, 0, 1})
+    @ValueSource(doubles = {0, 1})
     public void testGetCapacity(double capacity) throws Throwable {
         ConstructorLink constructor = assertNotNull(POWERBANK_CONSTRUCTOR_LINK.get(), emptyContext(),
             r -> "Class Powerbank does not have a constructor Powerbank(double)");

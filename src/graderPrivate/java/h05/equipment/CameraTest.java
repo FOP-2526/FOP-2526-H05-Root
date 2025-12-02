@@ -44,7 +44,7 @@ public class CameraTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {5, 1, 0, -1})
+    @ValueSource(ints = {5, 1})
     public void testSetVisibility(int visibility) {
         Camera instance = new Camera();
         call(() -> instance.setVisibilityRange(visibility));

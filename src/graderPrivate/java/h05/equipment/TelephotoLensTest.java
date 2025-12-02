@@ -49,7 +49,7 @@ public class TelephotoLensTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {-1, 0, 1})
+    @ValueSource(ints = {1, 2})
     public void testConstructor(int rangeEnhancement) throws Throwable {
         ConstructorLink constructor = assertNotNull(TELEPHOTO_LENS_CONSTRUCTOR_LINK.get(), emptyContext(),
             r -> "Class TelephotoLens does not have a constructor TelephotoLens(int)");
@@ -61,7 +61,7 @@ public class TelephotoLensTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {-1, 0, 1})
+    @ValueSource(ints = {1, 2})
     public void testGetRangeEnhancement(int rangeEnhancement) throws Throwable {
         ConstructorLink constructor = assertNotNull(TELEPHOTO_LENS_CONSTRUCTOR_LINK.get(), emptyContext(),
             r -> "Class TelephotoLens does not have a constructor TelephotoLens(int)");

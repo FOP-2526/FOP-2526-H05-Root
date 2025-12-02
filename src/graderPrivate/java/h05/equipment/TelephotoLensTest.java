@@ -51,7 +51,8 @@ public class TelephotoLensTest {
     @ParameterizedTest
     @ValueSource(ints = {-1, 0, 1})
     public void testConstructor(int rangeEnhancement) throws Throwable {
-        ConstructorLink constructor = TELEPHOTO_LENS_CONSTRUCTOR_LINK.get();
+        ConstructorLink constructor = assertNotNull(TELEPHOTO_LENS_CONSTRUCTOR_LINK.get(), emptyContext(),
+            r -> "Class TelephotoLens does not have a constructor TelephotoLens(int)");
         FieldLink rangeEnhancementField = TELEPHOTO_LENS_RANGE_ENHANCEMENT_FIELD_LINK.get();
         Object instance = constructor.invoke(rangeEnhancement);
 
@@ -62,7 +63,8 @@ public class TelephotoLensTest {
     @ParameterizedTest
     @ValueSource(ints = {-1, 0, 1})
     public void testGetRangeEnhancement(int rangeEnhancement) throws Throwable {
-        ConstructorLink constructor = TELEPHOTO_LENS_CONSTRUCTOR_LINK.get();
+        ConstructorLink constructor = assertNotNull(TELEPHOTO_LENS_CONSTRUCTOR_LINK.get(), emptyContext(),
+            r -> "Class TelephotoLens does not have a constructor TelephotoLens(int)");
         MethodLink getRangeEnhancementMethod = TELEPHOTO_LENS_GET_RANGE_ENHANCEMENT_METHOD_LINK.get();
         Object instance = constructor.invoke(rangeEnhancement);
 

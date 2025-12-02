@@ -30,8 +30,9 @@ public class AxeTest {
 
     @Test
     public void testGetMiningPower() throws Throwable {
-        Object instance = AXE_CONSTRUCTOR_LINK.get().invoke();
-        assertEquals(5d, AXE_GET_MINING_POWER_METHOD_LINK.get().invoke(instance), emptyContext(),
+        ConstructorLink constructor = assertNotNull(AXE_CONSTRUCTOR_LINK.get(), emptyContext(),
+            r -> "Class Axe has no constructor Axe()");
+        assertEquals(5d, AXE_GET_MINING_POWER_METHOD_LINK.get().invoke(constructor.invoke()), emptyContext(),
             r -> "Axe.getMiningPower() did not return the correct value");
     }
 }

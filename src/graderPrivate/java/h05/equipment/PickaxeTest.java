@@ -32,8 +32,9 @@ public class PickaxeTest {
 
     @Test
     public void testGetMiningPower() throws Throwable {
-        Object instance = PICKAXE_CONSTRUCTOR_LINK.get().invoke();
-        assertEquals(15d, PICKAXE_GET_MINING_POWER_METHOD_LINK.get().invoke(instance), emptyContext(),
+        ConstructorLink constructor = assertNotNull(PICKAXE_CONSTRUCTOR_LINK.get(), emptyContext(),
+            r -> "Class Pickaxe has no constructor Pickaxe()");
+        assertEquals(15d, PICKAXE_GET_MINING_POWER_METHOD_LINK.get().invoke(constructor.invoke()), emptyContext(),
             r -> "Pickaxe.getMiningPower() did not return the correct value");
     }
 }

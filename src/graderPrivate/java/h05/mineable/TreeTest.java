@@ -49,8 +49,8 @@ public class TreeTest {
     public void testOnMined(TestUtils.ToolClass toolClass, Optional<? extends Tool> tool) {
         double expectedReduction = switch (toolClass) {
             case NONE -> 7.5d;
-            case AXE -> 4d;
-            case PICKAXE -> 3d;
+            case AXE -> 20d;
+            case PICKAXE -> 45d;
         };
         AtomicDouble durability = new  AtomicDouble(100);
         Answer<?> answer = invocation -> {
@@ -72,9 +72,9 @@ public class TreeTest {
         Context context = contextBuilder()
             .add("durability", durability.get())
             .add("tool", toolClass)
-            .add("tool mining power", 1d)
+            .add("tool mining power", tool.map(Tool::getMiningPower).orElse(7.5d))
             .build();
-        assertFalse(treeMock.onMined(toolClass == TestUtils.ToolClass.NONE ? null : tool.orElseThrow()), context,
+        assertFalse(treeMock.onMined(tool.orElse(null)), context,
             r -> "The resource was not mined completely but Tree.onMined(Tool) returned true");
         assertEquals(100d - expectedReduction, durability.get(), context,
             r -> "Tree.onMine(Tool) did not reduce the durability by the correct amount");
@@ -83,9 +83,9 @@ public class TreeTest {
         context = contextBuilder()
             .add("durability", durability.get())
             .add("tool", toolClass)
-            .add("tool mining power", 1d)
+            .add("tool mining power", tool.map(Tool::getMiningPower).orElse(7.5d))
             .build();
-        assertTrue(treeMock.onMined(toolClass == TestUtils.ToolClass.NONE ? null : tool.orElseThrow()), context,
+        assertTrue(treeMock.onMined(tool.orElse(null)), context,
             r -> "The resource was mined completely but Tree.onMined(Tool) returned false");
         assertEquals(0d, durability.get(), context,
             r -> "Tree.onMine(Tool) did not reduce the durability to zero");

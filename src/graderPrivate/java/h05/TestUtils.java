@@ -79,7 +79,7 @@ public class TestUtils {
                 if (methodSignatureEquals(invokedMethod, "getName")) {
                     return "Axe";
                 } else if (methodSignatureEquals(invokedMethod, "getMiningPower")) {
-                    return 1d;
+                    return 5d;
                 } else {
                     return invocation.callRealMethod();
                 }
@@ -98,7 +98,7 @@ public class TestUtils {
                 if (methodSignatureEquals(invokedMethod, "getName")) {
                     return "Pickaxe";
                 } else if (methodSignatureEquals(invokedMethod, "getMiningPower")) {
-                    return 1d;
+                    return 15d;
                 } else {
                     return invocation.callRealMethod();
                 }

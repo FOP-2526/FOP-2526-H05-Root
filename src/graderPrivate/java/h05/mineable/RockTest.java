@@ -49,8 +49,8 @@ public class RockTest {
     public void testOnMined(TestUtils.ToolClass toolClass, Optional<? extends Tool> tool) {
         double expectedReduction = switch (toolClass) {
             case NONE -> 5d;
-            case AXE -> 1.5d;
-            case PICKAXE -> 2d;
+            case AXE -> 7.5d;
+            case PICKAXE -> 30d;
         };
         AtomicDouble durability = new  AtomicDouble(100);
         Answer<?> answer = invocation -> {
@@ -72,9 +72,9 @@ public class RockTest {
         Context context = contextBuilder()
             .add("durability", durability.get())
             .add("tool", toolClass)
-            .add("tool mining power", 1d)
+            .add("tool mining power", tool.map(Tool::getMiningPower).orElse(5d))
             .build();
-        assertFalse(rockMock.onMined(toolClass == TestUtils.ToolClass.NONE ? null : tool.orElseThrow()), context,
+        assertFalse(rockMock.onMined(tool.orElse(null)), context,
             r -> "The resource was not mined completely but Rock.onMined(Tool) returned true");
         assertEquals(100d - expectedReduction, durability.get(), context,
             r -> "Rock.onMine(Tool) did not reduce the durability by the correct amount");
@@ -83,9 +83,9 @@ public class RockTest {
         context = contextBuilder()
             .add("durability", durability.get())
             .add("tool", toolClass)
-            .add("tool mining power", 1d)
+            .add("tool mining power", tool.map(Tool::getMiningPower).orElse(5d))
             .build();
-        assertTrue(rockMock.onMined(toolClass == TestUtils.ToolClass.NONE ? null : tool.orElseThrow()), context,
+        assertTrue(rockMock.onMined(tool.orElse(null)), context,
             r -> "The resource was mined completely but Rock.onMined(Tool) returned false");
         assertEquals(0d, durability.get(), context,
             r -> "Rock.onMine(Tool) did not reduce the durability to zero");
